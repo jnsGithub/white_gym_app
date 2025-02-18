@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "625554390329",
+    "project_id": "white-gym",
+    "storage_bucket": "white-gym.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:625554390329:android:aa3c93b7aff4b714e2bce8",
+        "android_client_info": {
+          "package_name": "com.white.gym.app.white_gym"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbLwzI7c8VWINb9Fu0mq-GVFxFe0uMVxU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
