@@ -106,4 +106,44 @@ class SpotItem {
       createDate: DateTime.now(),
     );
   }
+
+  SpotItem copyWith({
+    String? documentId,
+    int? admission,
+    String? descriptions1,
+    String? descriptions2,
+    bool? isSubscribe,
+    bool? passTicket,
+    bool? discountCheck,
+    int? index,
+    int? locker,
+    int? monthly,
+    String? name,
+    int? pause,
+    int? beforeDiscount,
+    int? price,
+    int? sportswear,
+    String? spotDocumentId,
+    DateTime? createDate,
+  }) {
+    return SpotItem(
+      documentId: documentId ?? this.documentId,
+      admission: admission ?? this.admission,
+      descriptions1: descriptions1 ?? this.descriptions1,
+      descriptions2: descriptions2 ?? this.descriptions2,
+      isSubscribe: isSubscribe ?? this.isSubscribe,
+      discountCheck: discountCheck ?? this.discountCheck,
+      index: index ?? this.index,
+      locker: locker ?? this.locker,
+      monthly: monthly ?? this.monthly,
+      name: name ?? this.name,
+      passTicket: passTicket ?? this.passTicket,
+      pause: pause ?? this.pause,
+      beforeDiscount: beforeDiscount ?? this.beforeDiscount,
+      price: price ?? this.price,
+      sportswear: sportswear ?? this.sportswear,
+      spotDocumentId: spotDocumentId ?? this.spotDocumentId,
+      createDate: createDate ?? this.createDate,
+    );
+  }
 }

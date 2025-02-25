@@ -145,13 +145,13 @@ class PaymentView extends GetView<PaymentController> {
                                                         ),
                                                         Row(
                                                           children: [
-                                                            controller.spotItemList[index].isSubscribe && controller.spotItemList[index].locker != 0?
+                                                            // controller.spotItemList[index].isSubscribe && controller.spotItemList[index].locker != 0?
                                                             Text('월 ', style: TextStyle(
                                                             color: controller.check1.value ? text22 : Colors.grey,
                                                             fontWeight: FontWeight.w600,
                                                             fontSize: 16
-                                                        ),)
-                                                                :Container(),
+                                                        ),),
+                                                                // :Container(),
                                                             Text(formatNumber(controller.spotItemList[index].locker), style: TextStyle(
                                                                 color: controller.check1.value ? text22 : Colors.grey,
                                                                 fontWeight: FontWeight.w600,
@@ -193,13 +193,13 @@ class PaymentView extends GetView<PaymentController> {
 
                                                         Row(
                                                           children: [
-                                                            controller.spotItemList[index].isSubscribe && controller.spotItemList[index].sportswear != 0?
+                                                            // controller.spotItemList[index].isSubscribe && controller.spotItemList[index].sportswear != 0?
                                                             Text('월 ', style: TextStyle(
                                                                 color: controller.check2.value ? text22 : Colors.grey,
                                                                 fontWeight: FontWeight.w600,
                                                                 fontSize: 16
-                                                            ),)
-                                                                :Container(),
+                                                            ),),
+                                                                // :Container(),
                                                             Text(formatNumber(controller.spotItemList[index].sportswear), style: TextStyle(
                                                                 color: controller.check2.value ? text22 : Colors.grey,
                                                                 fontWeight: FontWeight.w600,

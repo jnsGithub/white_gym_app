@@ -27,6 +27,8 @@ class PaymentDetailController extends GetxController {
   var dataJson;
   RxInt sliderIndex = 0.obs;
   RxInt totalPrice = 0.obs;
+  RxInt lockerPrice = 0.obs;
+  RxInt sportswearPrice = 0.obs;
   RxBool lockerCheck = false.obs;
   RxBool sportswearCheck = false.obs;
   RxBool loading = false.obs;
@@ -46,7 +48,17 @@ class PaymentDetailController extends GetxController {
     }
     lockerCheck.value = Get.arguments['locker'];
     sportswearCheck.value = Get.arguments['sportswear'];
-    totalPrice.value = spotItem.price+ (lockerCheck.value?spotItem.locker:0) + (sportswearCheck.value?spotItem.sportswear:0);
+    lockerPrice.value = spotItem.locker;
+    sportswearPrice.value = spotItem.sportswear;
+
+    if(spotItem.isSubscribe){
+      totalPrice.value = spotItem.price + (lockerCheck.value?spotItem.locker:0) + (sportswearCheck.value?spotItem.sportswear:0);
+    } else {
+      lockerPrice.value *= spotItem.monthly;
+      sportswearPrice.value *= spotItem.monthly;
+      totalPrice.value = spotItem.price + (lockerCheck.value?lockerPrice.value:0) + (sportswearCheck.value?sportswearPrice.value:0);
+    }
+    // totalPrice.value = spotItem.price + (lockerCheck.value?spotItem.locker:0) + (sportswearCheck.value?spotItem.sportswear:0);
   }
 
   @override
@@ -117,7 +129,7 @@ class PaymentDetailController extends GetxController {
   }
   Payload getPayloadAppCard() {
     Payload payload = Payload();
-    var total = spotItem.price+ (lockerCheck.value?spotItem.locker:0) + (sportswearCheck.value?spotItem.sportswear:0);
+    var total = spotItem.price+ (lockerCheck.value?lockerPrice.value:0) + (sportswearCheck.value?sportswearPrice.value:0);
     List<Item> itemList = [];
     Item item1 = Item();
     item1.name = spotItem.name; // 주문정보에 담길 상품명
@@ -130,7 +142,7 @@ class PaymentDetailController extends GetxController {
       item2.name = "개인 락커"; // 주문정보에 담길 상품명
       item2.qty = 1; // 해당 상품의 주문 수량
       item2.id = spotItem.documentId; // 해당 상품의 고유 키
-      item2.price = spotItem.locker.toDouble(); // 상품의 가격
+      item2.price = lockerPrice.value.toDouble();//spotItem.locker.toDouble(); // 상품의 가격
       itemList.add(item2);
     }
     if(sportswearCheck.value && spotItem.sportswear != 0){
@@ -138,7 +150,7 @@ class PaymentDetailController extends GetxController {
       item3.name = "회원복"; // 주문정보에 담길 상품명
       item3.qty = 1; // 해당 상품의 주문 수량
       item3.id = spotItem.documentId; // 해당 상품의 고유 키
-      item3.price = spotItem.sportswear.toDouble(); // 상품의 가격
+      item3.price = sportswearPrice.value.toDouble();//spotItem.sportswear.toDouble(); // 상품의 가격
       itemList.add(item3);
     }
     payload.webApplicationId = webApplicationId; // web application id
@@ -221,7 +233,7 @@ class PaymentDetailController extends GetxController {
   }
   bootpayAppCard() async {
     Payload payload = getPayloadAppCard();
-    var total = spotItem.price+ (lockerCheck.value?spotItem.locker:0) + (sportswearCheck.value?spotItem.sportswear:0);
+    var total = spotItem.price+ (lockerCheck.value?lockerPrice.value:0) + (sportswearCheck.value?sportswearPrice.value:0);
     Bootpay().requestPayment(
       context: Get.context!,
       payload: payload,

@@ -64,7 +64,7 @@ class PaymentDetailView extends GetView<PaymentDetailController> {
                         Row(
                           children: [
                             controller.spotItem.isSubscribe?Text('월 ',style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600,color: text22),):Container(),
-                            Text(formatNumber(controller.spotItem.locker),style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: text22),),
+                            Text(formatNumber(controller.lockerPrice.value),style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: text22),),
                           ],
                         )
                       ],
@@ -97,7 +97,7 @@ class PaymentDetailView extends GetView<PaymentDetailController> {
                         Row(
                           children: [
                             controller.spotItem.isSubscribe?Text('월 ',style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600,color: text22),):Container(),
-                            Text(formatNumber(controller.spotItem.sportswear),style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: text22),),
+                            Text(formatNumber(controller.sportswearPrice.value),style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: text22),),
                           ],
                         )
                       ],
