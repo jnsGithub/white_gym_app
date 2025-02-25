@@ -164,7 +164,7 @@ class PaymentDetailController extends GetxController {
 
     Extra extra = Extra(); // 결제 옵션
     extra.appScheme = 'white-gym';
-    // extra.cardQuota = '3';
+    extra.cardQuota = '0,2,3';
     payload.items = itemList; // 상품정보 배열
     payload.user = user;
     payload.extra = extra;

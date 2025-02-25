@@ -129,7 +129,7 @@ class MainHomeController extends GetxController {
     } else if (Platform.isIOS) {
       _preventScreenshotOn();
     }
-    var a = await Get.bottomSheet(
+    await Get.bottomSheet(
       isScrollControlled: true,
         Container(
           height: size.height*0.89,
@@ -229,11 +229,8 @@ class MainHomeController extends GetxController {
     bool check = await getHistory();
     if(!check ){
       if(!Get.isSnackbarOpen){
-        Get.snackbar('알림', '일일 입장횟수를 초과 했습니다');
+        Get.snackbar('알림', '일일 입장횟수를 초과 했습니다',backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
       }
-      // if(Get.isDialogOpen){
-      //
-      // }
       return;
     }
     saving(Get.context!);

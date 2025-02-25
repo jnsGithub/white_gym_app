@@ -290,7 +290,7 @@ class PauseTicketController extends GetxController {
                         DateTime now2 = DateTime(ticket.pauseStartDate.last.year, ticket.pauseStartDate.last.month, ticket.pauseStartDate.last.day);
                         Duration diff =  ticket.endDate.difference(now2);
                         DateTime now3 = DateTime(now.year, now.month, now.day + diff.inDays);
-                        ticket.pauseEndDate.last = now2;
+                        ticket.pauseEndDate.last = now;
                         ticket.endDate = now3;
                         ticket.status = true ;
                         await userDataRepository.updateTicket(ticket);

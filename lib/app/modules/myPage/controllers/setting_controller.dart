@@ -101,19 +101,18 @@ class SettingController extends GetxController {
                       onTap: () async {
                         Get.back();
                         Get.snackbar('회원 탈퇴 오류', '현재 구독중인 이용권이 있어, 회원 탈퇴가 불가능합니다.',backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
-                        //await user?.delete();
-                        // bool check = await userDataRepository.deleteUserData();
-                        // if(check) {
-                        //   await FirebaseAuth.instance.signOut();
-                        //   box.remove('documentId');
-                        //   Get.offAllNamed(Routes.HOME);
-                        //   Get.snackbar('알림', '회원탈퇴가 완료되었습니다.'
-                        //       ,backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
-                        // } else {
-                        //   Get.back();
-                        //   Get.snackbar('알림', '회원탈퇴 실패하였습니다.'
-                        //       ,backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
-                        // }
+                        bool check = await userDataRepository.deleteUserData();
+                        if(check) {
+                          await FirebaseAuth.instance.signOut();
+                          box.remove('documentId');
+                          Get.offAllNamed(Routes.HOME);
+                          Get.snackbar('알림', '회원탈퇴가 완료되었습니다.'
+                              ,backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
+                        } else {
+                          Get.back();
+                          Get.snackbar('알림', '회원탈퇴 실패하였습니다.'
+                              ,backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
+                        }
                       },
                       child: Container(
                         height: 48.1,

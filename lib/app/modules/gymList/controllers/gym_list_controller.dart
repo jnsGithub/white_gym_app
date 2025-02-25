@@ -1,7 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:white_gym/app/data/spot.dart';
 import 'package:white_gym/app/model/spot.dart';
+
+import '../../../../global.dart';
 
 class GymListController extends GetxController {
   RxList<Spot> gymList = <Spot>[].obs;
@@ -38,13 +41,14 @@ class GymListController extends GetxController {
       );
       i.distanceBetween = double.parse((distance / 1000).toStringAsFixed(2));
     }
+    gymList.sort((a, b) => a.distanceBetween.compareTo(b.distanceBetween));
     update();
   }
   getCurrentLocation() async {
     LocationPermission permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied ||
         permission == LocationPermission.deniedForever) {
-      Get.snackbar('알림','위치정보 권한이 거부되었습니다.');
+      Get.snackbar('알림','위치정보 권한이 거부되었습니다.',backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
       isNotLatLon.value = true;
       getSpot();
       update();
