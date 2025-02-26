@@ -206,7 +206,7 @@ class PauseTicketView extends GetView<PauseTicketController> {
                       margin: EdgeInsets.only(bottom: 20),
                       child: GestureDetector(
                         onTap: (){
-                          if(controller.ticket.pause == 0 && controller.ticket.status){
+                          if(controller.ticket.pause == 0 && controller.ticket.status && !controller.subscribe.value){
                             Get.snackbar('일시정지 불가','일시정지 가능 횟수를 초과하였습니다.',backgroundColor: Colors.white,colorText: Colors.red);
                             return;
                           }
