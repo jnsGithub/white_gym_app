@@ -1,0 +1,2 @@
+/Users/hoon/Documents/project/jns/white_gym/android/app/.cxx/RelWithDebInfo/614e4w5t/x86/CMakeFiles/edit_cache.dir
+/Users/hoon/Documents/project/jns/white_gym/android/app/.cxx/RelWithDebInfo/614e4w5t/x86/CMakeFiles/rebuild_cache.dir

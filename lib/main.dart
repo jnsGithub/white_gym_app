@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:white_gym/app/data/userData.dart';
 
 import 'app/routes/app_pages.dart';
@@ -17,6 +18,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // await initializeDateFormatting('ko_KR', null);
 
   FirebaseAuth.instance.setLanguageCode("ko");
   // initializeNotification();

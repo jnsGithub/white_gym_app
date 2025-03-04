@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:white_gym/app/model/billingInfo.dart';
 import 'package:white_gym/app/modules/payment/controllers/payment_detail_controller.dart';
 import 'package:white_gym/component/main_box.dart';
@@ -262,7 +263,7 @@ class PaymentDetailView extends GetView<PaymentDetailController> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('매월 자동으로 결제가 이루어집니다',style: TextStyle(fontSize: 13,fontWeight: FontWeight.w400,color: text7D),),
-                          Text('다음 결제일 ${controller.now.year}.${controller.now.month}.${controller.now.day}',style: TextStyle(fontSize: 13,fontWeight: FontWeight.w600,color: text7D),),
+                          Text('다음 결제일 ${DateFormat('yyyy.MM.dd', 'ko_KR').format(controller.now.add(Duration(days: 29)))}',style: TextStyle(fontSize: 13,fontWeight: FontWeight.w600,color: text7D),),
                         ],
                       ),
                       SizedBox(height: 10,),

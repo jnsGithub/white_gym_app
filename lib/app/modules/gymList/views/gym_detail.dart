@@ -124,7 +124,7 @@ class GymDetail extends GetView<GymDetailController> {
                             ),
                           ),
                           Obx(()=>
-                          controller.spotItemList.length > 3 ? Container():
+                          controller.spotItemList.length < 3 ? Container():
                             controller.moreCheck.value ? Container():GestureDetector(
                               onTap: (){
                                 controller.getMoreList();
