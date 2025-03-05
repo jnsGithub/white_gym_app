@@ -135,11 +135,7 @@ class CardListController extends GetxController {
     );
   }
   changePaymentCard() async {
-    for(var i in billingInfo){
-      print(i.documentId);
-      print(i.cardNo);
-      print(i.cardCompany);
-    }
+
     myInfo.paymentCard = billingInfo[sliderIndex.value].documentId;
     bool a = await userDataRepository.setPaymentCard(myInfo.paymentCard);
     if(a){

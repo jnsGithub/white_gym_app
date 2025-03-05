@@ -38,7 +38,8 @@ class PaymentsRepository {
   removeCard(String documentId,String nextDocumentId) async {
     try {
       bool check = nextDocumentId != '';
-      if(!check  && myInfo.ticket!=''){
+      bool status = myInfo.ticket.status && myInfo.ticket.subscribe && !myInfo.ticket.endDate.isBefore(DateTime.now().add(Duration(days: -1)));
+      if(!check  && status){
         Get.back();
         Get.snackbar('카드 삭제 오류', '현재 결제 예정인 이용권이 있어, 삭제가 불가능합니다.',backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
         return false;

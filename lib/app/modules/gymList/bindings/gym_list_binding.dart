@@ -14,9 +14,15 @@ class GymListBinding extends Bindings {
 class GymDetailBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<GymDetailController>(
-          () => GymDetailController(),
-    );
+    // 페이지가 진입할 때마다 새 컨트롤러를 생성합니다.
+    Get.lazyPut<GymDetailController>(() => GymDetailController(), fenix: false);
   }
+  // @override
+  // void dependencies() {
+  //   Get.lazyPut<GymDetailController>(
+  //         () => GymDetailController(),
+  //       fenix: false
+  //   );
+  // }
 }
 

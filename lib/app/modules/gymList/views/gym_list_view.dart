@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:white_gym/global.dart';
 
+import '../controllers/gym_detail_controller.dart';
 import '../controllers/gym_list_controller.dart';
 
 class GymListView extends GetView<GymListController> {
@@ -47,6 +48,7 @@ class GymListView extends GetView<GymListController> {
                             itemBuilder: (context,index){
                               return GestureDetector(
                                 onTap: (){
+                                  Get.delete<GymDetailController>();
                                   Get.toNamed('/gym-detail',arguments: controller.gymList[index]);
                                 },
                                 child: Container(
