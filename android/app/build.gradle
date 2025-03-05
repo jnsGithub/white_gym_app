@@ -31,7 +31,7 @@ if (flutterVersionName == null) {
 android {
     namespace = "com.white.gym.app.white_gym"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = 28.0.12433566 //flutter.ndkVersion
+    ndkVersion = '26.3.11579264' //flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

@@ -218,6 +218,9 @@ class PauseTicketView extends GetView<PauseTicketController> {
                             }
                           } else {
                             if(controller.subscribe.value){
+                              if(controller.ticket.status){
+                                controller.cancel();
+                              }
                             } else {
                               controller.play();
                             }

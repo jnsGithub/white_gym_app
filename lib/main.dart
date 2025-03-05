@@ -18,7 +18,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // await initializeDateFormatting('ko_KR', null);
+  await initializeDateFormatting('ko_KR', null);
 
   FirebaseAuth.instance.setLanguageCode("ko");
   // initializeNotification();
