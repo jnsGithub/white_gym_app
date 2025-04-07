@@ -73,7 +73,7 @@ class PaymentListController extends GetxController {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('총 결제 금액',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: text22),),
-                        Text(formatNumber(item.receipt.price),style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: mainColor),),
+                        Text(formatNumber(item.receipt.price ),style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: mainColor),),
                       ],
                     ),
                   ),
@@ -84,7 +84,7 @@ class PaymentListController extends GetxController {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(item.receipt.orderName,style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: text7D),),
-                        Text(formatNumber(item.ticketPrice),style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: text22),),
+                        Text(formatNumber(item.ticketPrice  - item.locker - item.sportswear),style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: text22),),
                       ],
                     ),
                   ),

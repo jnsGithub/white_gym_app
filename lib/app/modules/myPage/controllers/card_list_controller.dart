@@ -195,6 +195,8 @@ class CardListController extends GetxController {
       onCancel: (String data) {
       },
       onError: (String data) {
+        var data2 = jsonDecode(data);
+        Get.snackbar('결제 오류', data2['message'].toString());
       },
       onClose: () async{
         try{

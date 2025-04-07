@@ -198,10 +198,12 @@ class PaymentDetailController extends GetxController {
       onCancel: (String data) {
         print(data);
       },
-      onError: (String data) {
-        print(data);
+      onError: (String data) async {
+        var data2 = jsonDecode(data);
+        Get.snackbar('결제 오류', data2['message'].toString());
       },
       onClose: () async{
+        print('onClose');
         try{
           Bootpay().dismiss(Get.context!); //명시적으로 부트페이 뷰 종료 호출
           saving(Get.context!);
@@ -243,6 +245,8 @@ class PaymentDetailController extends GetxController {
       },
       onError: (String data) {
         print(data);
+        var data2 = jsonDecode(data);
+        Get.snackbar('결제 오류', data2['message'].toString());
       },
       onClose: () async{
         try{
@@ -259,14 +263,12 @@ class PaymentDetailController extends GetxController {
               spotDocumentId: spot.documentId,
               paymentBranch: spot.name,
               subscribe: false,
-              sportswear:sportswearCheck.value?spotItem.sportswear:0,
-              locker:lockerCheck.value?spotItem.locker:0,
+              sportswear:sportswearCheck.value?spotItem.sportswear*spotItem.monthly:0,
+              locker:lockerCheck.value?spotItem.locker*spotItem.monthly:0,
               ticketPrice: total,
               crateDate: DateTime.now(),
               receipt: receipt,
             );
-
-
             DateTime endDate =now.add(Duration(days: (spotItem.monthly*30)-1));
             Ticket ticket = Ticket(
               documentId: '',
@@ -376,13 +378,13 @@ class PaymentDetailController extends GetxController {
           spotDocumentId: spot.documentId,
           paymentBranch: spot.name,
           subscribe: true,
-          sportswear:spotItem.sportswear,
-          locker:spotItem.locker,
+          sportswear:sportswearCheck.value ? spotItem.sportswear : 0,
+          locker:lockerCheck.value ? spotItem.locker : 0,
           ticketPrice: totalPrice,
           crateDate: DateTime.now(),
           receipt: receipt,
         );
-        DateTime endDate =now.add(Duration(days: (30)-1));
+        DateTime endDate = now.add(Duration(days: (30)-1));
         Ticket ticket = Ticket(
           documentId: '',
           userDocumentId: myInfo.documentId,

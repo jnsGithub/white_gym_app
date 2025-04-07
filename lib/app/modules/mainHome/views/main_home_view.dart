@@ -89,7 +89,10 @@ class MainHomeView extends GetView<MainHomeController> {
                                     Row(
                                       crossAxisAlignment: CrossAxisAlignment.end,
                                       children: [
-                                        Text(myInfo.name,style: TextStyle(fontSize: 24,fontWeight: FontWeight.w600,color: Colors.white),),
+                                        Text(
+                                          myInfo.name.length > 6 ? '${myInfo.name.substring(0,6)}...' : myInfo.name,
+                                          style: TextStyle(fontSize: 24,fontWeight: FontWeight.w600,color: Colors.white),
+                                        ),
                                         SizedBox(width: 4,),
                                         Text('회원님',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500,color: Color(0xff97B6FF)),)
                                       ],

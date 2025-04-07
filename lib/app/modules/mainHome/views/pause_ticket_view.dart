@@ -133,11 +133,17 @@ class PauseTicketView extends GetView<PauseTicketController> {
                                         ),
                                       ],
                                     ),
-                                    Text(controller.check1.value?formatNumber(controller.ticket.spotItem.locker):formatNumber(0), style: TextStyle(
-                                        color: text22,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16
-                                    ),)
+                                    Row(
+                                      children: [
+                                        Text('월 ',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: text22),),
+                                        const SizedBox(width: 8),
+                                        Text(controller.check1.value?formatNumber(controller.ticket.spotItem.locker):formatNumber(0), style: TextStyle(
+                                            color: text22,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16
+                                        ),),
+                                      ],
+                                    )
                                   ],
                                 ),
                               ),
@@ -166,11 +172,17 @@ class PauseTicketView extends GetView<PauseTicketController> {
                                         ),)
                                       ],
                                     ),
-                                   Text(controller.check2.value?formatNumber(controller.ticket.spotItem.sportswear):formatNumber(0), style: TextStyle(
-                                       color: text22,
-                                       fontWeight: FontWeight.w600,
-                                       fontSize: 16
-                                   ),)
+                                   Row(
+                                     children: [
+                                       Text('월 ',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: text22),),
+                                       const SizedBox(width: 8),
+                                       Text(controller.check2.value?formatNumber(controller.ticket.spotItem.sportswear):formatNumber(0), style: TextStyle(
+                                           color: text22,
+                                           fontWeight: FontWeight.w600,
+                                           fontSize: 16
+                                       ),),
+                                     ],
+                                   )
                                   ],
                                 ),
                               ),

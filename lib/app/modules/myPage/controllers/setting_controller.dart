@@ -100,7 +100,16 @@ class SettingController extends GetxController {
                     child: InkWell(
                       onTap: () async {
                         Get.back();
-                        Get.snackbar('회원 탈퇴 오류', '현재 구독중인 이용권이 있어, 회원 탈퇴가 불가능합니다.',backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
+                        if(myInfo.ticket.endDate.isAfter(DateTime.now().add(Duration(days: -1)))) {
+                          Get.snackbar(
+                              '회원 탈퇴 오류', '현재 이요중인 이용권이 있어, 회원 탈퇴가 불가능합니다.',
+                              backgroundColor: Colors.white,
+                              colorText: text22,
+                              borderRadius: 16,
+                              borderColor: gray700,
+                              borderWidth: 1);
+                          return;
+                        }
                         bool check = await userDataRepository.deleteUserData();
                         if(check) {
                           await FirebaseAuth.instance.signOut();
