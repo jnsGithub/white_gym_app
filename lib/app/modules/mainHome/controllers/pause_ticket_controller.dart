@@ -391,7 +391,7 @@ class PauseTicketController extends GetxController {
                       onTap: () async {
                         ticket.pause--;
                         DateTime now = DateTime.now();
-                        ticket.pauseStartDate.add(DateTime(now.year, now.month, now.day));
+                        ticket.pauseStartDate.add(DateTime.now());//(DateTime(now.year, now.month, now.day));
                         ticket.pauseEndDate.add(DateTime(now.year, now.month, now.day + 29));
                         ticket.status = false ;
                         cancelCheck.value = ticket.pause == 0;

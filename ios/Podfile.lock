@@ -1504,7 +1504,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   abseil: d121da9ef7e2ff4cab7666e76c5a3e0915ae08c3
-  bootpay_webview_flutter_wkwebview: 4020fe794c27b0d080fc4abd9f9f39d2b8af67e3
+  bootpay_webview_flutter_wkwebview: 8d89306c2321b85ae7611f6abb34132382d83bd5
   BoringSSL-GRPC: ca6a8e5d04812fce8ffd6437810c2d46f925eaeb
   cloud_firestore: f02547e5b28138821eb44a48e3c5f034ebb5411b
   Firebase: 374a441a91ead896215703a674d58cdb3e9d772b

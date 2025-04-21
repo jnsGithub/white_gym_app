@@ -45,26 +45,26 @@ packages:
     dependency: "direct main"
     description:
       name: bootpay
-      sha256: "251d666926b8a19ba14ec037039bcd308698ca28474cbc83a02feb686605aa61"
+      sha256: b7cb7ed6545a45a41ac72df63b8159f407bce8d8f49187d35ab2664777ca9e0c
       url: "https://pub.dev"
     source: hosted
-    version: "4.9.95"
+    version: "5.0.13"
   bootpay_webview_flutter:
     dependency: transitive
     description:
       name: bootpay_webview_flutter
-      sha256: "8fe4c82bb699f93079476e5b5278a6a901559468a6142a2b88c19b7e2118453a"
+      sha256: f2a1d75acaeb5239a8c36b7716694119cfac849828d165a622b88d287579d276
       url: "https://pub.dev"
     source: hosted
-    version: "4.8.1"
+    version: "4.9.12"
   bootpay_webview_flutter_android:
     dependency: transitive
     description:
       name: bootpay_webview_flutter_android
-      sha256: c18193ea41f075c73b19e8e818916cd9366192d5d07c790948a2f665e402d3b1
+      sha256: d6ba532a55a11bed3229cdd2ba617b62896e5a5b0b8aa62c1421f201dd1841ee
       url: "https://pub.dev"
     source: hosted
-    version: "3.17.1"
+    version: "4.3.22"
   bootpay_webview_flutter_platform_interface:
     dependency: transitive
     description:
@@ -77,10 +77,10 @@ packages:
     dependency: transitive
     description:
       name: bootpay_webview_flutter_wkwebview
-      sha256: ebde0d03f1d06454549ac73cfff31811c1d8d2abbd42ec5420c9086e4abbeab9
+      sha256: "54cc520360058a47d03f56d0b32f4cff7913f559c2414504cd4be439e0941812"
       url: "https://pub.dev"
     source: hosted
-    version: "3.13.14"
+    version: "3.13.15"
   cached_network_image:
     dependency: "direct main"
     description:
@@ -548,10 +548,10 @@ packages:
     dependency: "direct main"
     description:
       name: http
-      sha256: b9c29a161230ee03d3ccf545097fccd9b87a5264228c5d348202e0f0c28f9010
+      sha256: fe7ab022b76f3034adc518fb6ea04a82387620e19977665ea18d30a1cf43442f
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.2"
+    version: "1.3.0"
   http_parser:
     dependency: transitive
     description:
@@ -564,10 +564,10 @@ packages:
     dependency: "direct main"
     description:
       name: intl
-      sha256: "00f33b908655e606b86d2ade4710a231b802eec6f11e87e4ea3783fd72077a50"
+      sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
       url: "https://pub.dev"
     source: hosted
-    version: "0.20.1"
+    version: "0.19.0"
   js:
     dependency: transitive
     description:
@@ -644,18 +644,18 @@ packages:
     dependency: transitive
     description:
       name: package_info_plus
-      sha256: "70c421fe9d9cc1a9a7f3b05ae56befd469fe4f8daa3b484823141a55442d858d"
+      sha256: "7976bfe4c583170d6cdc7077e3237560b364149fcd268b5f53d95a991963b191"
       url: "https://pub.dev"
     source: hosted
-    version: "8.1.2"
+    version: "8.3.0"
   package_info_plus_platform_interface:
     dependency: transitive
     description:
       name: package_info_plus_platform_interface
-      sha256: a5ef9986efc7bf772f2696183a3992615baa76c1ffb1189318dd8803778fb05b
+      sha256: "6c935fb612dff8e3cc9632c2b301720c77450a126114126ffaafe28d2e87956c"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.2"
+    version: "3.2.0"
   path:
     dependency: transitive
     description:
@@ -836,10 +836,10 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences
-      sha256: "3c7e73920c694a436afaf65ab60ce3453d91f84208d761fbd83fc21182134d93"
+      sha256: "6e8bf70b7fef813df4e9a36f658ac46d107db4b4cfe1048b477d4e453a8159f5"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.4"
+    version: "2.5.3"
   shared_preferences_android:
     dependency: transitive
     description:

@@ -24,15 +24,32 @@ void main() async {
   // initializeNotification();
   UserDataRepository userDataRepository = UserDataRepository();
   await signInAnonymously();
-  if (box.read('documentId')!=null) {
+  // if (box.read('documentId')!=null) {
+  //   if(await userDataRepository.autoLogin()){
+  //     if(myInfo.ticket.endDate.isBefore(DateTime.now().add(Duration(days: -1)))){
+  //       autoLogin = Routes.GYM_LIST;
+  //     } else {
+  //       autoLogin = Routes.MAIN_HOME;
+  //     }
+  //   }
+  // }
+  if(await box.read('documentId')!=null){
     if(await userDataRepository.autoLogin()){
       if(myInfo.ticket.endDate.isBefore(DateTime.now().add(Duration(days: -1)))){
-        autoLogin = Routes.GYM_LIST;
+        DateTime end = myInfo.ticket.pauseEndDate.isNotEmpty ? myInfo.ticket.pauseEndDate.last : myInfo.ticket.endDate;
+        // DateTime end = myInfo.ticket.pauseEndDate.last;
+        DateTime endOfDay = DateTime(end.year, end.month, end.day, 23, 59, 59);
+        if(myInfo.ticket.status == false && DateTime.now().isBefore(endOfDay)){
+          autoLogin = Routes.MAIN_HOME;
+        } else {
+          autoLogin = Routes.GYM_LIST;
+        }
       } else {
         autoLogin = Routes.MAIN_HOME;
       }
     }
   }
+
   runApp(
     GetMaterialApp(
       title: "Application",

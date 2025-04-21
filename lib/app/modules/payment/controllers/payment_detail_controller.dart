@@ -236,6 +236,7 @@ class PaymentDetailController extends GetxController {
   bootpayAppCard() async {
     Payload payload = getPayloadAppCard();
     var total = spotItem.price+ (lockerCheck.value?lockerPrice.value:0) + (sportswearCheck.value?sportswearPrice.value:0);
+    var data2 = null;
     Bootpay().requestPayment(
       context: Get.context!,
       payload: payload,
@@ -245,8 +246,8 @@ class PaymentDetailController extends GetxController {
       },
       onError: (String data) {
         print(data);
-        var data2 = jsonDecode(data);
-        Get.snackbar('결제 오류', data2['message'].toString());
+        data2 = jsonDecode(data);
+        // Get.snackbar('결제 오류', data2['message'].toString());
       },
       onClose: () async{
         try{
@@ -301,8 +302,9 @@ class PaymentDetailController extends GetxController {
           }
         } catch (e){
           print(e);
-          print('1231231');
           Get.back();
+          Get.snackbar('결제 오류', data2['message'].toString());
+
         }
         //TODO - 원하시는 라우터로 페이지 이동
       },
