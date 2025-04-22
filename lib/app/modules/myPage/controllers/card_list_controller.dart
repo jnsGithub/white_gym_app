@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:bootpay/bootpay.dart';
+import 'package:bootpay/config/bootpay_config.dart';
 import 'package:bootpay/model/extra.dart';
 import 'package:bootpay/model/payload.dart';
 import 'package:bootpay/model/user.dart';
 import 'package:carousel_slider/carousel_controller.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -182,10 +185,14 @@ class CardListController extends GetxController {
     payload.extra = extra;
     return payload;
   }
-  void bootpay( String orderName) {
+  void bootpay( String orderName) async {
     Payload payload = getPayload(orderName);
     if(kIsWeb) {
       payload.extra?.openType = "iframe";
+    }
+    if(Platform.isAndroid){
+      var a = await _getDeviceInfo();
+      BootpayConfig.DISPLAY_WITH_HYBRID_COMPOSITION = a['sdk_version'] < 28;
     }
 
     Bootpay().requestSubscription(
@@ -229,5 +236,30 @@ class CardListController extends GetxController {
     );
   }
 
+  Future<Map<String, dynamic>> _getDeviceInfo() async {
+    DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+    Map<String, dynamic> deviceData = <String, dynamic>{};
 
+    try {
+      deviceData = _readAndroidDeviceInfo(await deviceInfoPlugin.androidInfo);
+
+    } catch(error) {
+      deviceData = {
+        "Error": "Failed to get platform version."
+      };
+    }
+
+    return deviceData;
+  }
+  Map<String, dynamic> _readAndroidDeviceInfo(AndroidDeviceInfo info) {
+    var release = info.version.release;
+    var sdkInt = info.version.sdkInt;
+    var manufacturer = info.manufacturer;
+    var model = info.model;
+
+    return {
+      "sdk_version": sdkInt,
+      "device_model": model
+    };
+  }
 }

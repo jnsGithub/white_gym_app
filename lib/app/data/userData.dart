@@ -106,7 +106,9 @@ class UserDataRepository {
   }
   autoLogin()async {
     try{
+      print('a');
       DocumentSnapshot documentSnapshot = await userCollection.doc(box.read('documentId')).get();
+      print('b');
       if(documentSnapshot.exists){
         DocumentReference documentRef = userCollection.doc(documentSnapshot.id);
         // documentRef.update({

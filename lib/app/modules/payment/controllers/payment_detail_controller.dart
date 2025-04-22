@@ -1,11 +1,14 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:bootpay/bootpay.dart';
+import 'package:bootpay/config/bootpay_config.dart';
 import 'package:bootpay/model/extra.dart';
 import 'package:bootpay/model/item.dart';
 import 'package:bootpay/model/payload.dart';
 import 'package:bootpay/model/user.dart';
 import 'package:carousel_slider/carousel_controller.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -38,6 +41,9 @@ class PaymentDetailController extends GetxController {
   PaymentsRepository payments = PaymentsRepository();
   SpotItem spotItem = Get.arguments['spotItem'];
   Spot spot = Get.arguments['spot'];
+
+
+
   @override
   void onInit() {
     super.onInit();
@@ -53,7 +59,8 @@ class PaymentDetailController extends GetxController {
 
     if(spotItem.isSubscribe){
       totalPrice.value = spotItem.price + (lockerCheck.value?spotItem.locker:0) + (sportswearCheck.value?spotItem.sportswear:0);
-    } else {
+    }
+    else {
       lockerPrice.value *= spotItem.monthly;
       sportswearPrice.value *= spotItem.monthly;
       totalPrice.value = spotItem.price + (lockerCheck.value?lockerPrice.value:0) + (sportswearCheck.value?sportswearPrice.value:0);
@@ -83,6 +90,7 @@ class PaymentDetailController extends GetxController {
       isBottom.value = true;
     }
   }
+
   getBillingInfo () async {
     billingInfo.value = await payments.getCardInfo();
     billingInfo.add(BillingInfo(billingKey: '', documentId: '', cardCompany: '', cardNo: '', createDate: DateTime.now(), userDocumentId: '', cardCompanyCode: ''));
@@ -93,6 +101,7 @@ class PaymentDetailController extends GetxController {
     }
     loading.value = true;
   }
+
   Payload getPayload(String orderName) {
     Payload payload = Payload();
 
@@ -127,6 +136,7 @@ class PaymentDetailController extends GetxController {
     payload.extra = extra;
     return payload;
   }
+
   Payload getPayloadAppCard() {
     Payload payload = Payload();
     var total = spotItem.price+ (lockerCheck.value?lockerPrice.value:0) + (sportswearCheck.value?sportswearPrice.value:0);
@@ -182,15 +192,26 @@ class PaymentDetailController extends GetxController {
     payload.extra = extra;
     return payload;
   }
+
   changeSlider(index){
     sliderIndex.value = index;
   }
-  void bootpay( String orderName) {
+
+  void bootpay( String orderName) async {
+    print('bootpay');
+    if(Platform.isAndroid){
+      var a = await _getDeviceInfo();
+      print('현재 sdk 버전 : ${a['sdk_version']}');
+      print(a['sdk_version'] < 28);
+      BootpayConfig.DISPLAY_WITH_HYBRID_COMPOSITION = a['sdk_version'] < 28;
+    }
 
     Payload payload = getPayload(orderName);
     if(kIsWeb) {
       payload.extra?.openType = "iframe";
     }
+
+
     Bootpay().requestSubscription(
       context: Get.context!,
       payload: payload,
@@ -233,10 +254,21 @@ class PaymentDetailController extends GetxController {
       },
     );
   }
+
   bootpayAppCard() async {
+    print('bootpayAppCard');
+    if(Platform.isAndroid){
+      var a = await _getDeviceInfo();
+      print('현재 sdk 버전 : ${a['sdk_version']}');
+      print(a['sdk_version'] < 28);
+      BootpayConfig.DISPLAY_WITH_HYBRID_COMPOSITION = a['sdk_version'] < 28;
+    }
+
     Payload payload = getPayloadAppCard();
     var total = spotItem.price+ (lockerCheck.value?lockerPrice.value:0) + (sportswearCheck.value?sportswearPrice.value:0);
     var data2 = null;
+
+
     Bootpay().requestPayment(
       context: Get.context!,
       payload: payload,
@@ -318,6 +350,7 @@ class PaymentDetailController extends GetxController {
       },
     );
   }
+
   billingKeyPay() async {
     try {
       /*
@@ -327,6 +360,7 @@ class PaymentDetailController extends GetxController {
       *
       *
       * */
+
       saving(Get.context!);
       User user = User(); // 구매자 정보
       user.username = myInfo.name;
@@ -423,5 +457,33 @@ class PaymentDetailController extends GetxController {
       print(e);
       Get.snackbar('알림', '결제가 실패되었습니다.',backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
     }
+  }
+
+  Future<Map<String, dynamic>> _getDeviceInfo() async {
+    DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+    Map<String, dynamic> deviceData = <String, dynamic>{};
+
+    try {
+        deviceData = _readAndroidDeviceInfo(await deviceInfoPlugin.androidInfo);
+
+    } catch(error) {
+      deviceData = {
+        "Error": "Failed to get platform version."
+      };
+    }
+
+    return deviceData;
+  }
+
+  Map<String, dynamic> _readAndroidDeviceInfo(AndroidDeviceInfo info) {
+    var release = info.version.release;
+    var sdkInt = info.version.sdkInt;
+    var manufacturer = info.manufacturer;
+    var model = info.model;
+
+    return {
+      "sdk_version": sdkInt,
+      "device_model": model
+    };
   }
 }
