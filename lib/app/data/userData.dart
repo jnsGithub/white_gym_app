@@ -20,6 +20,9 @@ class UserDataRepository {
   FirebaseStorage storage = FirebaseStorage.instance;
   final userCollection = FirebaseFirestore.instance.collection('user');
   final visitHistory = FirebaseFirestore.instance.collection('visitHistory');
+  final statusHistory = FirebaseFirestore.instance.collection('statusHistory');
+  final ticketHistory = FirebaseFirestore.instance.collection('ticketHistory');
+
   signUp(Map<String,dynamic> v) async {
     try{
       if(!await signUpCheck(v['phone'])){
@@ -148,12 +151,30 @@ class UserDataRepository {
       return false;
     }
   }
-  updateTicket(Ticket ticket) async {
+  updateTicket(Ticket afterTicket, {Ticket? beforeTicket}) async {
     try {
+      if(beforeTicket != null){
+        var statusHistoryData = {
+          'createDate': DateTime.now(),
+          'beforeTicket': beforeTicket.toJson(),
+          'afterTicket': afterTicket.toJson(),
+          'userDocumentId': myInfo.documentId,
+        };
+        await statusHistory.add(statusHistoryData);
+      }
+      else{
+        var ticketHistoryData = {
+          'paymentDate': DateTime.now(),
+          'ticket': afterTicket.toJson(),
+          'userDocumentId': myInfo.documentId,
+        };
+        await ticketHistory.add(ticketHistoryData);
+      }
       await userCollection.doc(myInfo.documentId).update({
-        'ticket': ticket.toJson(),
+        'ticket': afterTicket.toJson(),
       });
-      myInfo.ticket = ticket;
+
+      myInfo.ticket = afterTicket;
       return true;
     } catch (e) {
       print('1');

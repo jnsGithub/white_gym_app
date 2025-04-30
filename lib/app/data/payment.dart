@@ -107,8 +107,8 @@ class PaymentsRepository {
       return '';
     }
   }
-  createReceipt(PaymentItem paymentItem,Ticket ticket,isBilling, {BillingInfo? billingInfo}) async {
-    try{
+  createReceipt(PaymentItem paymentItem,Ticket ticket, isBilling, {BillingInfo? billingInfo}) async {
+    try {
       await paymentCollection.doc(paymentItem.documentId).set(paymentItem.toJson());
       if(isBilling){
         await userDataRepository.setPaymentCard(billingInfo!.documentId);
@@ -125,7 +125,7 @@ class PaymentsRepository {
     }
   }
   getPayment() async{
-    try{
+    try {
       RxList<PaymentItem> paymentItem = <PaymentItem>[].obs;
       QuerySnapshot querySnapshot = await paymentCollection.where('userDocumentId', isEqualTo: myInfo.documentId).orderBy('crateDate', descending: true).get();
       for (QueryDocumentSnapshot document in querySnapshot.docs) {
@@ -133,7 +133,7 @@ class PaymentsRepository {
         paymentItem.add(PaymentItem.fromJson(data));
       }
       return paymentItem;
-    }catch(e){
+    } catch(e) {
       print('getPayment');
       print(e);
       RxList<PaymentItem> paymentItem = <PaymentItem>[].obs;

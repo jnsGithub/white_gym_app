@@ -14,7 +14,6 @@ class HomeController extends GetxController {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       currentStoreVersion('com.white.gym.app.white_gym');
     });
-    print('currentStoreVersion : ${box.read('currentStoreVersion')}');
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:white_gym/app/data/userData.dart';
+import 'package:white_gym/app/model/userData.dart';
 
 import '../../../../global.dart';
 import '../../../model/ticket.dart';
@@ -188,10 +189,16 @@ class PauseTicketController extends GetxController {
                   Expanded(
                     child: InkWell(
                       onTap: () {
+                        Ticket beforeTicket = ticket.copyWith(
+                          status: ticket.status
+                        );
                         Get.back();
                         cancelCheck.value = true;
+                        print('구독 해지');
+                        print(myInfo.ticket.status);
                         ticket.status = false;
-                        userDataRepository.updateTicket(ticket);
+                        print(myInfo.ticket.status);
+                        userDataRepository.updateTicket(beforeTicket: beforeTicket, ticket);
                         myInfo.ticket = ticket;
                         update();
                       },
@@ -286,6 +293,13 @@ class PauseTicketController extends GetxController {
                   Expanded(
                     child: InkWell(
                       onTap: () async {
+                        Get.back();
+                        saving(Get.context!);
+                        Ticket beforeTicket = ticket.copyWith(
+                          pauseStartDate: List.from(ticket.pauseStartDate),
+                          pauseEndDate: List.from(ticket.pauseEndDate),
+                          status: ticket.status,
+                        );
                         DateTime now = DateTime.now();
                         DateTime now2 = DateTime(ticket.pauseStartDate.last.year, ticket.pauseStartDate.last.month, ticket.pauseStartDate.last.day);
                         Duration diff =  ticket.endDate.difference(now2);
@@ -293,10 +307,10 @@ class PauseTicketController extends GetxController {
                         ticket.pauseEndDate.last = now;
                         ticket.endDate = now3;
                         ticket.status = true ;
-                        await userDataRepository.updateTicket(ticket);
+                        await userDataRepository.updateTicket(beforeTicket: beforeTicket, ticket);
                         myInfo.ticket = ticket;
-                        Get.back();
                         init();
+                        Get.back();
                       },
                       child: Container(
                         height: 48.1,
@@ -389,16 +403,29 @@ class PauseTicketController extends GetxController {
                   Expanded(
                     child: InkWell(
                       onTap: () async {
+                        Get.back();
+                        saving(Get.context!);
+                        Ticket beforeTicket = ticket.copyWith(
+                          pauseStartDate: List.from(ticket.pauseStartDate),
+                          pauseEndDate: List.from(ticket.pauseEndDate),
+                          pause: ticket.pause,
+                          status: ticket.status,
+                        );
                         ticket.pause--;
+                        print(ticket.pause);
                         DateTime now = DateTime.now();
                         ticket.pauseStartDate.add(DateTime.now());//(DateTime(now.year, now.month, now.day));
                         ticket.pauseEndDate.add(DateTime(now.year, now.month, now.day + 29));
+                        print(beforeTicket.pauseStartDate);
+                        print(beforeTicket.pauseEndDate);
+                        print(ticket.pauseStartDate);
+                        print(ticket.pauseEndDate);
                         ticket.status = false ;
-                        cancelCheck.value = ticket.pause == 0;
-                        await userDataRepository.updateTicket(ticket);
+                        cancelCheck.value = ticket.pause <= 0;
+                        await userDataRepository.updateTicket(beforeTicket: beforeTicket, ticket);
                         myInfo.ticket = ticket;
-                        Get.back();
                         init();
+                        Get.back();
                       },
                       child: Container(
                         height: 48.1,

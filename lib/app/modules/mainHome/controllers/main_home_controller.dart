@@ -38,6 +38,9 @@ class MainHomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      currentStoreVersion('com.white.gym.app.white_gym');
+    });
     init();
     timer = Timer.periodic(const Duration(seconds: 30), (Timer t) {
 

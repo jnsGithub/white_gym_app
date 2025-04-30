@@ -283,10 +283,6 @@ Future currentStoreVersion(String packageName) async {
     }
     else if(Platform.isAndroid){
       final http.Response _response = await http.get(
-          headers: {
-            // 'Content-Type': 'application/json',
-            'User-Agent': 'Mozilla/5.0', // 이걸 꼭 넣어야 봇 차단 우회 가능
-          },
           Uri.parse(
           "https://play.google.com/store/apps/details?id=$packageName"));
       print("https://play.google.com/store/apps/details?id=$packageName");
@@ -294,7 +290,7 @@ Future currentStoreVersion(String packageName) async {
         RegExp regexp = RegExp(r'\[\[\[\"(\d+\.\d+(\.[a-z]+)?(\.([^"]|\\")*)?)\"\]\]');
         String? _version = regexp.firstMatch(_response.body)?.group(1);
         print(_version);
-        print(_response.body);
+        print(packageInfo.version);
         if (_isVersionOlder(packageInfo.version, _version!)) {
           print(1234);
           _showUpdateDialog("https://play.google.com/store/apps/details?id=$packageName");
@@ -313,6 +309,8 @@ bool _isVersionOlder(String current, String latest) {
   try{
     List<int> currentParts = current.split('.').map(int.parse).toList();
     List<int> latestParts = latest.split('.').map(int.parse).toList();
+    print(currentParts);
+    print(latestParts);
 
     for (int i = 0; i < latestParts.length; i++) {
       if (i >= currentParts.length) {

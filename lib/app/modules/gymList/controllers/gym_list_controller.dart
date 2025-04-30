@@ -16,6 +16,9 @@ class GymListController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      currentStoreVersion('com.white.gym.app.white_gym');
+    });
     getCurrentLocation();
     isFirst.value = Get.routing.previous == '';
   }

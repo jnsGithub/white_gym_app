@@ -98,6 +98,47 @@ class Ticket {
       'createDate': createDate,
     };
   }
+
+  Ticket copyWith({
+    String? documentId,
+    String? userDocumentId,
+    String? spotDocumentId,
+    String? paymentBranch,
+    int? admission,
+    int? lockerNum,
+    int? pause,
+    bool? locker,
+    bool? sportswear,
+    bool? status,
+    bool? subscribe,
+    bool? passTicket,
+    List<DateTime>? pauseStartDate,
+    List<DateTime>? pauseEndDate,
+    DateTime? endDate,
+    DateTime? createDate,
+  }) {
+    return Ticket(
+      documentId: documentId ?? this.documentId,
+      userDocumentId: userDocumentId ?? this.userDocumentId,
+      spotDocumentId: spotDocumentId ?? this.spotDocumentId,
+      paymentBranch: paymentBranch ?? this.paymentBranch,
+      admission: admission ?? this.admission,
+      lockerNum: lockerNum ?? this.lockerNum,
+      pause: pause ?? this.pause,
+      locker: locker ?? this.locker,
+      sportswear: sportswear ?? this.sportswear,
+      status: status ?? this.status,
+      subscribe: subscribe ?? this.subscribe,
+      passTicket: passTicket ?? this.passTicket,
+      pauseStartDate: pauseStartDate ?? this.pauseStartDate,
+      pauseEndDate: pauseEndDate ?? this.pauseEndDate,
+      endDate: endDate ?? this.endDate,
+      createDate: createDate ?? this.createDate,
+      spotItem: spotItem.copyWith(),
+    );
+  }
+
+
   factory Ticket.empty() {
     return Ticket(
       documentId: '',
