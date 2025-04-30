@@ -28,4 +28,26 @@ abstract class Ticket with _$Ticket {
   }) = _Ticket;
 
   factory Ticket.fromJson(Map<String, dynamic> json) => _$TicketFromJson(json);
+
+  factory Ticket.empty() {
+    return Ticket(
+      documentId: '',
+      userDocumentId: '',
+      spotDocumentId: '',
+      paymentBranch: '',
+      admission: 0,
+      lockerNum: 0,
+      pause: 0,
+      locker: false,
+      sportswear: false,
+      status: false,
+      subscribe: false,
+      passTicket: false,
+      pauseStartDate: [],
+      endDate: DateTime(1990, 12, 31),
+      pauseEndDate: [],
+      createDate: DateTime.now(),
+      spotItem: SpotItem.empty(),
+    );
+  }
 }

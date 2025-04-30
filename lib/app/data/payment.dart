@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:white_gym/app/data/userData.dart';
-import 'package:white_gym/app/model/ticket.dart';
+import 'package:white_gym/app/model/ticket/ticket.dart';
 
 import '../../global.dart';
-import '../model/billingInfo.dart';
-import '../model/paymentItem.dart';
+import '../model/billing_info/billing_info.dart';
+import '../model/payment_item/payment_item.dart';
 
 class PaymentsRepository {
   FirebaseStorage storage = FirebaseStorage.instance;
@@ -69,7 +69,7 @@ class PaymentsRepository {
           .orderBy('createDate', descending: true)
           .get();
       for (QueryDocumentSnapshot document in querySnapshot.docs) {
-        billingInfo.add(BillingInfo.fromJson(document));
+        billingInfo.add(BillingInfo.fromJson(document.data() as Map<String, dynamic>));
       }
       return billingInfo;
     }catch(e){

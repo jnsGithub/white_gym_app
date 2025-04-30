@@ -15,7 +15,7 @@ import 'package:white_gym/app/data/userData.dart';
 
 import '../../../../global.dart';
 import '../../../data/payment.dart';
-import '../../../model/billingInfo.dart';
+import '../../../model/billing_info/billing_info.dart';
 
 class CardListController extends GetxController {
   var dataJson;
@@ -139,7 +139,7 @@ class CardListController extends GetxController {
   }
   changePaymentCard() async {
 
-    myInfo.paymentCard = billingInfo[sliderIndex.value].documentId;
+    myInfo = myInfo.copyWith(paymentCard: billingInfo[sliderIndex.value].documentId);
     bool a = await userDataRepository.setPaymentCard(myInfo.paymentCard);
     if(a){
       Get.back();

@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import '../../global.dart';
-import '../model/visitHistory.dart';
+import '../model/visit_history/visit_history.dart';
 
 class VisitRepository {
   FirebaseStorage storage = FirebaseStorage.instance;

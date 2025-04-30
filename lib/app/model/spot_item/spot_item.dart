@@ -26,4 +26,26 @@ abstract class SpotItem with _$SpotItem {
   }) = _SpotItem;
 
   factory SpotItem.fromJson(Map<String, dynamic> json) => _$SpotItemFromJson(json);
+
+  factory SpotItem.empty() {
+    return SpotItem(
+      documentId: '',
+      name: '',
+      descriptions1: '',
+      descriptions2: '',
+      spotDocumentId: '',
+      isSubscribe: false,
+      passTicket: false,
+      discountCheck: false,
+      index: 0,
+      admission: 0,
+      locker: 0,
+      monthly: 0,
+      pause: 0,
+      beforeDiscount: 0,
+      price: 0,
+      sportswear: 0,
+      createDate: DateTime.now(),
+    );
+  }
 }

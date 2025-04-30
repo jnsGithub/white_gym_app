@@ -13,14 +13,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:white_gym/app/data/payment.dart';
-import 'package:white_gym/app/model/billingInfo.dart';
+import 'package:white_gym/app/model/billing_info/billing_info.dart';
 import 'package:http/http.dart' as http;
 import '../../../../global.dart';
-import '../../../model/paymentItem.dart';
-import '../../../model/receipt.dart';
-import '../../../model/spot.dart';
-import '../../../model/spotItem.dart';
-import '../../../model/ticket.dart';
+import '../../../model/payment_item/payment_item.dart';
+import '../../../model/receipt/receipt.dart';
+import '../../../model/spot/spot.dart';
+import '../../../model/spot_item/spot_item.dart';
+import '../../../model/ticket/ticket.dart';
 import '../../../routes/app_pages.dart';
 
 class PaymentDetailController extends GetxController {

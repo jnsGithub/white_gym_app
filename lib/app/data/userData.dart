@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -8,11 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
-import 'package:white_gym/app/model/visitHistory.dart';
 import '../../component/main_box.dart';
 import '../../global.dart';
-import '../model/ticket.dart';
-import '../model/userData.dart';
+import '../model/ticket/ticket.dart';
+import '../model/user/user.dart';
+import '../model/visit_history/visit_history.dart';
 import '../routes/app_pages.dart';
 
 
@@ -50,7 +50,7 @@ class UserDataRepository {
       }
       DocumentReference docRef = await userCollection.add(v);
       DocumentSnapshot addedUser = await docRef.get();
-      myInfo = UserData.fromJson(addedUser);
+      myInfo = User.fromJson(addedUser.data() as Map<String, dynamic>);
       loginState = true;
       box.write('documentId', docRef.id);
       return true;
@@ -81,7 +81,7 @@ class UserDataRepository {
       doc = 'QRh1ep3lw4zkHrvSwQtc';
     }
     DocumentSnapshot documentSnapshot = await userCollection.doc(doc).get();
-    myInfo = UserData.fromJson(documentSnapshot);
+    myInfo = User.fromJson(documentSnapshot.data() as Map<String, dynamic>);
     box.write('documentId', myInfo.documentId);
     loginState = true;
     return true;
@@ -94,7 +94,7 @@ class UserDataRepository {
         // documentRef.update({
         //   "fcmToken":  await FirebaseMessaging.instance.getToken(),
         // });
-        myInfo = UserData.fromJson(querySnapshot.docs[0]);
+        myInfo = User.fromJson(querySnapshot.docs[0].data() as Map<String, dynamic>);
         box.write('documentId', myInfo.documentId);
         loginState = true;
         return true;
@@ -117,7 +117,7 @@ class UserDataRepository {
         // documentRef.update({
         //   "fcmToken":  await FirebaseMessaging.instance.getToken(),
         // });
-        myInfo = UserData.fromJson(documentSnapshot);
+        myInfo = User.fromJson(documentSnapshot.data() as Map<String, dynamic>);
         box.write('documentId', myInfo.documentId);
         loginState = true;
         return true;
@@ -143,7 +143,7 @@ class UserDataRepository {
       await userCollection.doc(myInfo.documentId).update({
         'paymentCard': documentId,
       });
-      myInfo.paymentCard = documentId;
+      myInfo = myInfo.copyWith(paymentCard: documentId);
       return true;
     } catch (e) {
       print('1');
@@ -174,7 +174,7 @@ class UserDataRepository {
         'ticket': afterTicket.toJson(),
       });
 
-      myInfo.ticket = afterTicket;
+      myInfo = myInfo.copyWith(ticket: afterTicket);
       return true;
     } catch (e) {
       print('1');

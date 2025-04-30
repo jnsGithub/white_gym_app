@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:white_gym/app/data/userData.dart';
-import 'package:white_gym/app/model/userData.dart';
 import 'package:white_gym/global.dart';
 import 'package:http/http.dart' as http;
 import '../../../routes/app_pages.dart';

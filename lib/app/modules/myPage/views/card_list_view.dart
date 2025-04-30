@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:white_gym/app/model/billingInfo.dart';
+import 'package:white_gym/app/model/billing_info/billing_info.dart';
 import 'package:white_gym/app/modules/myPage/controllers/card_list_controller.dart';
 
 import '../../../../component/main_box.dart';

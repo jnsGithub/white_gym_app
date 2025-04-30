@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-import '../../../model/spot.dart';
-import '../../../model/spotItem.dart';
+import '../../../model/spot/spot.dart';
+import '../../../model/spot_item/spot_item.dart';
 
 class PaymentController extends GetxController {
   //TODO: Implement PaymentController

@@ -13,7 +13,7 @@ import 'package:white_gym/component/main_box.dart';
 import 'package:white_gym/global.dart';
 
 import '../../../data/userData.dart';
-import '../../../model/ticket.dart';
+import '../../../model/ticket/ticket.dart';
 
 
 class SignUpController extends GetxController {

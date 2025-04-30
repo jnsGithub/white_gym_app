@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:white_gym/app/data/payment.dart';
 
 import '../../../../global.dart';
-import '../../../model/paymentItem.dart';
+import '../../../model/payment_item/payment_item.dart';
 
 class PaymentListController extends GetxController {
   //TODO: Implement PaymentListController

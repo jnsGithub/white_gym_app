@@ -10,9 +10,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import '../../component/main_box.dart';
 import '../../global.dart';
-import '../model/spot.dart';
-import '../model/spotItem.dart';
-import '../model/userData.dart';
+import '../model/spot/spot.dart';
+import '../model/spot_item/spot_item.dart';
 import '../routes/app_pages.dart';
 
 
@@ -28,7 +27,7 @@ class SpotDataRepository {
       for (var doc in snapshot.docs) {
         Map<String, dynamic> data = doc.data();
         data['documentId'] = doc.id;
-        list.add(Spot.fromMap(data));
+        list.add(Spot.fromJson(data));
       }
       return list;
     } catch(e){

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:white_gym/app/data/spot.dart';
-import 'package:white_gym/app/model/spot.dart';
+import 'package:white_gym/app/model/spot/spot.dart';
 
 import '../../../../global.dart';
 
@@ -35,14 +35,14 @@ class GymListController extends GetxController {
 
   getSpot() async {
     gymList.value = await spotDataRepository.getSpot();
-    for(var i in gymList){
+    for(Spot i in gymList){
       double distance = Geolocator.distanceBetween(
         latitude,
         longitude,
         i.lat,
         i.lon,
       );
-      i.distanceBetween = double.parse((distance / 1000).toStringAsFixed(2));
+      i = i.copyWith(distanceBetween: double.parse((distance / 1000).toStringAsFixed(2)));
     }
     gymList.sort((a, b) => a.distanceBetween.compareTo(b.distanceBetween));
     update();

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:white_gym/app/data/userData.dart';
-import 'package:white_gym/app/model/userData.dart';
 
 import '../../../../global.dart';
-import '../../../model/ticket.dart';
+import '../../../model/ticket/ticket.dart';
 
 class PauseTicketController extends GetxController {
   RxBool check1 = myInfo.ticket.locker.obs;
@@ -196,10 +195,10 @@ class PauseTicketController extends GetxController {
                         cancelCheck.value = true;
                         print('구독 해지');
                         print(myInfo.ticket.status);
-                        ticket.status = false;
+                        ticket = ticket.copyWith(status: false);
                         print(myInfo.ticket.status);
                         userDataRepository.updateTicket(beforeTicket: beforeTicket, ticket);
-                        myInfo.ticket = ticket;
+                        myInfo = myInfo.copyWith(ticket: ticket);
                         update();
                       },
                       child: Container(
@@ -305,10 +304,10 @@ class PauseTicketController extends GetxController {
                         Duration diff =  ticket.endDate.difference(now2);
                         DateTime now3 = DateTime(now.year, now.month, now.day + diff.inDays);
                         ticket.pauseEndDate.last = now;
-                        ticket.endDate = now3;
-                        ticket.status = true ;
+                        ticket = ticket.copyWith(endDate: now3);
+                        ticket = ticket.copyWith(status: true) ;
                         await userDataRepository.updateTicket(beforeTicket: beforeTicket, ticket);
-                        myInfo.ticket = ticket;
+                        myInfo = myInfo.copyWith(ticket: ticket);
                         init();
                         Get.back();
                       },
@@ -411,7 +410,8 @@ class PauseTicketController extends GetxController {
                           pause: ticket.pause,
                           status: ticket.status,
                         );
-                        ticket.pause--;
+                        int a = ticket.pause - 1;
+                        ticket = ticket.copyWith(pause: a);
                         print(ticket.pause);
                         DateTime now = DateTime.now();
                         ticket.pauseStartDate.add(DateTime.now());//(DateTime(now.year, now.month, now.day));
@@ -420,10 +420,10 @@ class PauseTicketController extends GetxController {
                         print(beforeTicket.pauseEndDate);
                         print(ticket.pauseStartDate);
                         print(ticket.pauseEndDate);
-                        ticket.status = false ;
+                        ticket = ticket.copyWith(status: false);
                         cancelCheck.value = ticket.pause <= 0;
                         await userDataRepository.updateTicket(beforeTicket: beforeTicket, ticket);
-                        myInfo.ticket = ticket;
+                        myInfo = myInfo.copyWith(ticket: ticket);
                         init();
                         Get.back();
                       },

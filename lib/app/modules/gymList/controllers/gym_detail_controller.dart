@@ -5,10 +5,10 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:white_gym/app/data/spot.dart';
-import 'package:white_gym/app/model/spotItem.dart';
+import 'package:white_gym/app/model/spot_item/spot_item.dart';
 import 'package:white_gym/global.dart';
 
-import '../../../model/spot.dart';
+import '../../../model/spot/spot.dart';
 
 class GymDetailController extends GetxController {
   late GoogleMapController mapController;

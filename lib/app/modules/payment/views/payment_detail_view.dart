@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:white_gym/app/model/billingInfo.dart';
+import 'package:white_gym/app/model/billing_info/billing_info.dart';
 import 'package:white_gym/app/modules/payment/controllers/payment_detail_controller.dart';
 import 'package:white_gym/component/main_box.dart';
 

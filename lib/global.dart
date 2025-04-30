@@ -15,8 +15,8 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:white_gym/app/data/userData.dart';
 import 'package:url_launcher/url_launcher.dart' as url;
-import 'app/model/userData.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'app/model/user/user.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 
 
 const mainColor = Color(0xff2969FF);
@@ -38,7 +38,7 @@ String webApplicationId = '677e31d63aa7c4faf96e5425';
 String androidApplicationId = '677e31d63aa7c4faf96e5423';
 String iosApplicationId = '677e31d63aa7c4faf96e5424';
 String privateKey = 'MpBFUS1+4yl4QLjzeBcFxWNd1KMGEOYxODOKMnki7wU=';
-late UserData myInfo;
+late User myInfo;
 bool loginState = false;
 
 String formatNumber(int number) {
@@ -48,12 +48,12 @@ String formatNumber(int number) {
 
 Future<bool> signInAnonymously() async {
   try {
-    if( FirebaseAuth.instance.currentUser != null ){
-      User? user = FirebaseAuth.instance.currentUser;
+    if(auth.FirebaseAuth.instance.currentUser != null ){
+      auth.User? user = auth.FirebaseAuth.instance.currentUser;
       await user?.delete();
-      await FirebaseAuth.instance.signOut();
+      await auth.FirebaseAuth.instance.signOut();
     }
-    final userCredential = await FirebaseAuth.instance.signInAnonymously();
+    final userCredential = await auth.FirebaseAuth.instance.signInAnonymously();
     print('익명 로그인 성공: ${userCredential.user!.uid}');
     return true; // 익명 사용자 반환
   } catch (e) {

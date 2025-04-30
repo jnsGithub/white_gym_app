@@ -9,14 +9,14 @@ import 'package:get_storage/get_storage.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screen_protector/screen_protector.dart';
 import 'package:white_gym/app/data/userData.dart';
-import 'package:white_gym/app/model/visitHistory.dart';
+import 'package:white_gym/app/model/visit_history/visit_history.dart';
 import 'package:white_gym/component/main_box.dart';
 import 'package:white_gym/global.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../data/spot.dart';
 import '../../../data/visitHistory.dart';
-import '../../../model/spot.dart';
+import '../../../model/spot/spot.dart';
 class MainHomeController extends GetxController {
   //TODO: Implement MainHomeController
   SpotDataRepository spotDataRepository = SpotDataRepository();
