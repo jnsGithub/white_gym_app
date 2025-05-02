@@ -23,7 +23,8 @@ _SpotItem _$SpotItemFromJson(Map<String, dynamic> json) => _SpotItem(
       beforeDiscount: (json['beforeDiscount'] as num).toInt(),
       price: (json['price'] as num).toInt(),
       sportswear: (json['sportswear'] as num).toInt(),
-      createDate: DateTime.parse(json['createDate'] as String),
+      createDate:
+          const DateTimeConverter().fromJson(json['createDate'] as Timestamp),
     );
 
 Map<String, dynamic> _$SpotItemToJson(_SpotItem instance) => <String, dynamic>{
@@ -43,5 +44,5 @@ Map<String, dynamic> _$SpotItemToJson(_SpotItem instance) => <String, dynamic>{
       'beforeDiscount': instance.beforeDiscount,
       'price': instance.price,
       'sportswear': instance.sportswear,
-      'createDate': instance.createDate.toIso8601String(),
+      'createDate': const DateTimeConverter().toJson(instance.createDate),
     };

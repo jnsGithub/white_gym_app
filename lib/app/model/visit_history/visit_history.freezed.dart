@@ -20,8 +20,10 @@ mixin _$VisitHistory {
   String get spotDocumentId;
   String get spotName;
   String get userName;
+  @TicketConverter()
   Ticket get ticket;
   bool get userSportswear;
+  @DateTimeConverter()
   DateTime get createDate;
 
   /// Create a copy of VisitHistory
@@ -80,9 +82,9 @@ abstract mixin class $VisitHistoryCopyWith<$Res> {
       String spotDocumentId,
       String spotName,
       String userName,
-      Ticket ticket,
+      @TicketConverter() Ticket ticket,
       bool userSportswear,
-      DateTime createDate});
+      @DateTimeConverter() DateTime createDate});
 
   $TicketCopyWith<$Res> get ticket;
 }
@@ -164,9 +166,9 @@ class _VisitHistory implements VisitHistory {
       required this.spotDocumentId,
       required this.spotName,
       required this.userName,
-      required this.ticket,
+      @TicketConverter() required this.ticket,
       required this.userSportswear,
-      required this.createDate});
+      @DateTimeConverter() required this.createDate});
   factory _VisitHistory.fromJson(Map<String, dynamic> json) =>
       _$VisitHistoryFromJson(json);
 
@@ -181,10 +183,12 @@ class _VisitHistory implements VisitHistory {
   @override
   final String userName;
   @override
+  @TicketConverter()
   final Ticket ticket;
   @override
   final bool userSportswear;
   @override
+  @DateTimeConverter()
   final DateTime createDate;
 
   /// Create a copy of VisitHistory
@@ -249,9 +253,9 @@ abstract mixin class _$VisitHistoryCopyWith<$Res>
       String spotDocumentId,
       String spotName,
       String userName,
-      Ticket ticket,
+      @TicketConverter() Ticket ticket,
       bool userSportswear,
-      DateTime createDate});
+      @DateTimeConverter() DateTime createDate});
 
   @override
   $TicketCopyWith<$Res> get ticket;

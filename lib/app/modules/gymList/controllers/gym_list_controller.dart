@@ -35,18 +35,21 @@ class GymListController extends GetxController {
 
   getSpot() async {
     gymList.value = await spotDataRepository.getSpot();
-    for(Spot i in gymList){
+    gymList.value = gymList.map((i) {
       double distance = Geolocator.distanceBetween(
         latitude,
         longitude,
         i.lat,
         i.lon,
       );
-      i = i.copyWith(distanceBetween: double.parse((distance / 1000).toStringAsFixed(2)));
-    }
+      return i.copyWith(
+        distanceBetween: double.parse((distance / 1000).toStringAsFixed(2)),
+      );
+    }).toList();
     gymList.sort((a, b) => a.distanceBetween.compareTo(b.distanceBetween));
     update();
   }
+
   getCurrentLocation() async {
     LocationPermission permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied ||

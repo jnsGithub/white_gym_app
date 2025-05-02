@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:white_gym/app/data/util/converter.dart';
 
 import '../ticket/ticket.dart';
 
@@ -13,10 +15,22 @@ abstract class VisitHistory with _$VisitHistory {
     required final String spotDocumentId,
     required final String spotName,
     required final String userName,
-    required final Ticket ticket,
+    @TicketConverter() required final Ticket ticket,
     required final bool userSportswear,
-    required final DateTime createDate,
+    @DateTimeConverter() required final DateTime createDate,
   }) = _VisitHistory;
 
   factory VisitHistory.fromJson(Map<String, dynamic> json) => _$VisitHistoryFromJson(json);
+}
+
+class TicketConverter extends ModelConverter<Ticket> {
+  const TicketConverter();
+
+  @override
+  Ticket fromJson(Map<String, dynamic> json) {
+    return Ticket.fromJson(json);
+  }
+
+  @override
+  Map<String, dynamic> toJson(Ticket object) => object.toJson();
 }

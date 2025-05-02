@@ -19,15 +19,15 @@ _Ticket _$TicketFromJson(Map<String, dynamic> json) => _Ticket(
       status: json['status'] as bool,
       subscribe: json['subscribe'] as bool,
       passTicket: json['passTicket'] as bool,
-      pauseStartDate: (json['pauseStartDate'] as List<dynamic>)
-          .map((e) => DateTime.parse(e as String))
-          .toList(),
-      pauseEndDate: (json['pauseEndDate'] as List<dynamic>)
-          .map((e) => DateTime.parse(e as String))
-          .toList(),
-      endDate: DateTime.parse(json['endDate'] as String),
-      createDate: DateTime.parse(json['createDate'] as String),
-      spotItem: SpotItem.fromJson(json['spotItem'] as Map<String, dynamic>),
+      pauseStartDate: const DateTimeListConverter()
+          .fromJson(json['pauseStartDate'] as List),
+      pauseEndDate:
+          const DateTimeListConverter().fromJson(json['pauseEndDate'] as List),
+      endDate: const DateTimeConverter().fromJson(json['endDate'] as Timestamp),
+      createDate:
+          const DateTimeConverter().fromJson(json['createDate'] as Timestamp),
+      spotItem: const SpotItemConverter()
+          .fromJson(json['spotItem'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$TicketToJson(_Ticket instance) => <String, dynamic>{
@@ -44,10 +44,10 @@ Map<String, dynamic> _$TicketToJson(_Ticket instance) => <String, dynamic>{
       'subscribe': instance.subscribe,
       'passTicket': instance.passTicket,
       'pauseStartDate':
-          instance.pauseStartDate.map((e) => e.toIso8601String()).toList(),
+          const DateTimeListConverter().toJson(instance.pauseStartDate),
       'pauseEndDate':
-          instance.pauseEndDate.map((e) => e.toIso8601String()).toList(),
-      'endDate': instance.endDate.toIso8601String(),
-      'createDate': instance.createDate.toIso8601String(),
-      'spotItem': instance.spotItem,
+          const DateTimeListConverter().toJson(instance.pauseEndDate),
+      'endDate': const DateTimeConverter().toJson(instance.endDate),
+      'createDate': const DateTimeConverter().toJson(instance.createDate),
+      'spotItem': const SpotItemConverter().toJson(instance.spotItem),
     };

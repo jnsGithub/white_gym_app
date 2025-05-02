@@ -25,7 +25,9 @@ mixin _$User {
   int get gender;
   bool get pushAlarm;
   bool get smsAlarm;
+  @TicketConverter()
   Ticket get ticket;
+  @DateTimeConverter()
   DateTime get createDate;
 
   /// Create a copy of User
@@ -103,8 +105,8 @@ abstract mixin class $UserCopyWith<$Res> {
       int gender,
       bool pushAlarm,
       bool smsAlarm,
-      Ticket ticket,
-      DateTime createDate});
+      @TicketConverter() Ticket ticket,
+      @DateTimeConverter() DateTime createDate});
 
   $TicketCopyWith<$Res> get ticket;
 }
@@ -211,8 +213,8 @@ class _User implements User {
       required this.gender,
       required this.pushAlarm,
       required this.smsAlarm,
-      required this.ticket,
-      required this.createDate});
+      @TicketConverter() required this.ticket,
+      @DateTimeConverter() required this.createDate});
   factory _User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   @override
@@ -236,8 +238,10 @@ class _User implements User {
   @override
   final bool smsAlarm;
   @override
+  @TicketConverter()
   final Ticket ticket;
   @override
+  @DateTimeConverter()
   final DateTime createDate;
 
   /// Create a copy of User
@@ -321,8 +325,8 @@ abstract mixin class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       int gender,
       bool pushAlarm,
       bool smsAlarm,
-      Ticket ticket,
-      DateTime createDate});
+      @TicketConverter() Ticket ticket,
+      @DateTimeConverter() DateTime createDate});
 
   @override
   $TicketCopyWith<$Res> get ticket;

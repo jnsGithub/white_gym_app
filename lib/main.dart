@@ -25,9 +25,9 @@ void main() async {
 
 
 
-bool a = await signInAnonymously();
+bool isLogin = await signInAnonymously();
   UserDataRepository userDataRepository = UserDataRepository();
-  if(a){
+  if(isLogin){
     if(await box.read('documentId')!=null){
       if(await userDataRepository.autoLogin()){
         if(myInfo.ticket.endDate.isBefore(DateTime.now().add(Duration(days: -1)))){
@@ -79,7 +79,7 @@ bool a = await signInAnonymously();
       ),
     ),
   );
-  if(!a){
+  if(!isLogin){
     Future.delayed(Duration(seconds: 1),() {
       Get.snackbar('인터넷 연결 실패', '인터넷 상태를 확인해주세요.',backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
     },);

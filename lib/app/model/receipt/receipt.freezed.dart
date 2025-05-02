@@ -27,12 +27,15 @@ mixin _$Receipt {
   String get pg;
   String get method;
   String get methodOriginSymbol;
+  @DateTimeConverter()
   DateTime get purchasedAt;
+  @DateTimeConverter()
   DateTime get requestedAt;
   String get statusLocale;
   String get currency;
   String get receiptUrl;
   int get status;
+  @CardDataConverter()
   CardData get cardData;
 
   /// Create a copy of Receipt
@@ -132,13 +135,13 @@ abstract mixin class $ReceiptCopyWith<$Res> {
       String pg,
       String method,
       String methodOriginSymbol,
-      DateTime purchasedAt,
-      DateTime requestedAt,
+      @DateTimeConverter() DateTime purchasedAt,
+      @DateTimeConverter() DateTime requestedAt,
       String statusLocale,
       String currency,
       String receiptUrl,
       int status,
-      CardData cardData});
+      @CardDataConverter() CardData cardData});
 
   $CardDataCopyWith<$Res> get cardData;
 }
@@ -282,13 +285,13 @@ class _Receipt implements Receipt {
       required this.pg,
       required this.method,
       required this.methodOriginSymbol,
-      required this.purchasedAt,
-      required this.requestedAt,
+      @DateTimeConverter() required this.purchasedAt,
+      @DateTimeConverter() required this.requestedAt,
       required this.statusLocale,
       required this.currency,
       required this.receiptUrl,
       required this.status,
-      required this.cardData});
+      @CardDataConverter() required this.cardData});
   factory _Receipt.fromJson(Map<String, dynamic> json) =>
       _$ReceiptFromJson(json);
 
@@ -317,8 +320,10 @@ class _Receipt implements Receipt {
   @override
   final String methodOriginSymbol;
   @override
+  @DateTimeConverter()
   final DateTime purchasedAt;
   @override
+  @DateTimeConverter()
   final DateTime requestedAt;
   @override
   final String statusLocale;
@@ -329,6 +334,7 @@ class _Receipt implements Receipt {
   @override
   final int status;
   @override
+  @CardDataConverter()
   final CardData cardData;
 
   /// Create a copy of Receipt
@@ -434,13 +440,13 @@ abstract mixin class _$ReceiptCopyWith<$Res> implements $ReceiptCopyWith<$Res> {
       String pg,
       String method,
       String methodOriginSymbol,
-      DateTime purchasedAt,
-      DateTime requestedAt,
+      @DateTimeConverter() DateTime purchasedAt,
+      @DateTimeConverter() DateTime requestedAt,
       String statusLocale,
       String currency,
       String receiptUrl,
       int status,
-      CardData cardData});
+      @CardDataConverter() CardData cardData});
 
   @override
   $CardDataCopyWith<$Res> get cardData;

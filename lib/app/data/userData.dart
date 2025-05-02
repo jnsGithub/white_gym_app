@@ -91,10 +91,14 @@ class UserDataRepository {
       QuerySnapshot querySnapshot = await userCollection.where('phone',isEqualTo: hp).get();
       if(querySnapshot.docs.isNotEmpty){
         DocumentReference documentRef = userCollection.doc(querySnapshot.docs[0].id);
+        Map<String, dynamic> data = querySnapshot.docs[0].data() as Map<String, dynamic>;
+        data['documentId'] = querySnapshot.docs[0].id;
+        // data['ticket'] = Ticket.fromJson(data['ticket']).toJson();
+        // data['ticket.spotItem'] = SpotItem.fromJson(data['ticket']['spotItem']).toJson();
         // documentRef.update({
         //   "fcmToken":  await FirebaseMessaging.instance.getToken(),
         // });
-        myInfo = User.fromJson(querySnapshot.docs[0].data() as Map<String, dynamic>);
+        myInfo = User.fromJson(data);
         box.write('documentId', myInfo.documentId);
         loginState = true;
         return true;
@@ -102,6 +106,7 @@ class UserDataRepository {
         return false;
       }
     } catch(e){
+      print('여기구만');
       print(e);
       Get.snackbar('알림', '로그인 실패',backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
       return false;

@@ -27,10 +27,15 @@ mixin _$Ticket {
   bool get status;
   bool get subscribe;
   bool get passTicket;
+  @DateTimeListConverter()
   List<DateTime> get pauseStartDate;
+  @DateTimeListConverter()
   List<DateTime> get pauseEndDate;
+  @DateTimeConverter()
   DateTime get endDate;
+  @DateTimeConverter()
   DateTime get createDate;
+  @SpotItemConverter()
   SpotItem get spotItem;
 
   /// Create a copy of Ticket
@@ -126,11 +131,11 @@ abstract mixin class $TicketCopyWith<$Res> {
       bool status,
       bool subscribe,
       bool passTicket,
-      List<DateTime> pauseStartDate,
-      List<DateTime> pauseEndDate,
-      DateTime endDate,
-      DateTime createDate,
-      SpotItem spotItem});
+      @DateTimeListConverter() List<DateTime> pauseStartDate,
+      @DateTimeListConverter() List<DateTime> pauseEndDate,
+      @DateTimeConverter() DateTime endDate,
+      @DateTimeConverter() DateTime createDate,
+      @SpotItemConverter() SpotItem spotItem});
 
   $SpotItemCopyWith<$Res> get spotItem;
 }
@@ -264,11 +269,11 @@ class _Ticket implements Ticket {
       required this.status,
       required this.subscribe,
       required this.passTicket,
-      required final List<DateTime> pauseStartDate,
-      required final List<DateTime> pauseEndDate,
-      required this.endDate,
-      required this.createDate,
-      required this.spotItem})
+      @DateTimeListConverter() required final List<DateTime> pauseStartDate,
+      @DateTimeListConverter() required final List<DateTime> pauseEndDate,
+      @DateTimeConverter() required this.endDate,
+      @DateTimeConverter() required this.createDate,
+      @SpotItemConverter() required this.spotItem})
       : _pauseStartDate = pauseStartDate,
         _pauseEndDate = pauseEndDate;
   factory _Ticket.fromJson(Map<String, dynamic> json) => _$TicketFromJson(json);
@@ -299,6 +304,7 @@ class _Ticket implements Ticket {
   final bool passTicket;
   final List<DateTime> _pauseStartDate;
   @override
+  @DateTimeListConverter()
   List<DateTime> get pauseStartDate {
     if (_pauseStartDate is EqualUnmodifiableListView) return _pauseStartDate;
     // ignore: implicit_dynamic_type
@@ -307,6 +313,7 @@ class _Ticket implements Ticket {
 
   final List<DateTime> _pauseEndDate;
   @override
+  @DateTimeListConverter()
   List<DateTime> get pauseEndDate {
     if (_pauseEndDate is EqualUnmodifiableListView) return _pauseEndDate;
     // ignore: implicit_dynamic_type
@@ -314,10 +321,13 @@ class _Ticket implements Ticket {
   }
 
   @override
+  @DateTimeConverter()
   final DateTime endDate;
   @override
+  @DateTimeConverter()
   final DateTime createDate;
   @override
+  @SpotItemConverter()
   final SpotItem spotItem;
 
   /// Create a copy of Ticket
@@ -419,11 +429,11 @@ abstract mixin class _$TicketCopyWith<$Res> implements $TicketCopyWith<$Res> {
       bool status,
       bool subscribe,
       bool passTicket,
-      List<DateTime> pauseStartDate,
-      List<DateTime> pauseEndDate,
-      DateTime endDate,
-      DateTime createDate,
-      SpotItem spotItem});
+      @DateTimeListConverter() List<DateTime> pauseStartDate,
+      @DateTimeListConverter() List<DateTime> pauseEndDate,
+      @DateTimeConverter() DateTime endDate,
+      @DateTimeConverter() DateTime createDate,
+      @SpotItemConverter() SpotItem spotItem});
 
   @override
   $SpotItemCopyWith<$Res> get spotItem;

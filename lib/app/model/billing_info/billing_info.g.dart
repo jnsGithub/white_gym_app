@@ -11,7 +11,8 @@ _BillingInfo _$BillingInfoFromJson(Map<String, dynamic> json) => _BillingInfo(
       documentId: json['documentId'] as String,
       cardCompany: json['cardCompany'] as String,
       cardNo: json['cardNo'] as String,
-      createDate: DateTime.parse(json['createDate'] as String),
+      createDate:
+          const DateTimeConverter().fromJson(json['createDate'] as Timestamp),
       userDocumentId: json['userDocumentId'] as String,
       cardCompanyCode: json['cardCompanyCode'] as String,
     );
@@ -22,7 +23,7 @@ Map<String, dynamic> _$BillingInfoToJson(_BillingInfo instance) =>
       'documentId': instance.documentId,
       'cardCompany': instance.cardCompany,
       'cardNo': instance.cardNo,
-      'createDate': instance.createDate.toIso8601String(),
+      'createDate': const DateTimeConverter().toJson(instance.createDate),
       'userDocumentId': instance.userDocumentId,
       'cardCompanyCode': instance.cardCompanyCode,
     };

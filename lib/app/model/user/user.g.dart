@@ -17,8 +17,10 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
       gender: (json['gender'] as num).toInt(),
       pushAlarm: json['pushAlarm'] as bool,
       smsAlarm: json['smsAlarm'] as bool,
-      ticket: Ticket.fromJson(json['ticket'] as Map<String, dynamic>),
-      createDate: DateTime.parse(json['createDate'] as String),
+      ticket: const TicketConverter()
+          .fromJson(json['ticket'] as Map<String, dynamic>),
+      createDate:
+          const DateTimeConverter().fromJson(json['createDate'] as Timestamp),
     );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -32,6 +34,6 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
       'gender': instance.gender,
       'pushAlarm': instance.pushAlarm,
       'smsAlarm': instance.smsAlarm,
-      'ticket': instance.ticket,
-      'createDate': instance.createDate.toIso8601String(),
+      'ticket': const TicketConverter().toJson(instance.ticket),
+      'createDate': const DateTimeConverter().toJson(instance.createDate),
     };

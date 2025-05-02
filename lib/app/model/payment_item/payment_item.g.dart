@@ -17,8 +17,10 @@ _PaymentItem _$PaymentItemFromJson(Map<String, dynamic> json) => _PaymentItem(
       sportswear: (json['sportswear'] as num).toInt(),
       locker: (json['locker'] as num).toInt(),
       ticketPrice: (json['ticketPrice'] as num).toInt(),
-      crateDate: DateTime.parse(json['crateDate'] as String),
-      receipt: Receipt.fromJson(json['receipt'] as Map<String, dynamic>),
+      crateDate:
+          const DateTimeConverter().fromJson(json['crateDate'] as Timestamp),
+      receipt: const ReceiptConverter()
+          .fromJson(json['receipt'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PaymentItemToJson(_PaymentItem instance) =>
@@ -33,6 +35,6 @@ Map<String, dynamic> _$PaymentItemToJson(_PaymentItem instance) =>
       'sportswear': instance.sportswear,
       'locker': instance.locker,
       'ticketPrice': instance.ticketPrice,
-      'crateDate': instance.crateDate.toIso8601String(),
-      'receipt': instance.receipt,
+      'crateDate': const DateTimeConverter().toJson(instance.crateDate),
+      'receipt': const ReceiptConverter().toJson(instance.receipt),
     };

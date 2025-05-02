@@ -13,9 +13,11 @@ _VisitHistory _$VisitHistoryFromJson(Map<String, dynamic> json) =>
       spotDocumentId: json['spotDocumentId'] as String,
       spotName: json['spotName'] as String,
       userName: json['userName'] as String,
-      ticket: Ticket.fromJson(json['ticket'] as Map<String, dynamic>),
+      ticket: const TicketConverter()
+          .fromJson(json['ticket'] as Map<String, dynamic>),
       userSportswear: json['userSportswear'] as bool,
-      createDate: DateTime.parse(json['createDate'] as String),
+      createDate:
+          const DateTimeConverter().fromJson(json['createDate'] as Timestamp),
     );
 
 Map<String, dynamic> _$VisitHistoryToJson(_VisitHistory instance) =>
@@ -25,7 +27,7 @@ Map<String, dynamic> _$VisitHistoryToJson(_VisitHistory instance) =>
       'spotDocumentId': instance.spotDocumentId,
       'spotName': instance.spotName,
       'userName': instance.userName,
-      'ticket': instance.ticket,
+      'ticket': const TicketConverter().toJson(instance.ticket),
       'userSportswear': instance.userSportswear,
-      'createDate': instance.createDate.toIso8601String(),
+      'createDate': const DateTimeConverter().toJson(instance.createDate),
     };

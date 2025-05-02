@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:white_gym/app/data/util/converter.dart';
 import 'package:white_gym/app/model/card_data/card_data.dart';
 
 part 'receipt.freezed.dart';
@@ -20,16 +21,27 @@ abstract class Receipt with _$Receipt {
     required final String pg,
     required final String method,
     required final String methodOriginSymbol,
-    required final DateTime purchasedAt,
-    required final DateTime requestedAt,
+    @DateTimeConverter() required final DateTime purchasedAt,
+    @DateTimeConverter() required final DateTime requestedAt,
     required final String statusLocale,
     required final String currency,
     required final String receiptUrl,
     required final int status,
-    required final CardData cardData,
+    @CardDataConverter() required final CardData cardData,
   }) = _Receipt;
 
   factory Receipt.fromJson(Map<String, dynamic> json) => _$ReceiptFromJson(json);
+}
 
+class CardDataConverter implements ModelConverter<CardData> {
+  const CardDataConverter();
+
+  @override
+  CardData fromJson(Map<String, dynamic> json) {
+    return CardData.fromJson(json);
+  }
+
+  @override
+  Map<String, dynamic> toJson(CardData object) => object.toJson();
 }
 

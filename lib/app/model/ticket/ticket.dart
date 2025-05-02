@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:white_gym/app/data/util/converter.dart';
 
 import '../spot_item/spot_item.dart';
 
@@ -20,11 +22,11 @@ abstract class Ticket with _$Ticket {
     required bool status,
     required final bool subscribe,
     required final bool passTicket,
-    required List<DateTime> pauseStartDate,
-    required List<DateTime> pauseEndDate,
-    required DateTime endDate,
-    required final DateTime createDate,
-    required final SpotItem spotItem,
+    @DateTimeListConverter() required List<DateTime> pauseStartDate,
+    @DateTimeListConverter() required List<DateTime> pauseEndDate,
+    @DateTimeConverter() required DateTime endDate,
+    @DateTimeConverter() required final DateTime createDate,
+    @SpotItemConverter() required final SpotItem spotItem,
   }) = _Ticket;
 
   factory Ticket.fromJson(Map<String, dynamic> json) => _$TicketFromJson(json);
@@ -50,4 +52,16 @@ abstract class Ticket with _$Ticket {
       spotItem: SpotItem.empty(),
     );
   }
+}
+
+class SpotItemConverter implements ModelConverter<SpotItem> {
+  const SpotItemConverter();
+
+  @override
+  SpotItem fromJson(Map<String, dynamic> json) {
+    return SpotItem.fromJson(json);
+  }
+
+  @override
+  Map<String, dynamic> toJson(SpotItem object) => object.toJson();
 }

@@ -249,7 +249,7 @@ class PaymentView extends GetView<PaymentController> {
       ),
       bottomNavigationBar: SafeArea(
         bottom: true,
-        child: Obx(()=>controller.ready.value && myInfo.ticket.endDate.isBefore(DateTime.now())?
+        child: Obx(()=> controller.ready.value && (!loginState || myInfo.ticket.endDate.isBefore(DateTime.now())) ?
         Container(
           margin: EdgeInsets.only(bottom: 20),
           child: GestureDetector(
@@ -260,7 +260,6 @@ class PaymentView extends GetView<PaymentController> {
                 Get.snackbar('알림', '회원가입 이후 사용 가능합니다.',backgroundColor: Colors.white,colorText: text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
                 Get.toNamed(Routes.SIGN_UP);
               }
-
             },
             child: Container(
               width: size.width,

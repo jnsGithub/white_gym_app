@@ -25,6 +25,7 @@ mixin _$Spot {
   double get distanceBetween;
   double get lat;
   double get lon;
+  @DateTimeConverter()
   DateTime get createDate;
 
   /// Create a copy of Spot
@@ -99,7 +100,7 @@ abstract mixin class $SpotCopyWith<$Res> {
       double distanceBetween,
       double lat,
       double lon,
-      DateTime createDate});
+      @DateTimeConverter() DateTime createDate});
 }
 
 /// @nodoc
@@ -189,7 +190,7 @@ class _Spot implements Spot {
       required this.distanceBetween,
       required this.lat,
       required this.lon,
-      required this.createDate})
+      @DateTimeConverter() required this.createDate})
       : _imageUrlList = imageUrlList,
         _devSnList = devSnList;
   factory _Spot.fromJson(Map<String, dynamic> json) => _$SpotFromJson(json);
@@ -227,6 +228,7 @@ class _Spot implements Spot {
   @override
   final double lon;
   @override
+  @DateTimeConverter()
   final DateTime createDate;
 
   /// Create a copy of Spot
@@ -308,7 +310,7 @@ abstract mixin class _$SpotCopyWith<$Res> implements $SpotCopyWith<$Res> {
       double distanceBetween,
       double lat,
       double lon,
-      DateTime createDate});
+      @DateTimeConverter() DateTime createDate});
 }
 
 /// @nodoc

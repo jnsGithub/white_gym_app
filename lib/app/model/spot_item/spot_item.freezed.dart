@@ -31,6 +31,7 @@ mixin _$SpotItem {
   int get beforeDiscount;
   int get price;
   int get sportswear;
+  @DateTimeConverter()
   DateTime get createDate;
 
   /// Create a copy of SpotItem
@@ -128,7 +129,7 @@ abstract mixin class $SpotItemCopyWith<$Res> {
       int beforeDiscount,
       int price,
       int sportswear,
-      DateTime createDate});
+      @DateTimeConverter() DateTime createDate});
 }
 
 /// @nodoc
@@ -254,7 +255,7 @@ class _SpotItem implements SpotItem {
       required this.beforeDiscount,
       required this.price,
       required this.sportswear,
-      required this.createDate});
+      @DateTimeConverter() required this.createDate});
   factory _SpotItem.fromJson(Map<String, dynamic> json) =>
       _$SpotItemFromJson(json);
 
@@ -291,6 +292,7 @@ class _SpotItem implements SpotItem {
   @override
   final int sportswear;
   @override
+  @DateTimeConverter()
   final DateTime createDate;
 
   /// Create a copy of SpotItem
@@ -395,7 +397,7 @@ abstract mixin class _$SpotItemCopyWith<$Res>
       int beforeDiscount,
       int price,
       int sportswear,
-      DateTime createDate});
+      @DateTimeConverter() DateTime createDate});
 }
 
 /// @nodoc

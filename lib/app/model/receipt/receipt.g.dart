@@ -19,13 +19,16 @@ _Receipt _$ReceiptFromJson(Map<String, dynamic> json) => _Receipt(
       pg: json['pg'] as String,
       method: json['method'] as String,
       methodOriginSymbol: json['methodOriginSymbol'] as String,
-      purchasedAt: DateTime.parse(json['purchasedAt'] as String),
-      requestedAt: DateTime.parse(json['requestedAt'] as String),
+      purchasedAt:
+          const DateTimeConverter().fromJson(json['purchasedAt'] as Timestamp),
+      requestedAt:
+          const DateTimeConverter().fromJson(json['requestedAt'] as Timestamp),
       statusLocale: json['statusLocale'] as String,
       currency: json['currency'] as String,
       receiptUrl: json['receiptUrl'] as String,
       status: (json['status'] as num).toInt(),
-      cardData: CardData.fromJson(json['cardData'] as Map<String, dynamic>),
+      cardData: const CardDataConverter()
+          .fromJson(json['cardData'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ReceiptToJson(_Receipt instance) => <String, dynamic>{
@@ -41,11 +44,11 @@ Map<String, dynamic> _$ReceiptToJson(_Receipt instance) => <String, dynamic>{
       'pg': instance.pg,
       'method': instance.method,
       'methodOriginSymbol': instance.methodOriginSymbol,
-      'purchasedAt': instance.purchasedAt.toIso8601String(),
-      'requestedAt': instance.requestedAt.toIso8601String(),
+      'purchasedAt': const DateTimeConverter().toJson(instance.purchasedAt),
+      'requestedAt': const DateTimeConverter().toJson(instance.requestedAt),
       'statusLocale': instance.statusLocale,
       'currency': instance.currency,
       'receiptUrl': instance.receiptUrl,
       'status': instance.status,
-      'cardData': instance.cardData,
+      'cardData': const CardDataConverter().toJson(instance.cardData),
     };

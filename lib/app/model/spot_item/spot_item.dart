@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:white_gym/app/data/util/converter.dart';
 
 part 'spot_item.freezed.dart';
 part 'spot_item.g.dart';
@@ -22,7 +24,7 @@ abstract class SpotItem with _$SpotItem {
     required int beforeDiscount,
     required int price,
     required int sportswear,
-    required final DateTime createDate,
+    @DateTimeConverter() required final DateTime createDate,
   }) = _SpotItem;
 
   factory SpotItem.fromJson(Map<String, dynamic> json) => _$SpotItemFromJson(json);

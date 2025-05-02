@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:convert/convert.dart';
+import 'package:white_gym/app/data/util/converter.dart';
 
 part 'billing_info.freezed.dart';
 part 'billing_info.g.dart';
@@ -11,7 +13,7 @@ abstract class BillingInfo with _$BillingInfo {
     required final String documentId,
     required final String cardCompany,
     required final String cardNo,
-    required final DateTime createDate,
+    @DateTimeConverter() required final DateTime createDate,
     required final String userDocumentId,
     required final String cardCompanyCode,
   }) = _BillingInfo;

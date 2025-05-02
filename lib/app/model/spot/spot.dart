@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../data/util/converter.dart';
 
 part 'spot.freezed.dart';
 part 'spot.g.dart';
@@ -16,7 +19,7 @@ abstract class Spot with _$Spot {
     required double distanceBetween,
     required double lat,
     required double lon,
-    required final DateTime createDate,
+    @DateTimeConverter() required final DateTime createDate,
   }) = _Spot;
 
   factory Spot.fromJson(Map<String, dynamic> json) => _$SpotFromJson(json);

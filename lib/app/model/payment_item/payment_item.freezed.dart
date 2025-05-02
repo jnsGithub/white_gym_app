@@ -25,7 +25,9 @@ mixin _$PaymentItem {
   int get sportswear;
   int get locker;
   int get ticketPrice;
+  @DateTimeConverter()
   DateTime get crateDate;
+  @ReceiptConverter()
   Receipt get receipt;
 
   /// Create a copy of PaymentItem
@@ -107,8 +109,8 @@ abstract mixin class $PaymentItemCopyWith<$Res> {
       int sportswear,
       int locker,
       int ticketPrice,
-      DateTime crateDate,
-      Receipt receipt});
+      @DateTimeConverter() DateTime crateDate,
+      @ReceiptConverter() Receipt receipt});
 
   $ReceiptCopyWith<$Res> get receipt;
 }
@@ -215,8 +217,8 @@ class _PaymentItem implements PaymentItem {
       required this.sportswear,
       required this.locker,
       required this.ticketPrice,
-      required this.crateDate,
-      required this.receipt});
+      @DateTimeConverter() required this.crateDate,
+      @ReceiptConverter() required this.receipt});
   factory _PaymentItem.fromJson(Map<String, dynamic> json) =>
       _$PaymentItemFromJson(json);
 
@@ -241,8 +243,10 @@ class _PaymentItem implements PaymentItem {
   @override
   final int ticketPrice;
   @override
+  @DateTimeConverter()
   final DateTime crateDate;
   @override
+  @ReceiptConverter()
   final Receipt receipt;
 
   /// Create a copy of PaymentItem
@@ -331,8 +335,8 @@ abstract mixin class _$PaymentItemCopyWith<$Res>
       int sportswear,
       int locker,
       int ticketPrice,
-      DateTime crateDate,
-      Receipt receipt});
+      @DateTimeConverter() DateTime crateDate,
+      @ReceiptConverter() Receipt receipt});
 
   @override
   $ReceiptCopyWith<$Res> get receipt;

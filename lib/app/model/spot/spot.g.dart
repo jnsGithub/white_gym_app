@@ -17,7 +17,8 @@ _Spot _$SpotFromJson(Map<String, dynamic> json) => _Spot(
       distanceBetween: (json['distanceBetween'] as num).toDouble(),
       lat: (json['lat'] as num).toDouble(),
       lon: (json['lon'] as num).toDouble(),
-      createDate: DateTime.parse(json['createDate'] as String),
+      createDate:
+          const DateTimeConverter().fromJson(json['createDate'] as Timestamp),
     );
 
 Map<String, dynamic> _$SpotToJson(_Spot instance) => <String, dynamic>{
@@ -31,5 +32,5 @@ Map<String, dynamic> _$SpotToJson(_Spot instance) => <String, dynamic>{
       'distanceBetween': instance.distanceBetween,
       'lat': instance.lat,
       'lon': instance.lon,
-      'createDate': instance.createDate.toIso8601String(),
+      'createDate': const DateTimeConverter().toJson(instance.createDate),
     };

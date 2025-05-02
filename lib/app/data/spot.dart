@@ -27,11 +27,13 @@ class SpotDataRepository {
       for (var doc in snapshot.docs) {
         Map<String, dynamic> data = doc.data();
         data['documentId'] = doc.id;
+        data['distanceBetween'] = 0.0;
         list.add(Spot.fromJson(data));
       }
       return list;
     } catch(e){
       RxList<Spot> list = <Spot>[].obs;
+      print('getSpot');
       print(e);
       return list;
     }

@@ -19,6 +19,7 @@ mixin _$BillingInfo {
   String get documentId;
   String get cardCompany;
   String get cardNo;
+  @DateTimeConverter()
   DateTime get createDate;
   String get userDocumentId;
   String get cardCompanyCode;
@@ -75,7 +76,7 @@ abstract mixin class $BillingInfoCopyWith<$Res> {
       String documentId,
       String cardCompany,
       String cardNo,
-      DateTime createDate,
+      @DateTimeConverter() DateTime createDate,
       String userDocumentId,
       String cardCompanyCode});
 }
@@ -141,7 +142,7 @@ class _BillingInfo implements BillingInfo {
       required this.documentId,
       required this.cardCompany,
       required this.cardNo,
-      required this.createDate,
+      @DateTimeConverter() required this.createDate,
       required this.userDocumentId,
       required this.cardCompanyCode});
   factory _BillingInfo.fromJson(Map<String, dynamic> json) =>
@@ -156,6 +157,7 @@ class _BillingInfo implements BillingInfo {
   @override
   final String cardNo;
   @override
+  @DateTimeConverter()
   final DateTime createDate;
   @override
   final String userDocumentId;
@@ -221,7 +223,7 @@ abstract mixin class _$BillingInfoCopyWith<$Res>
       String documentId,
       String cardCompany,
       String cardNo,
-      DateTime createDate,
+      @DateTimeConverter() DateTime createDate,
       String userDocumentId,
       String cardCompanyCode});
 }
