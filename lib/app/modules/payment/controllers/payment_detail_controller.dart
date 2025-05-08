@@ -36,6 +36,7 @@ class PaymentDetailController extends GetxController {
   RxBool sportswearCheck = false.obs;
   RxBool loading = false.obs;
   RxBool isBottom = false.obs;
+  RxBool isAppCard = false.obs;
   RxList<BillingInfo> billingInfo = <BillingInfo>[].obs;
   CarouselSliderController carouselController = CarouselSliderController();
   PaymentsRepository payments = PaymentsRepository();
@@ -49,9 +50,12 @@ class PaymentDetailController extends GetxController {
     super.onInit();
     DateTime nowDate = DateTime.now();
     now = DateTime(nowDate.year, nowDate.month, nowDate.day);
+    // if(spotItem.isSubscribe){
     if(spotItem.isSubscribe){
-      getBillingInfo();
+      isAppCard.value = true;
     }
+    getBillingInfo();
+    // }
     lockerCheck.value = Get.arguments['locker'];
     sportswearCheck.value = Get.arguments['sportswear'];
     lockerPrice.value = spotItem.locker;

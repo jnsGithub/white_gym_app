@@ -59,4 +59,20 @@ class Spot{
     };
   }
 
+  factory Spot.empty() {
+    return Spot(
+      documentId: '',
+      name: '',
+      address: '',
+      addressDetail: '',
+      descriptions: '',
+      imageUrlList: [],
+      devSnList: [],
+      distanceBetween: 0.0,
+      lat: 0.0,
+      lon: 0.0,
+      createDate: DateTime.now(),
+    );
+  }
+
 }

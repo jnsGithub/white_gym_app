@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:white_gym/app/modules/myPage/views/card_list_view.dart';
 import 'package:white_gym/app/modules/myPage/views/payment_list_view.dart';
+import 'package:white_gym/app/modules/ot/views/ot_success_view.dart';
 
 import '../modules/gymList/bindings/gym_list_binding.dart';
 import '../modules/gymList/views/gym_detail.dart';
@@ -16,8 +17,11 @@ import '../modules/myPage/bindings/my_page_binding.dart';
 import '../modules/myPage/views/edit_hp_view.dart';
 import '../modules/myPage/views/my_page_view.dart';
 import '../modules/myPage/views/setting_view.dart';
+import '../modules/ot/bindings/ot_binding.dart';
+import '../modules/ot/views/ot_view.dart';
 import '../modules/payment/bindings/payment_binding.dart';
 import '../modules/payment/views/payment_detail_view.dart';
+import '../modules/payment/views/payment_success_view.dart';
 import '../modules/payment/views/payment_view.dart';
 import '../modules/signUp/bindings/sign_up_binding.dart';
 import '../modules/signUp/views/sign_up_completed.dart';
@@ -104,6 +108,21 @@ class AppPages {
       name: _Paths.EDIT_HP,
       page: () => const EditHpView(),
       binding: EditHpBinding(),
+    ),
+    GetPage(
+      name: _Paths.PAYMENT_SUCCESS,
+      page: () => const PaymentSuccessView(),
+      binding: PaymentBinding(),
+    ),
+    GetPage(
+      name: _Paths.OT,
+      page: () => const OtView(),
+      binding: OtBinding(),
+    ),
+    GetPage(
+      name: _Paths.OT_SUCCESS,
+      page: () => const OtSuccessView(),
+      binding: OtBinding(),
     ),
   ];
 }

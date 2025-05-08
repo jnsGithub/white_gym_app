@@ -59,7 +59,7 @@ bool a = await signInAnonymously();
   runApp(
     GetMaterialApp(
       title: "Application",
-      initialRoute: autoLogin,
+      initialRoute: Routes.PAYMENT_SUCCESS,//autoLogin, //TODO: autoLogin으로 바꾸셔야합니다
       getPages: AppPages.routes,
       theme: ThemeData(
         useMaterial3: false,

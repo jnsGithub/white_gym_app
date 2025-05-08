@@ -18,6 +18,9 @@ abstract class Routes {
   static const PAYMENT_LIST = _Paths.PAYMENT_LIST;
   static const SETTING = _Paths.SETTING;
   static const EDIT_HP = _Paths.EDIT_HP;
+  static const PAYMENT_SUCCESS = _Paths.PAYMENT_SUCCESS;
+  static const OT = _Paths.OT;
+  static const OT_SUCCESS = _Paths.OT_SUCCESS;
 }
 
 abstract class _Paths {
@@ -37,4 +40,7 @@ abstract class _Paths {
   static const PAYMENT_LIST = '/payment-list';
   static const SETTING = '/setting';
   static const EDIT_HP = '/edit-hp';
+  static const PAYMENT_SUCCESS = '/payment-success';
+  static const OT = '/ot';
+  static const OT_SUCCESS = '${OT}/success';
 }
