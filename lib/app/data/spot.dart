@@ -47,24 +47,23 @@ class SpotDataRepository {
       return list;
     }
   }
+
   getSpotItem(id) async {
     try {
-      final snapshot =
-      await spotItemCollection.where('spotDocumentId', isEqualTo: id).get();
+      final snapshot = await spotItemCollection.where('spotDocumentId', isEqualTo: id).get();
       RxList<SpotItem> list = <SpotItem>[].obs;
       for (var doc in snapshot.docs) {
         Map<String, dynamic> data = doc.data();
         data['documentId'] = doc.id;
         print(1);
         if(data['daily'] == null){
-          data['locker'] = data['monthly'] * 30;
+          data['daily'] = data['monthly'] * 30;
         }
         else{
           if(data['daily'] == 1){
             data['locker'] = 0;
             data['sportswear'] = 0;
           }
-
         }
         if(data['monthly'] == null){
           data['monthly'] = 0;
