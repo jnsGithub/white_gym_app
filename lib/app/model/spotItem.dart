@@ -12,7 +12,8 @@ class SpotItem {
   int index;
   int admission;
   int locker;
-  int monthly;
+  // int? monthly;
+  int daily;
   int pause;
   int beforeDiscount;
   int price;
@@ -28,7 +29,8 @@ class SpotItem {
     required this.discountCheck,
     required this.index,
     required this.locker,
-    required this.monthly,
+    // required this.monthly,
+    required this.daily,
     required this.name,
     required this.passTicket,
     required this.pause,
@@ -51,7 +53,8 @@ class SpotItem {
       discountCheck: json['discountCheck'] as bool,
       index: json['index'] as int,
       locker: json['locker'] as int,
-      monthly: json['monthly'] as int,
+      // monthly: json['monthly'] as int,
+      daily: json['daily'] ?? (json['monthly'] as int) * 30,
       name: json['name'] as String,
       passTicket: json['passTicket'] as bool,
       pause: json['pause'] as int,
@@ -74,7 +77,8 @@ class SpotItem {
       'discountCheck': discountCheck,
       'index': index,
       'locker': locker,
-      'monthly': monthly,
+      // 'monthly': monthly,
+      'daily': daily,
       'name': name,
       'passTicket': passTicket,
       'pause': pause,
@@ -98,7 +102,8 @@ class SpotItem {
       index: 0,
       admission: 0,
       locker: 0,
-      monthly: 0,
+      // monthly: 0,
+      daily: 0,
       pause: 0,
       beforeDiscount: 0,
       price: 0,
@@ -117,7 +122,8 @@ class SpotItem {
     bool? discountCheck,
     int? index,
     int? locker,
-    int? monthly,
+    // int? monthly,
+    int? daily,
     String? name,
     int? pause,
     int? beforeDiscount,
@@ -135,10 +141,11 @@ class SpotItem {
       discountCheck: discountCheck ?? this.discountCheck,
       index: index ?? this.index,
       locker: locker ?? this.locker,
-      monthly: monthly ?? this.monthly,
+      // monthly: monthly ?? this.monthly,
       name: name ?? this.name,
       passTicket: passTicket ?? this.passTicket,
       pause: pause ?? this.pause,
+      daily: daily ?? this.daily,
       beforeDiscount: beforeDiscount ?? this.beforeDiscount,
       price: price ?? this.price,
       sportswear: sportswear ?? this.sportswear,

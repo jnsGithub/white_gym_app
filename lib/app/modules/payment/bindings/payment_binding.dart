@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import 'package:white_gym/app/modules/payment/controllers/payment_detail_controller.dart';
+import 'package:white_gym/app/modules/payment/controllers/payment_success_controller..dart';
 
 import '../controllers/payment_controller.dart';
 
@@ -19,6 +20,15 @@ class PaymentDetailBinding extends Bindings {
   void dependencies() {
     Get.lazyPut<PaymentDetailController>(
           () => PaymentDetailController(),
+    );
+  }
+}
+
+class PaymentSuccessBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<PaymentSuccessController>(
+          () => PaymentSuccessController(),
     );
   }
 }

@@ -112,7 +112,7 @@ class AppPages {
     GetPage(
       name: _Paths.PAYMENT_SUCCESS,
       page: () => const PaymentSuccessView(),
-      binding: PaymentBinding(),
+      binding: PaymentSuccessBinding(),
     ),
     GetPage(
       name: _Paths.OT,

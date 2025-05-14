@@ -8,6 +8,7 @@ import 'package:white_gym/app/modules/payment/controllers/payment_detail_control
 import 'package:white_gym/component/main_box.dart';
 
 import '../../../../global.dart';
+import '../../../routes/app_pages.dart';
 
 class PaymentDetailView extends GetView<PaymentDetailController> {
   const PaymentDetailView({super.key});
@@ -389,8 +390,8 @@ class PaymentDetailView extends GetView<PaymentDetailController> {
       bottomNavigationBar:  SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: controller.spotItem.isSubscribe ?
-          Container(
+          child: Obx(() => controller.isAppCard.value//controller.spotItem.isSubscribe ?
+              ? Container(
             margin: EdgeInsets.only(bottom: 20),
             child: Obx(()=>controller.loading.value?
             GestureDetector(
@@ -398,6 +399,7 @@ class PaymentDetailView extends GetView<PaymentDetailController> {
                   if(controller.isBottom.value){
                     if(controller.billingInfo[controller.sliderIndex.value].documentId != '') {
                       controller.billingKeyPay();
+                      // Get.offAllNamed(Routes.PAYMENT_SUCCESS, arguments: controller.spotItem.passTicket ? '' : controller.spotItem.spotDocumentId);
                     }
                   } else {
                     controller.scrollJump();
@@ -410,12 +412,15 @@ class PaymentDetailView extends GetView<PaymentDetailController> {
                 )
             ):Container()
             ),
-          ):Container(
+          )
+              : Container(
             margin: EdgeInsets.only(bottom: 20),
             child:
             GestureDetector(
                 onTap: (){
-                    controller.bootpayAppCard();
+                  print(controller.isAppCard.value);
+                  controller.bootpayAppCard();
+                  // Get.offAllNamed(Routes.PAYMENT_SUCCESS, arguments: controller.spotItem.passTicket ? '' : controller.spotItem.spotDocumentId);
                 },
                 child: MainBox(
                     text: '결제하기',
@@ -423,7 +428,7 @@ class PaymentDetailView extends GetView<PaymentDetailController> {
                     textColor:Colors.white
                 )
             ),
-          ),
+          ),),
         ),
       )
     );

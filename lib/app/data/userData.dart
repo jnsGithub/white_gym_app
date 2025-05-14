@@ -94,6 +94,7 @@ class UserDataRepository {
         // documentRef.update({
         //   "fcmToken":  await FirebaseMessaging.instance.getToken(),
         // });
+
         myInfo = UserData.fromJson(querySnapshot.docs[0]);
         box.write('documentId', myInfo.documentId);
         loginState = true;
@@ -217,6 +218,18 @@ class UserDataRepository {
       print(e);
       List<VisitHistory> visitHistoryList = <VisitHistory>[];
       return visitHistoryList;
+    }
+  }
+
+  Future<void> updateOtCount(int count) async {
+    try {
+      await userCollection.doc(myInfo.documentId).update({
+        'otCount': count,
+      });
+      myInfo.otCount = count;
+    } catch (e) {
+      print('1');
+      print(e);
     }
   }
 }

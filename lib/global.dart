@@ -42,6 +42,9 @@ String privateKey = 'MpBFUS1+4yl4QLjzeBcFxWNd1KMGEOYxODOKMnki7wU=';
 late UserData myInfo;
 bool loginState = false;
 
+double baseWidth = 375;
+double baseHeight = 812;
+
 String formatNumber(int number) {
   final formatter = NumberFormat('#,###');
   return '${formatter.format(number)} 원';

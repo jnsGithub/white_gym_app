@@ -61,6 +61,7 @@ dependencies:
   package_info_plus: ^8.3.0
   device_info_plus: ^11.3.0
   dropdown_button2: ^2.3.9
+  mailer: ^6.4.1
 
   freezed: ^3.0.6
   freezed_annotation: ^3.0.0

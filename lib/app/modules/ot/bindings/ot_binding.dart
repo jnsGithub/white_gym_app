@@ -6,6 +6,6 @@ class OtBinding extends Bindings {
   @override
   void dependencies() {
     // Add your dependencies here
-    Get.lazyPut(() => OtController());
+    Get.lazyPut<OtController>(() => OtController());
   }
 }

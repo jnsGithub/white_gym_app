@@ -46,9 +46,12 @@ class PaymentView extends GetView<PaymentController> {
                             itemCount: controller.spotItemList.length,
                             physics:NeverScrollableScrollPhysics(),
                             itemBuilder: (context , index ){
+                              RxBool isOneDay = (controller.spotItemList[index].daily == 1).obs;
+                              controller.check1.value = false;
+                              controller.check2.value = true;
                               return Obx(()=>
                                   GestureDetector(
-                                      onTap: (){
+                                      onTap: () {
                                         if(controller.ticketIndex.value != index){
                                           controller.checkTicket(index);
                                         }
@@ -131,12 +134,14 @@ class PaymentView extends GetView<PaymentController> {
                                                               isChecked: controller.check1.value,
                                                               borderColor: controller.check1.value ? Colors.blue : Colors.grey,
                                                               fillColor: Colors.blue,
+                                                              isOneDay: isOneDay.value,
+                                                              isLocker: true,
                                                               size: 24,
                                                             ),
                                                             const SizedBox(width: 8),
                                                             Text(
                                                               "개인 락커", style: TextStyle(
-                                                              color: controller.check1.value ? text22 : Colors.grey,
+                                                              color: isOneDay.value ? Colors.grey : controller.check1.value ? text22 : Colors.grey,
                                                               fontWeight: FontWeight.w600,
                                                               fontSize: 16,
                                                             ),
@@ -147,13 +152,13 @@ class PaymentView extends GetView<PaymentController> {
                                                           children: [
                                                             // controller.spotItemList[index].isSubscribe && controller.spotItemList[index].locker != 0?
                                                             Text('월 ', style: TextStyle(
-                                                            color: controller.check1.value ? text22 : Colors.grey,
+                                                            color: isOneDay.value ? Colors.grey : controller.check1.value ? text22 : Colors.grey,
                                                             fontWeight: FontWeight.w600,
                                                             fontSize: 16
                                                         ),),
                                                                 // :Container(),
                                                             Text(formatNumber(controller.spotItemList[index].locker), style: TextStyle(
-                                                                color: controller.check1.value ? text22 : Colors.grey,
+                                                                color: isOneDay.value ? Colors.grey : controller.check1.value ? text22 : Colors.grey,
                                                                 fontWeight: FontWeight.w600,
                                                                 fontSize: 16
                                                             ),),
@@ -176,15 +181,16 @@ class PaymentView extends GetView<PaymentController> {
                                                           children: [
                                                             CustomCheckbox(
                                                               allCheck: true,
-                                                              isChecked: controller.check2.value,
-                                                              borderColor: controller.check2.value ? Colors.blue : Colors.grey,
+                                                              isChecked: isOneDay.value || controller.check2.value,
+                                                              borderColor: isOneDay.value || controller.check2.value ? Colors.blue : Colors.grey,
                                                               fillColor: Colors.blue,
+                                                              isOneDay: isOneDay.value,
                                                               size: 24,
                                                             ),
                                                             const SizedBox(width: 8),
                                                             Text(
                                                               "회원복", style: TextStyle(
-                                                                color: controller.check2.value ? text22 : Colors.grey,
+                                                                color: isOneDay.value ? text22 : controller.check2.value ? text22 : Colors.grey,
                                                                 fontWeight: FontWeight.w600,
                                                                 fontSize: 16
                                                             ),)
@@ -195,13 +201,13 @@ class PaymentView extends GetView<PaymentController> {
                                                           children: [
                                                             // controller.spotItemList[index].isSubscribe && controller.spotItemList[index].sportswear != 0?
                                                             Text('월 ', style: TextStyle(
-                                                                color: controller.check2.value ? text22 : Colors.grey,
+                                                                color: isOneDay.value ? text22 : controller.check2.value ? text22 : Colors.grey,
                                                                 fontWeight: FontWeight.w600,
                                                                 fontSize: 16
                                                             ),),
                                                                 // :Container(),
                                                             Text(formatNumber(controller.spotItemList[index].sportswear), style: TextStyle(
-                                                                color: controller.check2.value ? text22 : Colors.grey,
+                                                                color: isOneDay.value ? text22 : controller.check2.value ? text22 : Colors.grey,
                                                                 fontWeight: FontWeight.w600,
                                                                 fontSize: 16
                                                             ),),

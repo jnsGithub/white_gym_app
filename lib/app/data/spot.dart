@@ -18,20 +18,30 @@ import '../routes/app_pages.dart';
 
 class SpotDataRepository {
   FirebaseStorage storage = FirebaseStorage.instance;
-  final spotCollection = FirebaseFirestore.instance.collection('spot');
-  final spotItemCollection = FirebaseFirestore.instance.collection('spotItem');
+  final spotCollection = FirebaseFirestore.instance.collection('spot_test'); // TODO: 실사용 모드로 바꿔야함
+  final spotItemCollection = FirebaseFirestore.instance.collection('spotItem_test');
 
-  getSpot() async {
+  getSpot({String? docId}) async {
     try{
-      final snapshot = await spotCollection.get();
-      RxList<Spot> list = <Spot>[].obs;
-      for (var doc in snapshot.docs) {
-        Map<String, dynamic> data = doc.data();
-        data['documentId'] = doc.id;
-        list.add(Spot.fromMap(data));
+      if(docId != null){
+        final snapshot = await spotCollection.doc(docId).get();
+        RxList<Spot> list = <Spot>[].obs;
+          Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+          data['documentId'] = snapshot.id;
+          list.add(Spot.fromMap(data));
+        return list;
       }
-      return list;
-    } catch(e){
+      else{
+        final snapshot = await spotCollection.get();
+        RxList<Spot> list = <Spot>[].obs;
+        for (var doc in snapshot.docs) {
+          Map<String, dynamic> data = doc.data();
+          data['documentId'] = doc.id;
+          list.add(Spot.fromMap(data));
+        }
+        return list;
+      }
+    } catch(e) {
       RxList<Spot> list = <Spot>[].obs;
       print(e);
       return list;
@@ -40,15 +50,31 @@ class SpotDataRepository {
   getSpotItem(id) async {
     try {
       final snapshot =
-          await spotItemCollection.where('spotDocumentId', isEqualTo: id).get();
+      await spotItemCollection.where('spotDocumentId', isEqualTo: id).get();
       RxList<SpotItem> list = <SpotItem>[].obs;
       for (var doc in snapshot.docs) {
         Map<String, dynamic> data = doc.data();
         data['documentId'] = doc.id;
+        print(1);
+        if(data['daily'] == null){
+          data['locker'] = data['monthly'] * 30;
+        }
+        else{
+          if(data['daily'] == 1){
+            data['locker'] = 0;
+            data['sportswear'] = 0;
+          }
+
+        }
+        if(data['monthly'] == null){
+          data['monthly'] = 0;
+        }
+        print(2);
         list.add(SpotItem.fromJson(data));
       }
       return list;
     } catch(e){
+      print('스팟 아이템 가져올때 걸림 : ${e}');
       RxList<SpotItem> list = <SpotItem>[].obs;
       print(e);
       return list;

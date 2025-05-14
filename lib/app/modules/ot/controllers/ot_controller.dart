@@ -3,22 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:white_gym/app/data/spot.dart';
 
 import '../../../../global.dart';
+import '../../../data/userData.dart';
 import '../../../model/spot.dart';
 
 class OtController extends GetxController{
-  RxInt selectedValue = 1.obs;
+  RxInt selectedValue = 0.obs;
   RxBool isDropdownOpen = false.obs;
   List<RxBool> isRequiredCheck = <RxBool>[false.obs, false.obs, false.obs].obs;
   RxList<Spot> spotList = <Spot>[].obs;
+  int selectedIndex = 0;
+  String selectedTime = '오전 (07:00~12:00)';
 
   Rx<Spot> selectedSpot = Spot.empty().obs;
-
+  UserDataRepository userDataRepository = UserDataRepository();
   SpotDataRepository spotDataRepository = SpotDataRepository();
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    print(Get.arguments);
     init();
   }
   @override
@@ -28,12 +32,29 @@ class OtController extends GetxController{
   }
 
   void init() async {
-   spotList = await spotDataRepository.getSpot();
+    getSpot(Get.arguments);
+
+    update();
   }
 
-  Widget radioButton(int index){
+  void getSpot(String docId) async {
+    final spots = await spotDataRepository.getSpot(docId: docId.isEmpty ? null : docId);
+    spotList.assignAll(spots);
+    print(spotList.length);
+    selectedSpot.value = spotList[0];
+
+    // if(Get.arguments != ''){
+    //   for(int i = 0; i < spotList.length; i++){
+    //     if(spotList[i].documentId != Get.arguments){
+    //       spotList.removeAt(i);
+    //     }
+    //   }
+    // }
+  }
+
+  Widget radioButton(int index, double widthScale, double heightScale) {
     return Transform.translate(
-      offset: Offset(-4, 0), // ← x축으로 -10만큼 이동
+      offset: Offset(-4 * widthScale, 0), // ← x축으로 -10만큼 이동
       child: Transform.scale(
         scale: 1.25,
         child: Radio(
@@ -49,11 +70,18 @@ class OtController extends GetxController{
             groupValue: selectedValue.value,
             onChanged: (value){
               selectedValue.value = value!;
-            }),
+              selectedIndex = index;
+              selectedTime = index == 0
+                  ? '오전 (07:00~12:00)'
+                  : index == 1
+                  ? '낮 (12:00~18:00)'
+                  : '오후 (18:00~23:00)';
+            }
+            ),
       ),
     );
   }
-  Widget requiredCheck(int index, String text){
+  Widget requiredCheck(int index, String text, double fontSize){
     return Obx(() => GestureDetector(
       onTap: (){
         isRequiredCheck[index].value = !isRequiredCheck[index].value;
@@ -68,7 +96,7 @@ class OtController extends GetxController{
               child: Text(
                 text,
                 style: TextStyle(
-                    fontSize: 16,
+                    fontSize: fontSize,
                     color: isRequiredCheck[index].value
                         ? mainColor
                         : Colors.black,

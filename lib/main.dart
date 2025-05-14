@@ -53,13 +53,19 @@ bool a = await signInAnonymously();
   //       autoLogin = Routes.MAIN_HOME;
   //     }
   //   }
-  // }
+  // }ㄴ
 
 
   runApp(
     GetMaterialApp(
       title: "Application",
-      initialRoute: Routes.PAYMENT_SUCCESS,//autoLogin, //TODO: autoLogin으로 바꾸셔야합니다
+      initialRoute: autoLogin,
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaler: TextScaler.noScaling), // 고정
+          child: child!,
+        );
+      },
       getPages: AppPages.routes,
       theme: ThemeData(
         useMaterial3: false,

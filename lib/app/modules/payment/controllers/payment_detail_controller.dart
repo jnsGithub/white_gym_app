@@ -65,9 +65,9 @@ class PaymentDetailController extends GetxController {
       totalPrice.value = spotItem.price + (lockerCheck.value?spotItem.locker:0) + (sportswearCheck.value?spotItem.sportswear:0);
     }
     else {
-      lockerPrice.value *= spotItem.monthly;
-      sportswearPrice.value *= spotItem.monthly;
-      totalPrice.value = spotItem.price + (lockerCheck.value?lockerPrice.value:0) + (sportswearCheck.value?sportswearPrice.value:0);
+      lockerPrice.value *= spotItem.daily == 1 ? 0 : (spotItem.daily/30).toInt();
+      sportswearPrice.value *= spotItem.daily == 1 ? 0 : (spotItem.daily/30).toInt();
+      totalPrice.value = spotItem.price + (lockerCheck.value ? lockerPrice.value : 0) + (sportswearCheck.value ? sportswearPrice.value : 0);
     }
     // totalPrice.value = spotItem.price + (lockerCheck.value?spotItem.locker:0) + (sportswearCheck.value?spotItem.sportswear:0);
   }
@@ -205,8 +205,6 @@ class PaymentDetailController extends GetxController {
     print('bootpay');
     if(Platform.isAndroid){
       var a = await _getDeviceInfo();
-      print('현재 sdk 버전 : ${a['sdk_version']}');
-      print(a['sdk_version'] < 28);
       BootpayConfig.DISPLAY_WITH_HYBRID_COMPOSITION = a['sdk_version'] < 28;
     }
 
@@ -269,7 +267,7 @@ class PaymentDetailController extends GetxController {
     }
 
     Payload payload = getPayloadAppCard();
-    var total = spotItem.price+ (lockerCheck.value?lockerPrice.value:0) + (sportswearCheck.value?sportswearPrice.value:0);
+    var total = spotItem.price + (lockerCheck.value ? lockerPrice.value : 0) + (sportswearCheck.value ? sportswearPrice.value : 0);
     var data2 = null;
 
 
@@ -300,13 +298,13 @@ class PaymentDetailController extends GetxController {
               spotDocumentId: spot.documentId,
               paymentBranch: spot.name,
               subscribe: false,
-              sportswear:sportswearCheck.value?spotItem.sportswear*spotItem.monthly:0,
-              locker:lockerCheck.value?spotItem.locker*spotItem.monthly:0,
+              sportswear:sportswearCheck.value ? spotItem.sportswear * (30/spotItem.daily).toInt():0,
+              locker:lockerCheck.value ? spotItem.locker * (30/spotItem.daily).toInt():0,
               ticketPrice: total,
               crateDate: DateTime.now(),
               receipt: receipt,
             );
-            DateTime endDate =now.add(Duration(days: (spotItem.monthly*30)-1));
+            DateTime endDate =now.add(Duration(days: (spotItem.daily)-1));
             Ticket ticket = Ticket(
               documentId: '',
               userDocumentId: myInfo.documentId,
@@ -330,7 +328,7 @@ class PaymentDetailController extends GetxController {
             if (check) {
               Get.back();
               Get.snackbar('알림', '결제가 완료되었습니다.',backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
-              Get.offAllNamed(Routes.MAIN_HOME);
+              Get.offAllNamed(Routes.PAYMENT_SUCCESS, arguments: spotItem.passTicket ? '' : spotItem.spotDocumentId);
             } else {
               Get.back();
               Get.snackbar('알림', '결제가 실패되었습니다.',backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
@@ -424,7 +422,7 @@ class PaymentDetailController extends GetxController {
           crateDate: DateTime.now(),
           receipt: receipt,
         );
-        DateTime endDate = now.add(Duration(days: (30)-1));
+        DateTime endDate = now.add(Duration(days: spotItem.isSubscribe ? (30)-1 : (spotItem.daily)-1));
         Ticket ticket = Ticket(
           documentId: '',
           userDocumentId: myInfo.documentId,
@@ -448,7 +446,7 @@ class PaymentDetailController extends GetxController {
         if (check) {
           Get.back();
           Get.snackbar('알림', '결제가 완료되었습니다.',backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
-          Get.offAllNamed(Routes.MAIN_HOME);
+          Get.offAllNamed(Routes.PAYMENT_SUCCESS, arguments: spotItem.passTicket ? '' : spotItem.spotDocumentId);
         } else {
           print('sadasd');
           Get.back();

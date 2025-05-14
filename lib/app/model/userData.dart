@@ -14,6 +14,7 @@ class UserData {
   final bool pushAlarm;
   final bool smsAlarm;
   Ticket ticket;
+  int otCount;
   final Timestamp createDate;
 
 
@@ -29,6 +30,7 @@ class UserData {
     required this.gender,
     required this.pushAlarm,
     required this.smsAlarm,
+    required this.otCount,
     required this.createDate,
   });
 
@@ -50,6 +52,7 @@ class UserData {
       pushAlarm: data['pushAlarm'] ?? false,
       smsAlarm: data['smsAlarm'] ?? false,
       ticket: Ticket.fromJson(data['ticket']),
+      otCount: data['otCount'] ?? 2,
       createDate: data['createDate'] ?? Timestamp.now(),
     );
   }
@@ -68,6 +71,7 @@ class UserData {
       'gender': gender,
       'pushAlarm': pushAlarm,
       'smsAlarm': smsAlarm,
+      'otCount': otCount,
       'createDate': createDate,
     };
   }
@@ -85,6 +89,7 @@ class UserData {
     int? gender,
     bool? pushAlarm,
     bool? smsAlarm,
+    int? otCount,
     Timestamp? createDate,
   }) {
     return UserData(
@@ -99,12 +104,13 @@ class UserData {
       gender: gender ?? this.gender,
       pushAlarm: pushAlarm ?? this.pushAlarm,
       smsAlarm: smsAlarm ?? this.smsAlarm,
+      otCount: otCount ?? this.otCount,
       createDate: createDate ?? this.createDate,
     );
   }
 
   @override
   String toString() {
-    return 'UserInfo(documentId: $documentId, name: $name, phone: $phone, birth: $birth, ticket: $ticket,paymentCard:$paymentCard, gender: $gender, pushAlarm: $pushAlarm, smsAlarm: $smsAlarm, createDate: $createDate)';
+    return 'UserInfo(documentId: $documentId, name: $name, phone: $phone, birth: $birth, ticket: $ticket,paymentCard:$paymentCard, gender: $gender, pushAlarm: $pushAlarm, smsAlarm: $smsAlarm, otCount: $otCount, createDate: $createDate)';
   }
 }
