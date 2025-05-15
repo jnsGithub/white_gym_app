@@ -18,8 +18,8 @@ import '../routes/app_pages.dart';
 
 class SpotDataRepository {
   FirebaseStorage storage = FirebaseStorage.instance;
-  final spotCollection = FirebaseFirestore.instance.collection('spot_test'); // TODO: 실사용 모드로 바꿔야함
-  final spotItemCollection = FirebaseFirestore.instance.collection('spotItem_test');
+  final spotCollection = FirebaseFirestore.instance.collection('spot'); // TODO: 실사용 모드로 바꿔야함
+  final spotItemCollection = FirebaseFirestore.instance.collection('spotItem');
 
   getSpot({String? docId}) async {
     try{

@@ -167,69 +167,70 @@ class PaymentDetailView extends GetView<PaymentDetailController> {
                       children: [
                         GestureDetector(
                           onTap: (){
-                            controller.isAppCard.value = false;
-                          },
-                          child: Obx(() => Row(
-                              spacing: 6,
-                              children: [
-                                Transform.scale(
-                                  scale: 1.25,
-                                  child: Radio(
-                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, // ← 터치영역 축소
-                                    visualDensity: VisualDensity(horizontal: -4, vertical: -4),
-                                    value: false,
-                                    splashRadius: -2,
-                                    fillColor: WidgetStateProperty.resolveWith<Color>((states) {
-                                      if (controller.isAppCard.value) {
-                                        return gray100; // ✅ 비활성화 시 색상
-                                      }
-                                      return mainColor; // ✅ 기본 색상
-                                    }),
-                                    groupValue: controller.isAppCard.value,
-                                    onChanged: (_){
-                                      controller.isAppCard.value = false;
-                                    },
-                                  ),
-                                ),
-                                Text('일반 카드결제',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500,color: text22),),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 25,),
-                        GestureDetector(
-                          onTap: (){
                             controller.isAppCard.value = true;
                           },
                           child: Obx(() => Row(
-                              spacing: 6,
-                              children: [
-                                Transform.scale(
-                                  scale: 1.25,
-                                  child: Radio(
-                                    value: true,
-                                    splashRadius: -2,
-                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, // ← 터치영역 축소
-                                    visualDensity: VisualDensity(horizontal: -4, vertical: -4),
-                                    fillColor: WidgetStateProperty.resolveWith<Color>((states) {
-                                      if (!controller.isAppCard.value) {
-                                        return gray100; // ✅ 비활성화 시 색상
-                                      }
-                                      return mainColor; // ✅ 기본 색상
-                                    }),
+                            spacing: 6,
+                            children: [
+                              Transform.scale(
+                                scale: 1.25,
+                                child: Radio(
+                                  value: true,
+                                  splashRadius: -2,
+                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, // ← 터치영역 축소
+                                  visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+                                  fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+                                    if (!controller.isAppCard.value) {
+                                      return gray100; // ✅ 비활성화 시 색상
+                                    }
+                                    return mainColor; // ✅ 기본 색상
+                                  }),
 
-                                    // fillColor: WidgetStateProperty.all(gray100),
-                                    groupValue: controller.isAppCard.value,
-                                    onChanged: (_){
-                                      controller.isAppCard.value = true;
-                                    },
-                                  ),
+                                  // fillColor: WidgetStateProperty.all(gray100),
+                                  groupValue: controller.isAppCard.value,
+                                  onChanged: (_){
+                                    controller.isAppCard.value = true;
+                                  },
                                 ),
-                                Text('앱 카드 간편결제',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500,color: text22),),
-                              ],
-                            ),
+                              ),
+                              Text('앱 카드 간편결제',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500,color: text22),),
+                            ],
                           ),
-                        )
+                          ),
+                        ),
+
+                        SizedBox(height: 25,),
+                        GestureDetector(
+                          onTap: (){
+                            controller.isAppCard.value = false;
+                          },
+                          child: Obx(() => Row(
+                            spacing: 6,
+                            children: [
+                              Transform.scale(
+                                scale: 1.25,
+                                child: Radio(
+                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, // ← 터치영역 축소
+                                  visualDensity: VisualDensity(horizontal: -4, vertical: -4),
+                                  value: false,
+                                  splashRadius: -2,
+                                  fillColor: WidgetStateProperty.resolveWith<Color>((states) {
+                                    if (controller.isAppCard.value) {
+                                      return gray100; // ✅ 비활성화 시 색상
+                                    }
+                                    return mainColor; // ✅ 기본 색상
+                                  }),
+                                  groupValue: controller.isAppCard.value,
+                                  onChanged: (_){
+                                    controller.isAppCard.value = false;
+                                  },
+                                ),
+                              ),
+                              Text('일반 카드결제',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500,color: text22),),
+                            ],
+                          ),
+                          ),
+                        ),
                       ],
                     ) : SizedBox(),
                   SizedBox(height: controller.spotItem.isSubscribe ? 0 : 24,),

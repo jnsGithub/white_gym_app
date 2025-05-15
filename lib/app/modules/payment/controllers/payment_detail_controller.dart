@@ -36,7 +36,7 @@ class PaymentDetailController extends GetxController {
   RxBool sportswearCheck = false.obs;
   RxBool loading = false.obs;
   RxBool isBottom = false.obs;
-  RxBool isAppCard = false.obs;
+  RxBool isAppCard = true.obs;
   RxList<BillingInfo> billingInfo = <BillingInfo>[].obs;
   CarouselSliderController carouselController = CarouselSliderController();
   PaymentsRepository payments = PaymentsRepository();
