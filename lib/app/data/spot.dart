@@ -57,7 +57,16 @@ class SpotDataRepository {
         data['documentId'] = doc.id;
         print(1);
         if(data['daily'] == null){
-          data['daily'] = data['monthly'] * 30;
+          if(data['monthly'] == 12){
+            data['daily'] = 365;
+          }
+          else if(data['monthly'] == 0){
+            data['daily'] = 0;
+          }
+          else{
+            data['daily'] = data['monthly'] * 30;
+          }
+          // data['daily'] = data['monthly'] * 30;
         }
         else{
           if(data['daily'] == 1){
