@@ -7,6 +7,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:white_gym/app/data/userData.dart';
 
+import 'app/modules/block/views/block_view.dart';
 import 'app/routes/app_pages.dart';
 import 'firebase_options.dart';
 import 'global.dart';
@@ -58,6 +59,7 @@ bool a = await signInAnonymously();
 
   runApp(
     GetMaterialApp(
+      // home: BlockView(),
       title: "Application",
       initialRoute: autoLogin,
       builder: (context, child) {
@@ -81,7 +83,7 @@ bool a = await signInAnonymously();
                   fontSize: 18,
                   fontWeight: FontWeight.w400
               ), elevation:0
-          )
+          ),
       ),
     ),
   );

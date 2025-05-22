@@ -238,8 +238,9 @@ class PauseTicketView extends GetView<PauseTicketController> {
                             }
                           }
                         },
-                          child: controller.subscribe.value?MainBox(text:'이용권 구독 해지', color:controller.ticket.status?mainColor:gray500, textColor: Colors.white):
-                          MainBox(text: myInfo.ticket.status ? '이용권 일시 정지':'이용권 일시 정지 해제', color:mainColor, textColor: Colors.white)
+                          child: controller.subscribe.value
+                              ? SizedBox()//MainBox(text:'이용권 구독 해지', color:controller.ticket.status?mainColor:gray500, textColor: Colors.white)
+                              : MainBox(text: myInfo.ticket.status ? '이용권 일시 정지':'이용권 일시 정지 해제', color:mainColor, textColor: Colors.white)
                       ),
                     ),
                   )

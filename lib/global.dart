@@ -32,6 +32,11 @@ const gray400 = Color(0xff8E8E93);
 const gray300 = Color(0xffAEAEB2);
 const gray100 = Color(0xffE5E5EA);
 const gray200 = Color(0xffD4D4D4);
+const gray50 = Color(0xffF5F6F8);
+
+const red = Color(0xffFF3C66);
+
+const blue50 = Color(0xffE4ECFF);
 
 final box = GetStorage();
 

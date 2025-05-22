@@ -21,6 +21,9 @@ abstract class Routes {
   static const PAYMENT_SUCCESS = _Paths.PAYMENT_SUCCESS;
   static const OT = _Paths.OT;
   static const OT_SUCCESS = _Paths.OT_SUCCESS;
+  static const NOTIFICATION = _Paths.NOTIFICATION;
+  static const SUGGESTION = _Paths.SUGGESTION;
+  static const PT = _Paths.PT;
 }
 
 abstract class _Paths {
@@ -43,4 +46,7 @@ abstract class _Paths {
   static const PAYMENT_SUCCESS = '/payment-success';
   static const OT = '/ot';
   static const OT_SUCCESS = '${OT}/success';
+  static const NOTIFICATION = '/notification';
+  static const SUGGESTION = '/suggestion';
+  static const PT = '/pt';
 }

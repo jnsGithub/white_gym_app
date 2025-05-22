@@ -1,7 +1,4 @@
 import 'package:get/get.dart';
-import 'package:white_gym/app/modules/myPage/views/card_list_view.dart';
-import 'package:white_gym/app/modules/myPage/views/payment_list_view.dart';
-import 'package:white_gym/app/modules/ot/views/ot_success_view.dart';
 
 import '../modules/gymList/bindings/gym_list_binding.dart';
 import '../modules/gymList/views/gym_detail.dart';
@@ -14,18 +11,27 @@ import '../modules/mainHome/bindings/main_home_binding.dart';
 import '../modules/mainHome/views/main_home_view.dart';
 import '../modules/mainHome/views/pause_ticket_view.dart';
 import '../modules/myPage/bindings/my_page_binding.dart';
+import '../modules/myPage/views/card_list_view.dart';
 import '../modules/myPage/views/edit_hp_view.dart';
 import '../modules/myPage/views/my_page_view.dart';
+import '../modules/myPage/views/payment_list_view.dart';
 import '../modules/myPage/views/setting_view.dart';
+import '../modules/notification/bindings/notification_binding.dart';
+import '../modules/notification/views/notification_view.dart';
 import '../modules/ot/bindings/ot_binding.dart';
+import '../modules/ot/views/ot_success_view.dart';
 import '../modules/ot/views/ot_view.dart';
 import '../modules/payment/bindings/payment_binding.dart';
 import '../modules/payment/views/payment_detail_view.dart';
 import '../modules/payment/views/payment_success_view.dart';
 import '../modules/payment/views/payment_view.dart';
+import '../modules/pt/bindings/pt_binding.dart';
+import '../modules/pt/views/pt_view.dart';
 import '../modules/signUp/bindings/sign_up_binding.dart';
 import '../modules/signUp/views/sign_up_completed.dart';
 import '../modules/signUp/views/sign_up_view.dart';
+import '../modules/suggestion/bindings/suggestion_binding.dart';
+import '../modules/suggestion/views/suggestion_view.dart';
 
 part 'app_routes.dart';
 
@@ -123,6 +129,21 @@ class AppPages {
       name: _Paths.OT_SUCCESS,
       page: () => const OtSuccessView(),
       binding: OtBinding(),
+    ),
+    GetPage(
+      name: _Paths.NOTIFICATION,
+      page: () => const NotificationView(),
+      binding: NotificationBinding(),
+    ),
+    GetPage(
+      name: _Paths.SUGGESTION,
+      page: () => const SuggestionView(),
+      binding: SuggestionBinding(),
+    ),
+    GetPage(
+      name: _Paths.PT,
+      page: () => const PtView(),
+      binding: PtBinding(),
     ),
   ];
 }
