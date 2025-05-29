@@ -69,8 +69,16 @@ class PtView extends GetView<PtController> {
                                       topLeft: Radius.circular(12 * scaleWidth),
                                       topRight: Radius.circular(12 * scaleWidth),
                                     ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: gray50,
+                                        blurRadius: 4,
+                                        offset: const Offset(0, 2),
+                                      ),
+                                    ],
                                   ),
                                   child: Row(
+                                    spacing: 16 * scaleWidth,
                                     children: [
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,22 +89,100 @@ class PtView extends GetView<PtController> {
                                             height: 60 * scaleWidth,
                                             decoration: BoxDecoration(
                                               color: mainColor,
+                                              image: const DecorationImage(
+                                                image: AssetImage('image/exgam_profile.png'),
+                                                fit: BoxFit.cover,
+                                              ),
                                               borderRadius: BorderRadius.circular(8),
                                             ),
                                           ),
-                                          Text('세션 기간')
+                                          Text(
+                                              '세션 기간',
+                                            style: TextStyle(
+                                              fontSize: 14 * scaleWidth,
+                                              color: gray600,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          )
                                         ],
                                       ),
-                                      Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text('세션 기간'),
-                                          SizedBox(height: 10 * scaleHeight,),
-                                          Text('세션 기간'),
-                                          SizedBox(height: 20 * scaleHeight,),
-                                          Text('세션 기간')
-                                        ],
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          spacing: 21 * scaleHeight,
+                                          children: [
+                                            Container(
+                                              height: 60 * scaleWidth,
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      Text.rich(
+                                                        TextSpan(
+                                                          children: [
+                                                            TextSpan(
+                                                              text: '김피티 ',
+                                                              style: TextStyle(
+                                                                fontSize: 16 * scaleWidth,
+                                                                color: gray900,
+                                                                fontWeight: FontWeight.w600,
+                                                              ),
+                                                            ),
+                                                            TextSpan(
+                                                              text: '트레이너',
+                                                              style: TextStyle(
+                                                                fontSize: 12 * scaleWidth,
+                                                                color: gray900,
+                                                                fontWeight: FontWeight.w500,
+                                                              ),
+                                                            ),
+                                                          ]
+                                                        )
+                                                      ),
+                                                      Text(
+                                                        '2025. 12. 23', style: TextStyle(
+                                                          fontSize: 14 * scaleWidth,
+                                                          color: gray500,
+                                                          fontWeight: FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Container(
+                                                    height: 28 * scaleHeight,
+                                                    padding: EdgeInsets.symmetric(horizontal: 12 * scaleWidth, vertical: 4 * scaleHeight),
+                                                    decoration: BoxDecoration(
+                                                      color: blue50,
+                                                      borderRadius: BorderRadius.circular(100),
+                                                    ),
+                                                    child: Text(
+                                                        'PT 중급반 맞춤형 프로그램',
+                                                      style: TextStyle(
+                                                        fontSize: 14 * scaleWidth,
+                                                        color: mainColor,
+                                                        fontWeight: FontWeight.w500,
+                                                      ),
+                                                      textAlign: TextAlign.center,
+                                                      overflow: TextOverflow.ellipsis,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            Text(
+                                                '2024. 01. 01 - 2024. 06. 30',
+                                              style: TextStyle(
+                                                fontSize: 16 * scaleWidth,
+                                                color: gray900,
+                                                fontWeight: FontWeight.w500,
+                                                letterSpacing: -0.5,
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -105,21 +191,38 @@ class PtView extends GetView<PtController> {
                                   firstChild: Container(),
                                   secondChild: Container(
                                       width: size.width,
-                                      padding: EdgeInsets.all(20 * scaleWidth),
-                                      color: Colors.white,
+                                      padding: EdgeInsets.symmetric(horizontal: 20 * scaleWidth),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: gray50,
+                                            blurRadius: 4,
+                                            offset: const Offset(0, 2),
+                                          ),
+                                        ],
+                                      ),
                                       child: ListView.builder(
                                           shrinkWrap:   true,
                                           physics: const NeverScrollableScrollPhysics(),
-                                          itemCount: 5,
+                                          itemCount: 8,
                                           itemBuilder: (_, index){
-                                            return Padding(
-                                              padding: const EdgeInsets.symmetric(vertical: 12),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Text('$index 회차'),
-                                                  Icon(Icons.arrow_forward_ios, color: gray300, size: 16 * scaleWidth,),
-                                                ],
+                                            bool isCompleted = index == 7 ? false : true;
+                                            return GestureDetector(
+                                              onTap: () {
+                                                controller.showBottomSheet(scaleHeight, scaleWidth, '${index + 1} 회차');
+                                              },
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(vertical: 12 * scaleHeight),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Text('${index + 1} 회차', style: TextStyle(fontSize: 16 * scaleHeight, color: isCompleted ? gray900 : gray300, fontWeight: FontWeight.w500),),
+                                                    isCompleted
+                                                        ? Icon(Icons.arrow_forward_ios, color: gray500, size: 16 * scaleWidth,)
+                                                        : Text('미완료', style: TextStyle(fontSize: 16 * scaleWidth, color: gray300, fontWeight: FontWeight.w500),),
+                                                  ],
+                                                ),
                                               ),
                                             );
                                           }
