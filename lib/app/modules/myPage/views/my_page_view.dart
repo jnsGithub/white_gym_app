@@ -71,70 +71,70 @@ class MyPageView extends GetView<MyPageController> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 12,),
-                    Container(
-                      width: size.width,
-                      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Colors.white,
-                      ),
-                      child: Column(
-                        children: [
-                          GestureDetector(
-                            onTap: (){
-                              // TODO: 나의 이용권
-                            },
-                            child: Container(
-                              width: size.width,
-                              height: 46,
-                              decoration: BoxDecoration(
-                                  color: Colors.white
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Image.asset('image/ticket.png',width: 24,),
-                                      SizedBox(width: 8,),
-                                      Text('나의 이용권',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: text22),),
-                                    ],
-                                  ),
-                                  Icon(Icons.arrow_forward_ios,color: text7D,size: 20,)
-                                ],
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: (){
-                              // TODO: 나의 PT
-                              Get.toNamed(Routes.PT);
-                            },
-                            child: Container(
-                              width: size.width,
-                              height: 46,
-                              decoration: BoxDecoration(
-                                  color: Colors.white
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Image.asset('image/dumbel.png',width: 24,),
-                                      SizedBox(width: 8,),
-                                      Text('나의 PT',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: text22),),
-                                    ],
-                                  ),
-                                  Icon(Icons.arrow_forward_ios,color: text7D,size: 20,)
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // SizedBox(height: 12,),
+                    // Container(
+                    //   width: size.width,
+                    //   padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(12),
+                    //     color: Colors.white,
+                    //   ),
+                    //   child: Column(
+                    //     children: [
+                    //       GestureDetector(
+                    //         onTap: (){
+                    //           // TODO: 나의 이용권
+                    //         },
+                    //         child: Container(
+                    //           width: size.width,
+                    //           height: 46,
+                    //           decoration: BoxDecoration(
+                    //               color: Colors.white
+                    //           ),
+                    //           child: Row(
+                    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //             children: [
+                    //               Row(
+                    //                 children: [
+                    //                   Image.asset('image/ticket.png',width: 24,),
+                    //                   SizedBox(width: 8,),
+                    //                   Text('나의 이용권',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: text22),),
+                    //                 ],
+                    //               ),
+                    //               Icon(Icons.arrow_forward_ios,color: text7D,size: 20,)
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ), // 나의 이용권
+                    //       GestureDetector(
+                    //         onTap: (){
+                    //           // TODO: 나의 PT
+                    //           Get.toNamed(Routes.PT);
+                    //         },
+                    //         child: Container(
+                    //           width: size.width,
+                    //           height: 46,
+                    //           decoration: BoxDecoration(
+                    //               color: Colors.white
+                    //           ),
+                    //           child: Row(
+                    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //             children: [
+                    //               Row(
+                    //                 children: [
+                    //                   Image.asset('image/dumbel.png',width: 24,),
+                    //                   SizedBox(width: 8,),
+                    //                   Text('나의 PT',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: text22),),
+                    //                 ],
+                    //               ),
+                    //               Icon(Icons.arrow_forward_ios,color: text7D,size: 20,)
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ), // 나의 PT
+                    //     ],
+                    //   ),
+                    // ),
                     SizedBox(height: 12,),
                     Container(
                       width: size.width,
@@ -169,7 +169,7 @@ class MyPageView extends GetView<MyPageController> {
                                 ],
                               ),
                             ),
-                          ),
+                          ), // 결제 카드 관리
                           GestureDetector(
                             onTap: (){
                               Get.toNamed('/payment-list');
@@ -194,7 +194,7 @@ class MyPageView extends GetView<MyPageController> {
                                 ],
                               ),
                             ),
-                          ),
+                          ), // 결제 내역
                           GestureDetector(
                             onTap: (){
                               Get.toNamed('/setting');
@@ -219,33 +219,33 @@ class MyPageView extends GetView<MyPageController> {
                                 ],
                               ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: (){
-                              // TODO: 건의사항
-                              Get.toNamed(Routes.SUGGESTION);
-                            },
-                            child: Container(
-                              width: size.width,
-                              height: 46,
-                              decoration: BoxDecoration(
-                                  color: Colors.white
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Image.asset('image/suggestion.png',width: 24,),
-                                      SizedBox(width: 8,),
-                                      Text('건의사항',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: text22),),
-                                    ],
-                                  ),
-                                  Icon(Icons.arrow_forward_ios,color: text7D,size: 20,)
-                                ],
-                              ),
-                            ),
-                          )
+                          ), // 설정
+                          // GestureDetector(
+                          //   onTap: (){
+                          //     // TODO: 건의사항
+                          //     Get.toNamed(Routes.SUGGESTION);
+                          //   },
+                          //   child: Container(
+                          //     width: size.width,
+                          //     height: 46,
+                          //     decoration: BoxDecoration(
+                          //         color: Colors.white
+                          //     ),
+                          //     child: Row(
+                          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //       children: [
+                          //         Row(
+                          //           children: [
+                          //             Image.asset('image/suggestion.png',width: 24,),
+                          //             SizedBox(width: 8,),
+                          //             Text('건의사항',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: text22),),
+                          //           ],
+                          //         ),
+                          //         Icon(Icons.arrow_forward_ios,color: text7D,size: 20,)
+                          //       ],
+                          //     ),
+                          //   ),
+                          // )  // 건의사항
                         ],
                       ),
                     ),
