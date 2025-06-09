@@ -8,6 +8,7 @@ class PaymentItem {
   final String spotDocumentId;
   final String paymentBranch;
   final bool subscribe;
+  final bool newPayment;
   final int sportswear;
   final int locker;
   final int ticketPrice;
@@ -22,6 +23,7 @@ class PaymentItem {
     required this.spotDocumentId,
     required this.paymentBranch,
     required this.subscribe,
+    required this.newPayment,
     required this.sportswear,
     required this.locker,
     required this.ticketPrice,
@@ -38,6 +40,7 @@ class PaymentItem {
       spotDocumentId: json['spotDocumentId'] as String,
       paymentBranch: json['paymentBranch'] as String,
       subscribe: json['subscribe'] as bool,
+      newPayment: json['newPayment'] as bool? ?? false,
       sportswear: json['sportswear'] as int,
       locker: json['locker'] as int,
       ticketPrice: json['ticketPrice'] as int,
@@ -54,6 +57,7 @@ class PaymentItem {
       'userName': userName,
       'spotDocumentId': spotDocumentId,
       'paymentBranch': paymentBranch,
+      'newPayment': newPayment,
       'subscribe': subscribe,
       'sportswear': sportswear,
       'locker': locker,

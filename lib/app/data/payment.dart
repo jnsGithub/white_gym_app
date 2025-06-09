@@ -17,6 +17,62 @@ class PaymentsRepository {
   final billingInfoCollection = FirebaseFirestore.instance.collection('billingInfo');
   final paymentCollection = FirebaseFirestore.instance.collection('payment');
   UserDataRepository userDataRepository = UserDataRepository();
+  gg() async {
+    RxList<PaymentItem> paymentItem = <PaymentItem>[].obs;
+    RxList<PaymentItem> paymentItem1 = <PaymentItem>[].obs;
+    QuerySnapshot querySnapshot =  await paymentCollection.where('receipt.method_origin_symbol', isEqualTo: 'card_rebill_rest').get();
+
+    for (QueryDocumentSnapshot document in querySnapshot.docs) {
+
+      Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+      if(data['receipt']['order_name'].contains('개월')){
+        if(data['locker']!= 0 || data['sportswear'] != 0 ){
+          paymentItem.add(PaymentItem.fromJson(data));
+        }
+      }
+       else if(data['receipt']['order_name'].toLowerCase().contains('pass')){
+        if(data['locker']!= 0 || data['sportswear'] != 0 ){
+          paymentItem1.add(PaymentItem.fromJson(data));
+        }
+      }
+
+
+
+    }
+    int index = 1;
+    for(PaymentItem item in paymentItem){
+
+      print('부트페이 ${item.documentId}');
+      print('결제 지점 ${item.paymentBranch}');
+      print('상품 이름 ${item.receipt.orderName}');
+      print('유저 이름 ${item.userName}');
+      print('유저 핸드폰 ${item.userPhone}');
+      print('결제 금액 ${item.receipt.price}');
+      print('락커 ${item.locker}');
+      print('회원복 ${item.sportswear}');
+      print('결제 날짜 ${item.crateDate}');
+      print('$index-----------------------------------');
+      index++;
+    }
+    for(PaymentItem item in paymentItem1){
+
+      print('부트페이 ${item.documentId}');
+      print('결제 지점 ${item.paymentBranch}');
+      print('상품 이름 ${item.receipt.orderName}');
+      print('유저 이름 ${item.userName}');
+      print('유저 핸드폰 ${item.userPhone}');
+      print('결제 금액 ${item.receipt.price}');
+      print('락커 ${item.locker}');
+      print('회원복 ${item.sportswear}');
+      print('결제 날짜 ${item.crateDate}');
+      print('$index-----------------------------------');
+      index++;
+    }
+    print(querySnapshot.docs.length);
+    print(paymentItem.length);
+    print(paymentItem1.length);
+    return paymentItem;
+  }
   Future setBillingKey(String receiptId) async {
     try {
       Map billing = await getBillingKey(receiptId);

@@ -298,11 +298,11 @@ class PaymentDetailController extends GetxController {
               spotDocumentId: spot.documentId,
               paymentBranch: spot.name,
               subscribe: false,
-              sportswear:sportswearCheck.value ? spotItem.sportswear * (30/spotItem.daily).toInt():0,
-              locker:lockerCheck.value ? spotItem.locker * (30/spotItem.daily).toInt():0,
+              sportswear:sportswearCheck.value ? sportswearPrice.value:0,
+              locker:lockerCheck.value ? lockerPrice.value:0,
               ticketPrice: total,
               crateDate: DateTime.now(),
-              receipt: receipt,
+              receipt: receipt, newPayment: myInfo.ticket.spotDocumentId == ''
             );
             DateTime endDate =now.add(Duration(days: (spotItem.daily)-1));
             Ticket ticket = Ticket(
@@ -368,7 +368,7 @@ class PaymentDetailController extends GetxController {
       user.username = myInfo.name;
       user.id = myInfo.documentId;
       user.phone = myInfo.phone;
-      int totalPrice = spotItem.price+ (lockerCheck.value?spotItem.locker:0) + (sportswearCheck.value?spotItem.sportswear:0);
+      int totalPrice = spotItem.price+ (lockerCheck.value?lockerPrice.value:0) + (sportswearCheck.value?sportswearPrice.value:0);
       String bootPayUrl = 'https://api.bootpay.co.kr/v2/subscribe/payment';
       String tokenUrl = 'https://api.bootpay.co.kr/v2/request/token';
       Map<String, dynamic> paymentsMap = {
@@ -415,12 +415,13 @@ class PaymentDetailController extends GetxController {
           userPhone: myInfo.phone,
           spotDocumentId: spot.documentId,
           paymentBranch: spot.name,
-          subscribe: true,
-          sportswear:sportswearCheck.value ? spotItem.sportswear : 0,
-          locker:lockerCheck.value ? spotItem.locker : 0,
+          subscribe: spotItem.isSubscribe,
+          sportswear:!sportswearCheck.value ?0:spotItem.isSubscribe? spotItem.sportswear :sportswearPrice.value,
+          locker:!lockerCheck.value ?0: spotItem.isSubscribe?spotItem.locker : lockerPrice.value,
           ticketPrice: totalPrice,
           crateDate: DateTime.now(),
           receipt: receipt,
+          newPayment: myInfo.ticket.spotDocumentId == '',
         );
         DateTime endDate = now.add(Duration(days: spotItem.isSubscribe ? (30)-1 : (spotItem.daily)-1));
         Ticket ticket = Ticket(
