@@ -1,16 +1,21 @@
 import 'package:get/get.dart';
 
+import 'package:white_gym/app/modules/gymList/controllers/pt_item_controller.dart';
+import 'package:white_gym/app/modules/gymList/controllers/pt_list_controller.dart';
+
 import '../controllers/gym_detail_controller.dart';
 import '../controllers/gym_list_controller.dart';
 
 class GymListBinding extends Bindings {
   @override
   void dependencies() {
+
     Get.lazyPut<GymListController>(
       () => GymListController(),
     );
   }
 }
+
 class GymDetailBinding extends Bindings {
   @override
   void dependencies() {
@@ -26,3 +31,19 @@ class GymDetailBinding extends Bindings {
   // }
 }
 
+class PtListBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<PtListController>(
+      () => PtListController(),
+    );
+  }
+}
+class PtItemBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<PtItemController>(
+      () => PtItemController(),
+    );
+  }
+}

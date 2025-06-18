@@ -12,6 +12,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:white_gym/app/data/payment.dart';
 import 'package:white_gym/app/model/billingInfo.dart';
 import 'package:http/http.dart' as http;
@@ -37,6 +38,8 @@ class PaymentDetailController extends GetxController {
   RxBool loading = false.obs;
   RxBool isBottom = false.obs;
   RxBool isAppCard = true.obs;
+  RxBool isExtend = false.obs;
+  late DateTime extendDays;
   RxList<BillingInfo> billingInfo = <BillingInfo>[].obs;
   CarouselSliderController carouselController = CarouselSliderController();
   PaymentsRepository payments = PaymentsRepository();
@@ -52,6 +55,7 @@ class PaymentDetailController extends GetxController {
     now = DateTime(nowDate.year, nowDate.month, nowDate.day);
     // if(spotItem.isSubscribe){
     if(spotItem.isSubscribe){
+
       isAppCard.value = true;
     }
     getBillingInfo();
@@ -60,14 +64,18 @@ class PaymentDetailController extends GetxController {
     sportswearCheck.value = Get.arguments['sportswear'];
     lockerPrice.value = spotItem.locker;
     sportswearPrice.value = spotItem.sportswear;
-
+    if(Get.arguments['extendDays'] != null){
+      isExtend.value = true;
+      extendDays = now.add(Duration(days: Get.arguments['extendDays']));
+    }
     if(spotItem.isSubscribe){
       totalPrice.value = spotItem.price + (lockerCheck.value?spotItem.locker:0) + (sportswearCheck.value?spotItem.sportswear:0);
     }
     else {
       lockerPrice.value *= spotItem.daily == 1 ? 0 : (spotItem.daily/30).toInt();
       sportswearPrice.value *= spotItem.daily == 1 ? 0 : (spotItem.daily/30).toInt();
-      totalPrice.value = spotItem.price + (lockerCheck.value ? lockerPrice.value : 0) + (sportswearCheck.value ? sportswearPrice.value : 0);
+      totalPrice.value += spotItem.price + (lockerCheck.value ? lockerPrice.value : 0) + (sportswearCheck.value ? sportswearPrice.value : 0);
+
     }
     // totalPrice.value = spotItem.price + (lockerCheck.value?spotItem.locker:0) + (sportswearCheck.value?spotItem.sportswear:0);
   }
@@ -143,7 +151,6 @@ class PaymentDetailController extends GetxController {
 
   Payload getPayloadAppCard() {
     Payload payload = Payload();
-    var total = spotItem.price+ (lockerCheck.value?lockerPrice.value:0) + (sportswearCheck.value?sportswearPrice.value:0);
     List<Item> itemList = [];
     Item item1 = Item();
     item1.name = spotItem.name; // 주문정보에 담길 상품명
@@ -173,8 +180,8 @@ class PaymentDetailController extends GetxController {
 
 
     payload.pg = 'nicepay';
-    payload.orderName = spotItem.name; //결제할 상품명
-    payload.price = total.toDouble(); //정기결제시 0 혹은 주석
+    payload.orderName = '${spotItem.name}${isExtend.value?' (연장)':''}'; //결제할 상품명
+    payload.price = totalPrice.value.toDouble(); //정기결제시 0 혹은 주석
     String id = DateTime.now().millisecondsSinceEpoch.toString();
     payload.methods = ['card'];
     payload.orderId = id; //주문번호, 개발사에서 고유값으로 지정해야함
@@ -202,7 +209,6 @@ class PaymentDetailController extends GetxController {
   }
 
   void bootpay( String orderName) async {
-    print('bootpay');
     if(Platform.isAndroid){
       var a = await _getDeviceInfo();
       BootpayConfig.DISPLAY_WITH_HYBRID_COMPOSITION = a['sdk_version'] < 28;
@@ -258,16 +264,12 @@ class PaymentDetailController extends GetxController {
   }
 
   bootpayAppCard() async {
-    print('bootpayAppCard');
     if(Platform.isAndroid){
       var a = await _getDeviceInfo();
-      print('현재 sdk 버전 : ${a['sdk_version']}');
-      print(a['sdk_version'] < 28);
       BootpayConfig.DISPLAY_WITH_HYBRID_COMPOSITION = a['sdk_version'] < 28;
     }
 
     Payload payload = getPayloadAppCard();
-    var total = spotItem.price + (lockerCheck.value ? lockerPrice.value : 0) + (sportswearCheck.value ? sportswearPrice.value : 0);
     var data2 = null;
 
 
@@ -298,13 +300,28 @@ class PaymentDetailController extends GetxController {
               spotDocumentId: spot.documentId,
               paymentBranch: spot.name,
               subscribe: false,
-              sportswear:sportswearCheck.value ? spotItem.sportswear * (30/spotItem.daily).toInt():0,
-              locker:lockerCheck.value ? spotItem.locker * (30/spotItem.daily).toInt():0,
-              ticketPrice: total,
+              sportswear:sportswearCheck.value ? sportswearPrice.value:0,
+              locker:lockerCheck.value ? lockerPrice.value:0,
+              ticketPrice: totalPrice.value,
               crateDate: DateTime.now(),
-              receipt: receipt,
+              receipt: receipt, newPayment: myInfo.ticket.spotDocumentId == '',
             );
-            DateTime endDate =now.add(Duration(days: (spotItem.daily)-1));
+            DateTime endDate = now.add(Duration(days: (spotItem.daily)-1));
+            DateTime lockerEndDate = lockerCheck.value? endDate : DateTime(1990, 12, 31);
+            DateTime sportswearEndDate = sportswearCheck.value? endDate : DateTime(1990, 12, 31);
+            if(isExtend.value){
+              if(lockerCheck.value){
+                lockerEndDate = extendDays;
+              } else{
+                lockerEndDate = myInfo.ticket.endDate;
+              }
+              if(sportswearCheck.value){
+                sportswearEndDate = extendDays;
+              } else{
+                sportswearEndDate = myInfo.ticket.endDate;
+              }
+            }
+
             Ticket ticket = Ticket(
               documentId: '',
               userDocumentId: myInfo.documentId,
@@ -317,12 +334,14 @@ class PaymentDetailController extends GetxController {
               sportswear: sportswearCheck.value,
               passTicket: spotItem.passTicket,
               status: true,
-              endDate: endDate,
+              endDate: isExtend.value? extendDays:endDate,
               lockerNum: 0,
               pause: spotItem.pause,
               pauseStartDate: [],
               pauseEndDate: [],
-              spotItem: spotItem,
+              lockerEndDate:  lockerEndDate,
+              sportswearEndDate: sportswearEndDate,
+              spotItem: spotItem, upgrade: false,
             );
             bool check = await payments.createReceipt(payment,ticket,false);
             if (check) {
@@ -368,7 +387,7 @@ class PaymentDetailController extends GetxController {
       user.username = myInfo.name;
       user.id = myInfo.documentId;
       user.phone = myInfo.phone;
-      int totalPrice = spotItem.price+ (lockerCheck.value?spotItem.locker:0) + (sportswearCheck.value?spotItem.sportswear:0);
+
       String bootPayUrl = 'https://api.bootpay.co.kr/v2/subscribe/payment';
       String tokenUrl = 'https://api.bootpay.co.kr/v2/request/token';
       Map<String, dynamic> paymentsMap = {
@@ -377,8 +396,8 @@ class PaymentDetailController extends GetxController {
             .now()
             .millisecondsSinceEpoch
             .toString(),
-        "order_name": spotItem.name,
-        "price": totalPrice,
+        "order_name": '${spotItem.name}${isExtend.value?' (연장)':''}', // 주문정보에 담길 상품명,
+        "price": totalPrice.value,
         "user": {
           "username": myInfo.name,
           "phone": myInfo.phone,
@@ -415,32 +434,49 @@ class PaymentDetailController extends GetxController {
           userPhone: myInfo.phone,
           spotDocumentId: spot.documentId,
           paymentBranch: spot.name,
-          subscribe: true,
-          sportswear:sportswearCheck.value ? spotItem.sportswear : 0,
-          locker:lockerCheck.value ? spotItem.locker : 0,
-          ticketPrice: totalPrice,
-          crateDate: DateTime.now(),
-          receipt: receipt,
-        );
-        DateTime endDate = now.add(Duration(days: spotItem.isSubscribe ? (30)-1 : (spotItem.daily)-1));
-        Ticket ticket = Ticket(
-          documentId: '',
-          userDocumentId: myInfo.documentId,
-          spotDocumentId: spot.documentId,
-          paymentBranch:spot.name,
-          admission: spotItem.admission,
           subscribe: spotItem.isSubscribe,
-          createDate: DateTime(now.year, now.month, now.day),
-          locker: lockerCheck.value,
-          sportswear: sportswearCheck.value,
-          passTicket: spotItem.passTicket,
-          status: true,
-          endDate: endDate,
-          lockerNum: 0,
-          pause: spotItem.pause,
-          pauseStartDate: [],
-          pauseEndDate: [],
-          spotItem: spotItem,
+          sportswear:!sportswearCheck.value ?0:spotItem.isSubscribe? spotItem.sportswear :sportswearPrice.value,
+          locker:!lockerCheck.value ?0: spotItem.isSubscribe?spotItem.locker : lockerPrice.value,
+          ticketPrice: totalPrice.value,
+          crateDate: DateTime.now(),
+          receipt: receipt, newPayment: myInfo.ticket.spotDocumentId == '',
+        );
+        DateTime endDate = isExtend.value?extendDays: now.add(Duration(days: spotItem.isSubscribe ? (30)-1 : (spotItem.daily)-1));
+        DateTime lockerEndDate = lockerCheck.value? endDate : DateTime(1990, 12, 31);
+        DateTime sportswearEndDate = sportswearCheck.value? endDate : DateTime(1990, 12, 31);
+        if(isExtend.value){
+          if(lockerCheck.value){
+            lockerEndDate = extendDays;
+          } else{
+            lockerEndDate = myInfo.ticket.endDate;
+          }
+          if(sportswearCheck.value){
+            sportswearEndDate = extendDays;
+          } else{
+            sportswearEndDate = myInfo.ticket.endDate;
+          }
+        }
+        Ticket ticket = Ticket(
+            documentId: '',
+            userDocumentId: myInfo.documentId,
+            spotDocumentId: spot.documentId,
+            paymentBranch:spot.name,
+            admission: spotItem.admission,
+            subscribe: spotItem.isSubscribe,
+            createDate: DateTime(now.year, now.month, now.day),
+            locker: lockerCheck.value,
+            sportswear: sportswearCheck.value,
+            passTicket: spotItem.passTicket,
+            status: true,
+            endDate: endDate,
+            lockerNum: 0,
+            pause: spotItem.pause,
+            pauseStartDate: [],
+            pauseEndDate: [],
+            lockerEndDate: lockerEndDate,
+            sportswearEndDate:sportswearEndDate,
+            spotItem: spotItem,
+            upgrade: false
         );
         bool check = await payments.createReceipt(payment,ticket,true,billingInfo: billingInfo[sliderIndex.value]);
         if (check) {
@@ -448,7 +484,6 @@ class PaymentDetailController extends GetxController {
           Get.snackbar('알림', '결제가 완료되었습니다.',backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
           Get.offAllNamed(Routes.PAYMENT_SUCCESS, arguments: spotItem.passTicket ? '' : spotItem.spotDocumentId);
         } else {
-          print('sadasd');
           Get.back();
           Get.snackbar('알림', '결제가 실패되었습니다.',backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
         }

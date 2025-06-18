@@ -7,19 +7,19 @@ import '../model/visitHistory.dart';
 
 class VisitRepository {
   FirebaseStorage storage = FirebaseStorage.instance;
-  final visitCollection = FirebaseFirestore.instance.collection('visitHistory');
 
 
-  Future fetchCurrentMonthVisitHistory() async {
+
+  Future fetchCurrentMonthVisitHistory(DateTime now) async {
     // 현재 날짜를 기준으로 이번 달의 시작과 다음 달의 시작 날짜 계산
-    final now = DateTime.now();
+
     final firstDayOfMonth = DateTime(now.year, now.month, 1);
     final firstDayOfNextMonth = DateTime(now.year, now.month + 1, 1);
 
     // Firestore 쿼리 작성
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('visitHistory')
-        .where('userDocumentId', isEqualTo: myInfo.documentId)
+        .where('userDocumentId', isEqualTo:'sh8YJ7PJE2YiqEh3h0Pj')
         .where('createDate', isGreaterThanOrEqualTo: firstDayOfMonth)
         .where('createDate', isLessThan: firstDayOfNextMonth)
         .get();

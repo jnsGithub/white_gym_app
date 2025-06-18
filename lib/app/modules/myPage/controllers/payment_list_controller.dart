@@ -45,6 +45,7 @@ class PaymentListController extends GetxController {
   }
   getReceipt(PaymentItem item){
     Size size = MediaQuery.of(Get.context!).size;
+    bool isPt = item.ptItemDocumentId != '';
     Get.bottomSheet(
         isScrollControlled: true,
         shape: const RoundedRectangleBorder(
@@ -88,24 +89,60 @@ class PaymentListController extends GetxController {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 50,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('개인 락커',style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: text7D),),
-                        Text(formatNumber(item.locker),style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: text22),),
-                      ],
-                    ),
+                  isPt ?
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('담당 트레이너',style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: text7D),),
+                            Text(item.trainerName,style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: text22),),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 50,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('PT 횟수',style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: text7D),),
+                            Text('${item.ptItemAdmission}회',style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: text22),),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                      :Column(
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('개인 락커',style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: text7D),),
+                            Text(formatNumber(item.locker),style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: text22),),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 50,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('회원복',style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: text7D),),
+                            Text(formatNumber(item.sportswear),style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: text22),),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    height: 50,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('회원복',style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: text7D),),
-                        Text(formatNumber(item.sportswear),style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: text22),),
-                      ],
+                  Container(
+                    width: size.width,
+                    height: 1,
+                    decoration: BoxDecoration(
+                      color: Color(0xffE2E8F0),
                     ),
                   ),
                   SizedBox(

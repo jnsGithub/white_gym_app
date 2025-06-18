@@ -50,17 +50,7 @@ class PauseTicketView extends GetView<PauseTicketController> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            controller.subscribe.value ?
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-
-                                Text(controller.ticket.spotItem.name,style:TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: text22)),
-                                SizedBox(height: 4,),
-                                Text('${controller.ticket.paymentBranch}만 이용',style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500,color: text7D),),
-                              ],
-                            )
-                                :Row(
+                            Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -73,15 +63,7 @@ class PauseTicketView extends GetView<PauseTicketController> {
                                     Text(controller.ticket.passTicket? '전지점 이용가능':'${myInfo.ticket.paymentBranch}점만 이용',style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500,color: text7D),),
                                   ],
                                 ),
-                                myInfo.ticket.status || myInfo.ticket.subscribe?Text('${controller.endDate.value}일',style: TextStyle(fontSize: 28,fontWeight: FontWeight.w600,color: mainColor),):
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text('${controller.ticket.pauseStartDate.last.year}년${controller.ticket.pauseStartDate.last.month}월${controller.ticket.pauseStartDate.last.day}일',style:TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: text22)),
-                                    SizedBox(height: 4,),
-                                    Text('일시정지 시작',style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500,color: text7D),),
-                                  ],
-                                ),
+                                Text('${controller.endDate.value}일',style: TextStyle(fontSize: 28,fontWeight: FontWeight.w600,color:myInfo.ticket.status || myInfo.ticket.subscribe? mainColor:gray500),)
                               ],
                             ),
                             SizedBox(height: 16,),
@@ -211,9 +193,41 @@ class PauseTicketView extends GetView<PauseTicketController> {
                             )
                           ],
                         ),
-                      )
+                      ),
+                      SizedBox(height: 20,),
+                      myInfo.ticket.status || myInfo.ticket.subscribe? Container():
+                      Container(
+                        width: size.width,
+                        height: 94,
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                            color: blue50,
+                            borderRadius: BorderRadius.circular(12)
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('일시정지 시작',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500,color: gray900),),
+                                Text('${controller.ticket.pauseStartDate.last.year}. ${controller.ticket.pauseStartDate.last.month < 10 ? '0${controller.ticket.pauseStartDate.last.month}':controller.ticket.pauseStartDate.last.month}. ${controller.ticket.pauseStartDate.last.day<10?'0${controller.ticket.pauseStartDate.last.day}':controller.ticket.pauseStartDate.last.day}',style:TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: mainColor)),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('남은 일수',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500,color: gray900),),
+                                Text('${-(controller.endPauseDate.value - 30)}일',style:TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: mainColor)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
+
                   Obx(()=> Container(
                       margin: EdgeInsets.only(bottom: 20),
                       child: GestureDetector(

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -18,6 +19,11 @@ void main() async {
   await GetStorage.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    badge: true,
+    sound: true,
   );
   await initializeDateFormatting('ko_KR', null);
 
@@ -38,7 +44,7 @@ bool a = await signInAnonymously();
           if(myInfo.ticket.status == false && DateTime.now().isBefore(endOfDay)){
             autoLogin = Routes.MAIN_HOME;
           } else {
-            autoLogin = Routes.GYM_LIST;
+            autoLogin = Routes.LOGGED_HOME_VIEW;
           }
         } else {
           autoLogin = Routes.MAIN_HOME;

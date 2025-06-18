@@ -2,6 +2,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -33,10 +35,12 @@ const gray300 = Color(0xffAEAEB2);
 const gray100 = Color(0xffE5E5EA);
 const gray200 = Color(0xffD4D4D4);
 const gray50 = Color(0xffF5F6F8);
-
 const red = Color(0xffFF3C66);
-
+const red50 = Color(0xffFFEBEF);
 const blue50 = Color(0xffE4ECFF);
+const blue500 = Color(0xff2969FF);
+const blue700 = Color(0xff003BC1);
+const green = Color(0xffC8FF00);
 
 final box = GetStorage();
 
@@ -50,11 +54,61 @@ bool loginState = false;
 double baseWidth = 375;
 double baseHeight = 812;
 
+
+final ticketHistory = FirebaseFirestore.instance.collection('ticketHistory');
+final ptTicketHistory = FirebaseFirestore.instance.collection('ptTicketHistory');
+final billingInfoCollection = FirebaseFirestore.instance.collection('billingInfo');
+final paymentCollection = FirebaseFirestore.instance.collection('payment');
+final visitCollection = FirebaseFirestore.instance.collection('visitHistory');
+final spotCollection = FirebaseFirestore.instance.collection('spot');
+final spotItemCollection = FirebaseFirestore.instance.collection('spotItem');
+final userCollection = FirebaseFirestore.instance.collection('user');
+final recordCollection = FirebaseFirestore.instance.collection('user').doc(myInfo.documentId).collection('record');
+final staffCollection = FirebaseFirestore.instance.collection('staff_test');
+final visitHistory = FirebaseFirestore.instance.collection('visitHistory');
+final statusHistory = FirebaseFirestore.instance.collection('statusHistory');
+final ptSchedules = FirebaseFirestore.instance.collection('pt_schedules');
+
+// 말풍선 꼬리를 그리는 CustomPainter
+class SpeechBubblePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
+
+    final borderPaint = Paint()
+      ..color = Colors.grey[200]!
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
+
+    // 말풍선 꼬리 경로
+    final path = Path();
+    path.moveTo(0, 16); // 시작점
+    path.lineTo(-12, 12); // 꼬리 끝점
+    path.lineTo(0, 24); // 끝점
+    path.close();
+
+    // 꼬리 그리기
+    canvas.drawPath(path, paint);
+    canvas.drawPath(path, borderPaint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
+
 String formatNumber(int number) {
   final formatter = NumberFormat('#,###');
   return '${formatter.format(number)} 원';
 }
+String formatExpiryDate(DateTime date) {
+  final year = date.year.toString();
+  final month = date.month.toString().padLeft(2, '0');
+  final day = date.day.toString().padLeft(2, '0');
 
+  return '$year. $month. $day';
+}
 Future<bool> signInAnonymously() async {
   try {
     if( FirebaseAuth.instance.currentUser != null ){
@@ -70,7 +124,9 @@ Future<bool> signInAnonymously() async {
     return false;
   }
 }
-
+String formatTime(DateTime date) {
+  return '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+}
 String getDigitsAfterAsterisk(String input) {
   final regex = RegExp(r'\*(\d{3,4})$'); // * 다음 3자리 또는 4자리 추출
   final match = regex.firstMatch(input);
@@ -268,7 +324,32 @@ void _showUpdateDialog(String updateUrl) {
     print(e);
   }
 }
+Future<Map<String, dynamic>> getDeviceInfo() async {
+  DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  Map<String, dynamic> deviceData = <String, dynamic>{};
 
+  try {
+    deviceData = readAndroidDeviceInfo(await deviceInfoPlugin.androidInfo);
+
+  } catch(error) {
+    deviceData = {
+      "Error": "Failed to get platform version."
+    };
+  }
+
+  return deviceData;
+}
+Map<String, dynamic> readAndroidDeviceInfo(AndroidDeviceInfo info) {
+  var release = info.version.release;
+  var sdkInt = info.version.sdkInt;
+  var manufacturer = info.manufacturer;
+  var model = info.model;
+
+  return {
+    "sdk_version": sdkInt,
+    "device_model": model
+  };
+}
 Future currentStoreVersion(String packageName) async {
   try {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -301,9 +382,7 @@ Future currentStoreVersion(String packageName) async {
         print(_version);
         print(packageInfo.version);
         if (_isVersionOlder(packageInfo.version, _version!)) {
-          print(1234);
           _showUpdateDialog("https://play.google.com/store/apps/details?id=$packageName");
-          print(123);
           return true;
         }
         return true;
@@ -318,8 +397,6 @@ bool _isVersionOlder(String current, String latest) {
   try{
     List<int> currentParts = current.split('.').map(int.parse).toList();
     List<int> latestParts = latest.split('.').map(int.parse).toList();
-    print(currentParts);
-    print(latestParts);
 
     for (int i = 0; i < latestParts.length; i++) {
       if (i >= currentParts.length) {
@@ -337,4 +414,31 @@ bool _isVersionOlder(String current, String latest) {
     return false;
   }
 
+}
+
+showCheck(){
+  return AlertDialog(
+    backgroundColor: Colors.white,
+    // contentPadding: EdgeInsets.only(top: topPadding ?? 30, bottom: bottomPadding ?? 30),
+
+    actionsPadding: EdgeInsets.zero,
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('PT를 완료하시겠습니까?',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            height: 1.5,
+          )
+        )
+
+
+      ],
+    ),
+    actions: [
+
+
+    ],
+  );
 }

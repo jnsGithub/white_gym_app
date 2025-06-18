@@ -8,9 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:white_gym/app/model/staff.dart';
 import 'package:white_gym/app/model/visitHistory.dart';
 import '../../component/main_box.dart';
 import '../../global.dart';
+import '../model/ptItem.dart';
+import '../model/ptTicket.dart';
+import '../model/review/review.dart';
 import '../model/ticket.dart';
 import '../model/userData.dart';
 import '../routes/app_pages.dart';
@@ -18,10 +23,6 @@ import '../routes/app_pages.dart';
 
 class UserDataRepository {
   FirebaseStorage storage = FirebaseStorage.instance;
-  final userCollection = FirebaseFirestore.instance.collection('user');
-  final visitHistory = FirebaseFirestore.instance.collection('visitHistory');
-  final statusHistory = FirebaseFirestore.instance.collection('statusHistory');
-  final ticketHistory = FirebaseFirestore.instance.collection('ticketHistory');
 
   signUp(Map<String,dynamic> v) async {
     try{
@@ -55,7 +56,6 @@ class UserDataRepository {
       box.write('documentId', docRef.id);
       return true;
     } catch(e){
-      print('123');
       print(e);
       Navigator.pop(Get.context!);
       Get.snackbar('알림', '회원가입 실패',backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
@@ -91,10 +91,9 @@ class UserDataRepository {
       QuerySnapshot querySnapshot = await userCollection.where('phone',isEqualTo: hp).get();
       if(querySnapshot.docs.isNotEmpty){
         DocumentReference documentRef = userCollection.doc(querySnapshot.docs[0].id);
-        // documentRef.update({
-        //   "fcmToken":  await FirebaseMessaging.instance.getToken(),
-        // });
-
+        documentRef.update({
+          "fcmToken":  await FirebaseMessaging.instance.getToken(),
+        });
         myInfo = UserData.fromJson(querySnapshot.docs[0]);
         box.write('documentId', myInfo.documentId);
         loginState = true;
@@ -110,14 +109,12 @@ class UserDataRepository {
   }
   autoLogin()async {
     try{
-      print('a');
       DocumentSnapshot documentSnapshot = await userCollection.doc(box.read('documentId')).get();
-      print('b');
       if(documentSnapshot.exists){
         DocumentReference documentRef = userCollection.doc(documentSnapshot.id);
-        // documentRef.update({
-        //   "fcmToken":  await FirebaseMessaging.instance.getToken(),
-        // });
+        documentRef.update({
+          "fcmToken":  await FirebaseMessaging.instance.getToken(),
+        });
         myInfo = UserData.fromJson(documentSnapshot);
         box.write('documentId', myInfo.documentId);
         loginState = true;
@@ -127,7 +124,6 @@ class UserDataRepository {
       }
     } catch(e){
       print(e);
-      print(2);
       return false;
     }
   }
@@ -163,14 +159,6 @@ class UserDataRepository {
         };
         await statusHistory.add(statusHistoryData);
       }
-      else{
-        var ticketHistoryData = {
-          'paymentDate': DateTime.now(),
-          'ticket': afterTicket.toJson(),
-          'userDocumentId': myInfo.documentId,
-        };
-        await ticketHistory.add(ticketHistoryData);
-      }
       await userCollection.doc(myInfo.documentId).update({
         'ticket': afterTicket.toJson(),
       });
@@ -181,6 +169,50 @@ class UserDataRepository {
       print('1');
       print(e);
       return false;
+    }
+  }
+  updatePtTicket(PtTicket ptTicket) async {
+    try {
+      await userCollection.doc(myInfo.documentId).update({
+        'ptTicket': ptTicket.toJson(),
+      });
+      myInfo.ptTicket = ptTicket;
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+
+  }
+  getPtTicketHistory() async {
+    try {
+      List ptTicketList = [];
+      QuerySnapshot querySnapshot = await ptTicketHistory
+          .where('userDocumentId', isEqualTo: myInfo.documentId)
+          .orderBy('paymentDate', descending: true)
+          .get();
+      for (QueryDocumentSnapshot document in querySnapshot.docs) {
+        Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+        data['documentId'] = document.id;
+        DocumentSnapshot documentSnapshot = await staffCollection.doc(data['ptTicket']['trainerDocumentId']).get();
+        if (documentSnapshot.exists) {
+          data['profile'] = Staff.fromJson(documentSnapshot).profileImageUrl;
+        } else {
+          data['profile'] = 'https://firebasestorage.googleapis.com/v0/b/white-gym.firebasestorage.app/o/basic_profile_icon.png?alt=media&token=db9600cc-8176-4571-80a2-ed5d8e75c0e0';
+        }
+        ptTicketList.add(data);
+      }
+      DocumentSnapshot documentSnapshot = await staffCollection.doc(myInfo.ptTicket.trainerDocumentId).get();
+      if (documentSnapshot.exists) {
+        ptTicketList.add(Staff.fromJson(documentSnapshot).profileImageUrl);
+      } else {
+        ptTicketList.add('https://firebasestorage.googleapis.com/v0/b/white-gym.firebasestorage.app/o/basic_profile_icon.png?alt=media&token=db9600cc-8176-4571-80a2-ed5d8e75c0e0');
+      }
+      return ptTicketList;
+    } catch(e){
+      print('PT 티켓 히스토리 가져올때 걸림 : ${e}');
+      List ptTicketList = [];
+      return ptTicketList;
     }
   }
   deleteUserData() async {
@@ -214,13 +246,43 @@ class UserDataRepository {
       }
       return visitHistoryList;
     }catch(e){
-      print(e);
-      print(e);
       List<VisitHistory> visitHistoryList = <VisitHistory>[];
       return visitHistoryList;
     }
   }
-
+  Future<List<Staff>> getTR(spotId) async {
+    try{
+      List<Staff> item = await staffCollection.where('spotIdList', arrayContains: spotId).where('position',isEqualTo: '트레이너').get().then((value) {
+        List<Staff> staffList = value.docs.map((doc) => Staff.fromJson(doc)).toList();
+        staffList.sort((a, b) => a.name.compareTo(b.name));
+        return staffList;
+      });
+      item.removeWhere((element) => element.imageList.isEmpty);
+      item.shuffle();
+      return item;
+    } catch(e){
+      print(e);
+      List<Staff> a = <Staff>[];
+      return a; 
+    }
+  }
+  getPtGroupList(id) async {
+    try {
+      final snapshot = await staffCollection.doc(id).collection('pt_group').get();
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        data['id'] = doc.id; // 문서 ID 추가
+        return data;
+      }).toList();
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+  getPtItem(id,groupId) async {
+    final snapshot = await staffCollection.doc(id).collection('pt_item').where('ptGroupId', isEqualTo: groupId).get();
+    return snapshot.docs.map((doc) => PtItem.fromJson(doc)).toList();
+  }
   Future<void> updateOtCount(int count) async {
     try {
       await userCollection.doc(myInfo.documentId).update({
@@ -231,5 +293,51 @@ class UserDataRepository {
       print('1');
       print(e);
     }
+  }
+  Future<List<Review>> getReview(String documentId) async {
+    try {
+      List<Review> reviewList = [];
+      final snapshot = await staffCollection.doc(documentId).collection('review').get();
+      for (var doc in snapshot.docs) {
+        final data = doc.data();
+        data['documentId'] = doc.id; // 문서 ID 추가
+        reviewList.add(Review.fromJson(data));
+      }
+      return reviewList;
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+  addRecord (List selectedParts,visits,selectedDay) async {
+    try{
+      await recordCollection.doc(DateFormat('yyyyMMdd').format(selectedDay)).set({
+        'createDate': DateTime.now(),
+        'trainingPart':selectedParts,
+        'visits':visits,
+      });
+      return true;
+    } catch (e){
+      print('addRecord error: $e');
+      return false;
+    }
+  }
+  getRecord(DateTime date) async {
+    try{
+      String dateId = DateFormat('yyyyMMdd').format(date);
+      DocumentSnapshot doc = await recordCollection.doc(dateId).get();
+      if(!doc.exists) {
+        return null; // 문서가 존재하지 않으면 null 반환
+      }
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      data['documentId'] = doc.id; // 문서 ID 추가
+      return data;
+    } catch (e) {
+      print('getRecord error: $e');
+      return null;
+    }
+
+
+
   }
 }

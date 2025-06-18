@@ -6,6 +6,7 @@ import 'package:white_gym/app/modules/myPage/controllers/payment_list_controller
 import 'package:white_gym/app/modules/myPage/controllers/setting_controller.dart';
 
 import '../controllers/my_page_controller.dart';
+import '../controllers/upgradeController.dart';
 
 class MyPageBinding extends Bindings {
   @override
@@ -50,6 +51,14 @@ class EditHpBinding extends Bindings {
   void dependencies() {
     Get.lazyPut<EditHpController>(
       () => EditHpController(),
+    );
+  }
+}
+class UpgradeBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<UpgradeController>(
+      () => UpgradeController(),
     );
   }
 }

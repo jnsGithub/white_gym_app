@@ -48,11 +48,11 @@ class LoginController extends GetxController {
         if(authController.text == '123123'){
           await userDataRepository.testLogin(phoneController.text);
           if(myInfo.ticket.endDate.isBefore(DateTime.now().add(Duration(days: -1)))){
-            Get.offAllNamed(Routes.GYM_LIST);
+            Get.offAllNamed(Routes.LOGGED_HOME_VIEW);
             Get.snackbar('알림', '로그인이 완료되었습니다.',backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
             return;
           }
-          Get.offAllNamed(Routes.MAIN_HOME);
+         Get.offAllNamed(Routes.MAIN_HOME);
           return;
         }
         Get.snackbar('알림', '인증번호를 확인해주세요.',backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
@@ -62,7 +62,7 @@ class LoginController extends GetxController {
         if(check){
           if(myInfo.ticket.endDate.isBefore(DateTime.now().add(Duration(days: -1)))){
             Get.back();
-            Get.offAllNamed(Routes.GYM_LIST);
+            Get.offAllNamed(Routes.LOGGED_HOME_VIEW);
             Get.snackbar('알림', '로그인이 완료되었습니다.',backgroundColor: Colors.white,colorText:text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
             return;
           }
@@ -79,6 +79,7 @@ class LoginController extends GetxController {
       }
     } catch (e){
       print(e);
+      print('sadasdsadsa');
       Get.back();
     }
   }

@@ -18,9 +18,22 @@ import '../routes/app_pages.dart';
 
 class SpotDataRepository {
   FirebaseStorage storage = FirebaseStorage.instance;
-  final spotCollection = FirebaseFirestore.instance.collection('spot'); // TODO: 실사용 모드로 바꿔야함
-  final spotItemCollection = FirebaseFirestore.instance.collection('spotItem');
 
+  getSpotOne(String docId) async {
+    try {
+      final snapshot = await spotCollection.doc(docId).get();
+      if (snapshot.exists) {
+        Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+        data['documentId'] = snapshot.id;
+        return Spot.fromMap(data);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('스팟 가져올때 걸림 : ${e}');
+      return null;
+    }
+  }
   getSpot({String? docId}) async {
     try{
       if(docId != null){
@@ -55,7 +68,6 @@ class SpotDataRepository {
       for (var doc in snapshot.docs) {
         Map<String, dynamic> data = doc.data();
         data['documentId'] = doc.id;
-        print(1);
         if(data['daily'] == null){
           if(data['monthly'] == 12){
             data['daily'] = 365;
@@ -77,7 +89,6 @@ class SpotDataRepository {
         if(data['monthly'] == null){
           data['monthly'] = 0;
         }
-        print(2);
         list.add(SpotItem.fromJson(data));
       }
       return list;
@@ -86,6 +97,44 @@ class SpotDataRepository {
       RxList<SpotItem> list = <SpotItem>[].obs;
       print(e);
       return list;
+    }
+  }
+  getUpgradeSpotItem(id) async {
+    try {
+      final snapshot = await spotItemCollection.where('spotDocumentId', isEqualTo: id).where('passTicket',isEqualTo: true).get();
+      RxList<SpotItem> list = <SpotItem>[].obs;
+      for (var doc in snapshot.docs) {
+        Map<String, dynamic> data = doc.data();
+        data['documentId'] = doc.id;
+        if(data['daily'] == null){
+          if(data['monthly'] == 12){
+            data['daily'] = 365;
+          }
+          else if(data['monthly'] == 0){
+            data['daily'] = 0;
+          }
+          else{
+            data['daily'] = data['monthly'] * 30;
+          }
+          // data['daily'] = data['monthly'] * 30;
+        }
+        else{
+          if(data['daily'] == 1){
+            data['locker'] = 0;
+            data['sportswear'] = 0;
+          }
+        }
+        if(data['monthly'] == null){
+          data['monthly'] = 0;
+        }
+        list.add(SpotItem.fromJson(data));
+      }
+      return list.first;
+    } catch(e){
+      print('스팟 아이템 가져올때 걸림 : ${e}');
+      RxList<SpotItem> list = <SpotItem>[].obs;
+      print(e);
+      return list.first;
     }
   }
 }

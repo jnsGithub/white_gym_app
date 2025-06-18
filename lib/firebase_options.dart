@@ -66,10 +66,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyD-twaAVIR_22J4HEpq9QUBLnqNLgMdVAQ',
-    appId: '1:625554390329:ios:f4c4adc4dc91f2bde2bce8',
+    appId: '1:625554390329:ios:621c1d1c494e4c2ee2bce8',
     messagingSenderId: '625554390329',
     projectId: 'white-gym',
     storageBucket: 'white-gym.firebasestorage.app',
-    iosBundleId: 'com.white.gym.app.whiteGym',
+    iosBundleId: 'com.white.gym.whitegym',
   );
+
 }

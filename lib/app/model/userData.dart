@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:white_gym/app/model/ptTicket.dart';
 import 'package:white_gym/app/model/spotItem.dart';
 import 'package:white_gym/app/model/ticket.dart';
 
@@ -14,6 +15,7 @@ class UserData {
   final bool pushAlarm;
   final bool smsAlarm;
   Ticket ticket;
+  PtTicket ptTicket;
   int otCount;
   final Timestamp createDate;
 
@@ -24,6 +26,7 @@ class UserData {
     required this.phone,
     required this.birth,
     required this.ticket,
+    required this.ptTicket,
     required this.storeDocumentId,
     required this.paymentCard,
     required this.fcmToken,
@@ -40,6 +43,7 @@ class UserData {
     if(data['ticket'] == null){
       data['ticket'] = Ticket.empty();
     }
+    print(data['ptTicket']);
     return UserData(
       documentId: doc.id,
       name: data['name'] ?? '',
@@ -52,6 +56,7 @@ class UserData {
       pushAlarm: data['pushAlarm'] ?? false,
       smsAlarm: data['smsAlarm'] ?? false,
       ticket: Ticket.fromJson(data['ticket']),
+      ptTicket: data['ptTicket'] == null ? PtTicket.empty(): PtTicket.fromJson(data['ptTicket']),
       otCount: data['otCount'] ?? 2,
       createDate: data['createDate'] ?? Timestamp.now(),
     );
@@ -65,6 +70,7 @@ class UserData {
       'phone': phone,
       'birth': birth,
       'ticket': ticket,
+      'ptTicket': ptTicket,
       'storeDocumentId': storeDocumentId,
       'paymentCard': paymentCard,
       'fcmToken': fcmToken,
@@ -83,6 +89,7 @@ class UserData {
     String? phone,
     String? birth,
     Ticket? ticket,
+    PtTicket? ptTicket,
     String? storeDocumentId,
     String? paymentCard,
     String? fcmToken,
@@ -98,6 +105,7 @@ class UserData {
       phone: phone ?? this.phone,
       birth: birth ?? this.birth,
       ticket: ticket ?? this.ticket.copyWith(),
+      ptTicket: ptTicket ?? this.ptTicket,
       storeDocumentId: storeDocumentId ?? this.storeDocumentId,
       paymentCard: paymentCard ?? this.paymentCard,
       fcmToken: fcmToken ?? this.fcmToken,

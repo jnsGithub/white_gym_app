@@ -198,7 +198,105 @@ class PaymentDetailView extends GetView<PaymentDetailController> {
                           ),
                           ),
                         ),
-
+                        Obx(()=>
+                        controller.isAppCard.value ?
+                        Column(
+                          children: [
+                            SizedBox(height: 10,),
+                            CarouselSlider(
+                              carouselController: controller.carouselController,
+                              options: CarouselOptions(
+                                viewportFraction: 0.7173,
+                                autoPlay: false,
+                                // aspectRatio: 3.0,
+                                height: size.width*0.4133,
+                                enlargeCenterPage: true,
+                                enableInfiniteScroll:false,
+                                onPageChanged: (index, reason) {
+                                  controller.changeSlider(index);
+                                },
+                              ),
+                              items: controller.billingInfo.asMap().entries.map((entry) {
+                                final index = entry.key;     // 인덱스
+                                BillingInfo billingInfo = entry.value;    // 실제 값
+                                return Builder(
+                                  builder: (BuildContext context) {
+                                    return billingInfo.billingKey == '' ?
+                                    GestureDetector(
+                                      onTap: (){
+                                        controller.bootpay('자동결제 카드등록');
+                                      },
+                                      child: Container(
+                                        width: size.width,
+                                        alignment: Alignment.center,
+                                        child: Container(
+                                          width: size.width*0.7173,
+                                          height: size.width*0.4133,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(12),
+                                            color: Color(0xffF9F9FB),
+                                            border: Border.all(color: Color(0xffE2E8F0)),
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.add_circle_outline,size: 20,color: Color(0xffA5ADBE),),
+                                              SizedBox(height: 24,),
+                                              Text('결제하실 카드를 등록해 주세요',style: TextStyle(color: Color(0xffA5ADBE),fontSize: 14,fontWeight: FontWeight.w500),)
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                        :
+                                    Obx(()=>
+                                        Container(
+                                            width: MediaQuery.of(context).size.width,
+                                            margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(12),
+                                                border: Border.all(color: mainColor),
+                                                color: Color(0xffD2E7FF)
+                                            ),
+                                            child: index == controller.sliderIndex.value ? Column(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Container(
+                                                  margin: EdgeInsets.symmetric(vertical: 20,horizontal: 20),
+                                                  child: Row(
+                                                    children: [
+                                                      Container(
+                                                          width: 21,
+                                                          height: 21,
+                                                          alignment: Alignment.center,
+                                                          decoration: BoxDecoration(
+                                                              color: mainColor,
+                                                              borderRadius: BorderRadius.circular(8)
+                                                          ),
+                                                          child: Icon(Icons.check_outlined,color: Colors.white,size: 18,)
+                                                      ),
+                                                      SizedBox(width: 8,),
+                                                      Text(billingInfo.cardCompany,style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: text22),)
+                                                    ],
+                                                  ),
+                                                ),
+                                                Container(
+                                                    width: size.width,
+                                                    alignment: Alignment.center,
+                                                    margin: EdgeInsets.symmetric(vertical: 24),
+                                                    child: Text('xxxx-xxxx-xxxx-${getDigitsAfterAsterisk(billingInfo.cardNo)}',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: gray700,letterSpacing: 2.6),)
+                                                )
+                                              ],
+                                            ):Container()
+                                        ),
+                                    );
+                                  },
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ) : Container(),
+                        ),
                         SizedBox(height: 25,),
                         GestureDetector(
                           onTap: (){
@@ -232,11 +330,8 @@ class PaymentDetailView extends GetView<PaymentDetailController> {
                           ),
                         ),
                       ],
-                    ) : SizedBox(),
-                  SizedBox(height: controller.spotItem.isSubscribe ? 0 : 24,),
-                  Obx(()=>
-                  controller.isAppCard.value ?
-                    CarouselSlider(
+                    ) : Obx(()=>
+                      CarouselSlider(
                       carouselController: controller.carouselController,
                       options: CarouselOptions(
                         viewportFraction: 0.7173,
@@ -326,9 +421,9 @@ class PaymentDetailView extends GetView<PaymentDetailController> {
                           },
                         );
                       }).toList(),
-                    ) : Container(),
-                  ),
-
+                                        ),
+                    ),
+                  SizedBox(height: controller.spotItem.isSubscribe ? 0 : 24,),
                   controller.spotItem.isSubscribe?Column(
                     children: [
                       SizedBox(height: 30,),
@@ -419,7 +514,6 @@ class PaymentDetailView extends GetView<PaymentDetailController> {
             child:
             GestureDetector(
                 onTap: (){
-                  print(controller.isAppCard.value);
                   controller.bootpayAppCard();
                   // Get.offAllNamed(Routes.PAYMENT_SUCCESS, arguments: controller.spotItem.passTicket ? '' : controller.spotItem.spotDocumentId);
                 },

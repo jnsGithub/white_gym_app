@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:white_gym/app/data/userData.dart';
+import 'package:white_gym/app/model/ptTicket.dart';
 import 'package:white_gym/app/model/ticket.dart';
 
 import '../../global.dart';
@@ -13,9 +14,7 @@ import '../model/paymentItem.dart';
 
 class PaymentsRepository {
   FirebaseStorage storage = FirebaseStorage.instance;
-  final ticketHistory = FirebaseFirestore.instance.collection('ticketHistory');
-  final billingInfoCollection = FirebaseFirestore.instance.collection('billingInfo');
-  final paymentCollection = FirebaseFirestore.instance.collection('payment');
+
   UserDataRepository userDataRepository = UserDataRepository();
   Future setBillingKey(String receiptId) async {
     try {
@@ -114,9 +113,40 @@ class PaymentsRepository {
         await userDataRepository.setPaymentCard(billingInfo!.documentId);
       }
       if(myInfo.ticket.spotDocumentId != ''){
-        await ticketHistory.add(myInfo.ticket.toJson());
+        var ticketHistoryData = {
+          'paymentDate': DateTime.now(),
+          'ticket': myInfo.ticket.toJson(),
+          'paymentDocumentId': paymentItem.documentId,
+          'userDocumentId': myInfo.documentId,
+        };
+        await ticketHistory.add(ticketHistoryData);
       }
       await userDataRepository.updateTicket(ticket);
+
+      return true;
+    } catch(e) {
+      print('createReceipt');
+      print(e);
+      return false;
+    }
+  }
+  createPtReceipt(PaymentItem paymentItem,PtTicket ptTicket, isBilling, {BillingInfo? billingInfo}) async {
+    try {
+      await paymentCollection.doc(paymentItem.documentId).set(paymentItem.toJson());
+      if(isBilling){
+        await userDataRepository.setPaymentCard(billingInfo!.documentId);
+      }
+      if(myInfo.ptTicket.spotDocumentId != ''){
+        var ptTicketHistoryData = {
+          'paymentDate': DateTime.now(),
+          'ptTicket': myInfo.ptTicket.toJson(),
+          'paymentDocumentId': paymentItem.documentId,
+          'userDocumentId': myInfo.documentId,
+        };
+        await ptTicketHistory.add(ptTicketHistoryData);
+      }
+      await userDataRepository.updatePtTicket(ptTicket);
+
       return true;
     } catch(e) {
       print('createReceipt');

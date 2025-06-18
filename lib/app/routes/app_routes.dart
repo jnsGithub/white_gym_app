@@ -24,6 +24,12 @@ abstract class Routes {
   static const NOTIFICATION = _Paths.NOTIFICATION;
   static const SUGGESTION = _Paths.SUGGESTION;
   static const PT = _Paths.PT;
+  static const LOGGED_HOME_VIEW = _Paths.LOGGED_HOME_VIEW;
+  static const PT_LIST_VIEW = _Paths.PT_LIST_VIEW;
+  static const UPGRADE = _Paths.UPGRADE;
+  static const UPGARDE_MEMBERSHIP = _Paths.UPGARDE_MEMBERSHIP;
+  static const PT_ITEM_VIEW = _Paths.PT_ITEM_VIEW;
+  static const PT_PAYMENT = _Paths.PT_PAYMENT;
 }
 
 abstract class _Paths {
@@ -49,4 +55,10 @@ abstract class _Paths {
   static const NOTIFICATION = '/notification';
   static const SUGGESTION = '/suggestion';
   static const PT = '/pt';
+  static const LOGGED_HOME_VIEW = '/logged_home_view';
+  static const PT_LIST_VIEW = '/pt_list_view';
+  static const UPGRADE = '/upgrade_view';
+  static const UPGARDE_MEMBERSHIP = '/upgarde-membership';
+  static const PT_ITEM_VIEW = '/pt_item_view';
+  static const PT_PAYMENT = '/pt-payment';
 }

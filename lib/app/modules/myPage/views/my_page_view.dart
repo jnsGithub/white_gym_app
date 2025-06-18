@@ -42,11 +42,18 @@ class MyPageView extends GetView<MyPageController> {
                     Text('내 구독',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: text22),),
                     SizedBox(height: 8,),
                     GestureDetector(
-                      onTap: (){
+                      onTap: () async {
                         if(controller.isDone.value){
                           Get.toNamed(Routes.GYM_LIST);
                         } else {
-                          Get.toNamed(Routes.PAUSE_TICKET, arguments: myInfo.ticket.subscribe);
+                          if(myInfo.ticket.subscribe&&myInfo.ticket.passTicket){
+                            Get.toNamed(Routes.PAUSE_TICKET, arguments: myInfo.ticket.subscribe);
+                          }else if(myInfo.ticket.passTicket){
+                            await controller.getItem();
+                            Get.toNamed(Routes.PAYMENT,arguments: {'spot':controller.spot,'spotItemList':controller.spotItemList,'extend':true});
+                          } else {
+                            Get.toNamed(Routes.UPGRADE);
+                          }
                         }
                       },
                       child: Container(
@@ -65,8 +72,19 @@ class MyPageView extends GetView<MyPageController> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(controller.isDone.value ?'멤버쉽 구매하기':myInfo.ticket.spotItem.name,style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500,color: Colors.white),),
-                            Icon(Icons.arrow_forward_ios,color: Colors.white,size: 20,)
+                            Row(
+                              children: [
+                                Icon(Icons.play_arrow,color: Colors.white,size: 24),
+                                SizedBox(width: 12),
+                                Text(controller.isDone.value ?'멤버쉽 구매하기':myInfo.ticket.spotItem.name,style: TextStyle(fontSize: 18,fontWeight: FontWeight.w500,color: Colors.white),),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                controller.isDone.value ?Container():myInfo.ticket.subscribe&&myInfo.ticket.passTicket?Text(''):Text('업그레이드 ',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.white),),
+                                Icon(Icons.arrow_forward_ios,color: Colors.white,size: 20,),
+                              ],
+                            )
                           ],
                         ),
                       ),
@@ -81,9 +99,9 @@ class MyPageView extends GetView<MyPageController> {
                       ),
                       child: Column(
                         children: [
-                          GestureDetector(
+                          controller.isDone.value ? Container() : GestureDetector(
                             onTap: (){
-                              // TODO: 나의 이용권
+                              Get.toNamed(Routes.PAUSE_TICKET, arguments: myInfo.ticket.subscribe);
                             },
                             child: Container(
                               width: size.width,

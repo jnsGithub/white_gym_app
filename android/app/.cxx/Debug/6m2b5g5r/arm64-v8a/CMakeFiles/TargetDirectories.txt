@@ -1,0 +1,2 @@
+/Users/project/jnswork/2025/white_gym_app/android/app/.cxx/Debug/6m2b5g5r/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/project/jnswork/2025/white_gym_app/android/app/.cxx/Debug/6m2b5g5r/arm64-v8a/CMakeFiles/rebuild_cache.dir

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:white_gym/app/modules/gymList/controllers/pt_list_controller.dart';
 import 'package:white_gym/global.dart';
 
+import '../../../routes/app_pages.dart';
 import '../controllers/gym_detail_controller.dart';
 import '../controllers/gym_list_controller.dart';
 
@@ -30,7 +32,7 @@ class GymListView extends GetView<GymListController> {
                 SizedBox(height: 24),
                 Row(
                   children: [
-                    Text('이용 지점',style: TextStyle(fontSize:24,fontWeight: FontWeight.w600,color: mainColor),),
+                    Obx(()=> Text('${controller.isPt.value? 'PT ':''}이용 지점',style: TextStyle(fontSize:24,fontWeight: FontWeight.w600,color: mainColor),)),
                     Text('을',style: TextStyle(fontSize:24,fontWeight: FontWeight.w600,color: text22),),
                   ],
                 ),
@@ -48,8 +50,12 @@ class GymListView extends GetView<GymListController> {
                             itemBuilder: (context,index){
                               return GestureDetector(
                                 onTap: (){
-                                  Get.delete<GymDetailController>();
-                                  Get.toNamed('/gym-detail',arguments: controller.gymList[index]);
+                                  if(controller.isPt.value) {
+                                    Get.toNamed(Routes.PT_LIST_VIEW,arguments: controller.gymList[index]);
+                                  } else{
+                                    Get.delete<GymDetailController>();
+                                    Get.toNamed(Routes.GTM_DETAIL,arguments: controller.gymList[index]);
+                                  }
                                 },
                                 child: Container(
                                   margin: EdgeInsets.only(bottom: 16),

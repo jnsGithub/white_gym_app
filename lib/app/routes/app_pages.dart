@@ -3,8 +3,11 @@ import 'package:get/get.dart';
 import '../modules/gymList/bindings/gym_list_binding.dart';
 import '../modules/gymList/views/gym_detail.dart';
 import '../modules/gymList/views/gym_list_view.dart';
+import '../modules/gymList/views/pt_item_view.dart';
+import '../modules/gymList/views/pt_list_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/home/views/logged_home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/mainHome/bindings/main_home_binding.dart';
@@ -16,15 +19,19 @@ import '../modules/myPage/views/edit_hp_view.dart';
 import '../modules/myPage/views/my_page_view.dart';
 import '../modules/myPage/views/payment_list_view.dart';
 import '../modules/myPage/views/setting_view.dart';
+import '../modules/myPage/views/upgrade_view.dart';
 import '../modules/notification/bindings/notification_binding.dart';
 import '../modules/notification/views/notification_view.dart';
 import '../modules/ot/bindings/ot_binding.dart';
 import '../modules/ot/views/ot_success_view.dart';
 import '../modules/ot/views/ot_view.dart';
 import '../modules/payment/bindings/payment_binding.dart';
+import '../modules/payment/bindings/upgrade_membership_binding.dart';
 import '../modules/payment/views/payment_detail_view.dart';
 import '../modules/payment/views/payment_success_view.dart';
 import '../modules/payment/views/payment_view.dart';
+import '../modules/payment/views/pt_payment_view.dart';
+import '../modules/payment/views/upgrade_membership_view.dart';
 import '../modules/pt/bindings/pt_binding.dart';
 import '../modules/pt/views/pt_view.dart';
 import '../modules/signUp/bindings/sign_up_binding.dart';
@@ -144,6 +151,35 @@ class AppPages {
       name: _Paths.PT,
       page: () => const PtView(),
       binding: PtBinding(),
+    ),
+    GetPage(
+      name: _Paths.PT_LIST_VIEW,
+      page: () => const PtListView(),
+      binding: PtListBinding(),
+    ),
+    GetPage(
+      name: _Paths.LOGGED_HOME_VIEW,
+      page: () => const LoggedHomeView(),
+    ),
+    GetPage(
+      name: _Paths.UPGRADE,
+      page: () => const UpgradeView(),
+      binding: UpgradeBinding(),
+    ),
+    GetPage(
+      name: _Paths.UPGARDE_MEMBERSHIP,
+      page: () => const UpgradeMembershipView(),
+      binding: UpgradeMembershipBinding(),
+    ),
+    GetPage(
+      name: _Paths.PT_ITEM_VIEW,
+      page: () => const PtItemView(),
+      binding: PtItemBinding(),
+    ),
+    GetPage(
+      name: _Paths.PT_PAYMENT,
+      page: () => const PtPaymentView(),
+      binding: PtPaymentBinding(),
     ),
   ];
 }

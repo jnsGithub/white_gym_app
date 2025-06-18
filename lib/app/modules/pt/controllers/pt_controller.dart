@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:white_gym/app/data/userData.dart';
+import 'package:white_gym/app/model/ptTicket.dart';
 
 import '../../../../global.dart';
 
 class PtController extends GetxController with GetTickerProviderStateMixin {
   //TODO: Implement PtController
   TabController? tabController;
+  RxString profileImage = ''.obs;
   RxInt selectedPageNumber = 0.obs;
-
+  RxBool isExpanded = false.obs;
+  RxList ptTicketList = [].obs;
+  UserDataRepository userDataRepository = UserDataRepository();
   final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
     tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+    getPtHistory();
   }
 
   @override
@@ -24,7 +30,16 @@ class PtController extends GetxController with GetTickerProviderStateMixin {
   void onClose() {
     super.onClose();
   }
-
+  getPtHistory() async {
+    try {
+      ptTicketList.value = await userDataRepository.getPtTicketHistory();
+      profileImage.value = ptTicketList[ptTicketList.length-1];
+      ptTicketList.removeAt(ptTicketList.length-1);
+      print('PT 티켓 가져오기 성공: ${ptTicketList.length}개');
+    } catch (e) {
+      print('PT 티켓 가져오기 실패: $e');
+    }
+  }
   showBottomSheet(double scaleHeight, double scaleWidth, String title) {
     EdgeInsetsGeometry padding = EdgeInsets.symmetric(
       horizontal: scaleWidth * 20,

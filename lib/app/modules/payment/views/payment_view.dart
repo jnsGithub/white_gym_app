@@ -118,7 +118,7 @@ class PaymentView extends GetView<PaymentController> {
                                                   ),
                                                 ),
 
-                                                GestureDetector(
+                                                controller.check1_2.value ? GestureDetector(
                                                   onTap: (){
                                                     controller.check1.value = !controller.check1.value;
                                                   },
@@ -167,8 +167,8 @@ class PaymentView extends GetView<PaymentController> {
                                                       ],
                                                     ),
                                                   ),
-                                                ),
-                                                GestureDetector(
+                                                ):Container(),
+                                               controller.check2_2.value?GestureDetector(
                                                   onTap: (){
                                                     controller.check2.value = !controller.check2.value;
                                                   },
@@ -216,7 +216,7 @@ class PaymentView extends GetView<PaymentController> {
                                                       ],
                                                     ),
                                                   ),
-                                                ),
+                                                ):Container(),
                                               ],
                                             ):Container(),
                                             ),
@@ -255,17 +255,26 @@ class PaymentView extends GetView<PaymentController> {
       ),
       bottomNavigationBar: SafeArea(
         bottom: true,
-        child: Obx(()=>controller.ready.value && myInfo.ticket.endDate.isBefore(DateTime.now())?
+        child: Obx(()=>controller.isExtend.value||controller.ready.value && myInfo.ticket.endDate.isBefore(DateTime.now())?
         Container(
           margin: EdgeInsets.only(bottom: 20),
           child: GestureDetector(
             onTap: (){
-              if(loginState){
-                Get.toNamed('/payment-detail',arguments: {'locker':controller.check1.value,'sportswear':controller.check2.value,'item':1,'spotItem':controller.spotItemList[controller.ticketIndex.value],'spot':controller.spot});
-              } else {
-                Get.snackbar('알림', '회원가입 이후 사용 가능합니다.',backgroundColor: Colors.white,colorText: text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
-                Get.toNamed(Routes.SIGN_UP);
+              if(controller.ticketIndex.value == 99999){
+                Get.snackbar('알림', '이용권을 선택해주세요.',backgroundColor: Colors.white,colorText: text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
+                return;
               }
+              if(controller.isExtend.value){
+                controller.showDialog(size);
+              } else{
+                if(loginState){
+                  Get.toNamed('/payment-detail',arguments: {'locker':controller.check1.value,'sportswear':controller.check2.value,'item':1,'spotItem':controller.spotItemList[controller.ticketIndex.value],'spot':controller.spot});
+                } else {
+                  Get.snackbar('알림', '회원가입 이후 사용 가능합니다.',backgroundColor: Colors.white,colorText: text22,borderRadius:16,borderColor: gray700,borderWidth: 1);
+                  Get.toNamed(Routes.SIGN_UP);
+                }
+              }
+
 
             },
             child: Container(

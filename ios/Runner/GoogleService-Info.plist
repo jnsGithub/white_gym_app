@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.white.gym.app.whiteGym</string>
+	<string>com.white.gym.whitegym</string>
 	<key>PROJECT_ID</key>
 	<string>white-gym</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:625554390329:ios:f4c4adc4dc91f2bde2bce8</string>
+	<string>1:625554390329:ios:621c1d1c494e4c2ee2bce8</string>
 </dict>
 </plist>

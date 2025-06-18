@@ -13,6 +13,7 @@ class PauseTicketController extends GetxController {
   RxBool cancelCheck = false.obs;
   Ticket ticket = myInfo.ticket;
   RxInt endDate = 0.obs;
+  RxInt endPauseDate = 0.obs;
   UserDataRepository userDataRepository = UserDataRepository();
   @override
   void onInit() {
@@ -31,12 +32,21 @@ class PauseTicketController extends GetxController {
   }
   init() async {
     DateTime now = DateTime.now();
+    DateTime now2 = DateTime(now.year, now.month, now.day);
     cancelCheck.value = ticket.pause == 0 || !ticket.status;
     if(!ticket.status){
+      DateTime now3 =DateTime(ticket.pauseStartDate.last.year, ticket.pauseStartDate.last.month, ticket.pauseStartDate.last.day);
+      Duration diff = ticket.endDate.difference(now3);
+      endDate.value = diff.inDays + 1;
+      DateTime now4 = DateTime(ticket.pauseStartDate.last.year, ticket.pauseStartDate.last.month, ticket.pauseStartDate.last.day);
+      Duration diff2 = now2.difference(now4);
+      endPauseDate.value = diff2.inDays + 1;
     } else {
-      DateTime now2 = DateTime(now.year, now.month, now.day);
+
       Duration diff = ticket.endDate.difference(now2);
       endDate.value = diff.inDays + 1;
+
+      //endPauseDate
     }
     update();
   }
@@ -304,8 +314,14 @@ class PauseTicketController extends GetxController {
                         DateTime now2 = DateTime(ticket.pauseStartDate.last.year, ticket.pauseStartDate.last.month, ticket.pauseStartDate.last.day);
                         Duration diff =  ticket.endDate.difference(now2);
                         DateTime now3 = DateTime(now.year, now.month, now.day + diff.inDays);
+                        Duration diffLocker = ticket.lockerEndDate.difference(now2);
+                        Duration diffSportswearEndDate = ticket.sportswearEndDate.difference(now2);
+                        DateTime lockerEndDate = DateTime(now.year, now.month, now.day + diffLocker.inDays);
+                        DateTime sportswearEndDate = DateTime(now.year, now.month, now.day + diffSportswearEndDate.inDays);
                         ticket.pauseEndDate.last = now;
                         ticket.endDate = now3;
+                        ticket.lockerEndDate = myInfo.ticket.locker?lockerEndDate: DateTime(1990, 12, 31);
+                        ticket.sportswearEndDate = myInfo.ticket.sportswear?sportswearEndDate: DateTime(1990, 12, 31);
                         ticket.status = true ;
                         await userDataRepository.updateTicket(beforeTicket: beforeTicket, ticket);
                         myInfo.ticket = ticket;

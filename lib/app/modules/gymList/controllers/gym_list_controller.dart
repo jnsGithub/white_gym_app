@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:white_gym/app/data/spot.dart';
 import 'package:white_gym/app/model/spot.dart';
 
@@ -13,14 +14,16 @@ class GymListController extends GetxController {
   double latitude = 0;
   RxBool isNotLatLon= false.obs;
   RxBool isFirst = false.obs;
+  RxBool isPt = false.obs;
   @override
   void onInit() {
     super.onInit();
+    getCurrentLocation();
+
+    isFirst.value = Get.routing.previous == '';
     WidgetsBinding.instance.addPostFrameCallback((_) {
       currentStoreVersion('com.white.gym.app.white_gym');
     });
-    getCurrentLocation();
-    isFirst.value = Get.routing.previous == '';
   }
 
   @override
@@ -35,6 +38,10 @@ class GymListController extends GetxController {
 
   getSpot() async {
     gymList.value = await spotDataRepository.getSpot();
+    if(isNotLatLon.value){
+      update();
+      return;
+    }
     for(var i in gymList){
       double distance = Geolocator.distanceBetween(
         latitude,
@@ -48,6 +55,7 @@ class GymListController extends GetxController {
     update();
   }
   getCurrentLocation() async {
+    isPt.value = Get.arguments == null ? false : Get.arguments['isPt'];
     LocationPermission permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied ||
         permission == LocationPermission.deniedForever) {
