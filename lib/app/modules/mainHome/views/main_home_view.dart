@@ -245,21 +245,26 @@ class MainHomeView extends GetView<MainHomeController> {
                                             Text('회',style: TextStyle(fontWeight: FontWeight.w600,color: text22,fontSize: 16),),
                                           ],
                                         ),
-                                        Row(
-                                          children: [
-                                            Image(image: AssetImage('image/main_home_icon2.png'),width: 14,),
-                                            SizedBox(width: 8,),
-                                            Text(myInfo.ticket.sportswear?'사용':'미사용',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: text22),),
-                                            Container(
-                                              width: 1,
-                                              height: 14,
-                                              margin: EdgeInsets.symmetric(horizontal: 12),
-                                              color: Color(0xffD9D9D9),
-                                            ),
-                                            Image(image: AssetImage('image/main_home_icon1.png'),width: 14,),
-                                            SizedBox(width: 8,),
-                                            Text(myInfo.ticket.locker?'${myInfo.ticket.lockerNum} 번':'미사용',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: myInfo.ticket.locker?mainColor:text22),),
-                                          ],
+                                        GestureDetector(
+                                          onTap: (){
+                                           controller.changeLocker();
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Image(image: AssetImage('image/main_home_icon2.png'),width: 14,),
+                                              SizedBox(width: 8,),
+                                              Text(myInfo.ticket.sportswear?'사용':'미사용',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: text22),),
+                                              Container(
+                                                width: 1,
+                                                height: 14,
+                                                margin: EdgeInsets.symmetric(horizontal: 12),
+                                                color: Color(0xffD9D9D9),
+                                              ),
+                                              Image(image: AssetImage('image/main_home_icon1.png'),width: 14,),
+                                              SizedBox(width: 8,),
+                                              Text(myInfo.ticket.locker?'${myInfo.ticket.lockerNum} 번':'미사용',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: myInfo.ticket.locker?mainColor:text22),),
+                                            ],
+                                          ),
                                         )
                                       ],
                                     )
@@ -490,7 +495,12 @@ class MainHomeView extends GetView<MainHomeController> {
               ),
               GestureDetector(
                 onTap: (){
-                  Get.toNamed(Routes.GYM_LIST,arguments: {'isPt':true});
+                  // Get.toNamed(Routes.GYM_LIST,arguments: {'isPt':true});
+                  if(myInfo.ptTicket.endDate.isBefore(DateTime.now().add(Duration(days: -1)))){
+                    Get.toNamed(Routes.GYM_LIST,arguments: {'isPt':true});
+                  } else {
+                    Get.toNamed(Routes.PT);
+                  }
                 },
                 child: Container(
                   width: size.width *0.432,
@@ -510,4 +520,5 @@ class MainHomeView extends GetView<MainHomeController> {
       ),
     );
   }
+
 }

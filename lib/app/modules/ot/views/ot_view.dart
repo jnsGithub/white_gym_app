@@ -388,33 +388,45 @@ class OtView extends GetView<OtController> {
                   }
                   return;
                 }
-                return;
-                // saving(context);
-                // if(await SendEmail().sendEmail(controller.selectedSpot.value, controller.selectedIndex, controller.selectedTime)){
-                //   Get.back();
-                //   if(!Get.isSnackbarOpen) {
-                //     controller.userDataRepository.updateOtCount(myInfo.otCount - 1);
-                //     Get.offAllNamed(Routes.OT_SUCCESS);
-                //     Get.snackbar(
-                //         '신청 완료', '신청이 완료되었습니다.', backgroundColor: Colors.white,
-                //         colorText: Colors.black,
-                //         borderRadius: 16,
-                //         borderColor: gray700,
-                //         borderWidth: 1);
-                //   }
-                // }
-                // else{
-                //   Get.back();
-                //   if(!Get.isSnackbarOpen) {
-                //     Get.snackbar(
-                //         '신청 실패', '인포에 문의해주세요.', backgroundColor: Colors.white,
-                //         colorText: Colors.red,
-                //         borderRadius: 16,
-                //         borderColor: gray700,
-                //         borderWidth: 1);
-                //   }
-                //   return;
-                // }
+                saving(context);
+                if(myInfo.otCount > 0){
+                  Get.back();
+                  bool check = await controller.addOt();
+                  if(check){
+                    if(!Get.isSnackbarOpen) {
+                      controller.userDataRepository.updateOtCount(myInfo.otCount - 1);
+                      Get.offAllNamed(Routes.OT_SUCCESS);
+                      Get.snackbar(
+                          '신청 완료', '신청이 완료되었습니다.', backgroundColor: Colors.white,
+                          colorText: Colors.black,
+                          borderRadius: 16,
+                          borderColor: gray700,
+                          borderWidth: 1);
+                    }
+                  }
+                  else{
+                    if(!Get.isSnackbarOpen) {
+                      Get.snackbar(
+                          '신청 실패', 'OT 신청 횟수 소진1', backgroundColor: Colors.white,
+                          colorText: Colors.red,
+                          borderRadius: 16,
+                          borderColor: gray700,
+                          borderWidth: 1);
+                    }
+                  }
+                }
+                else{
+                  Get.back();
+                  if(!Get.isSnackbarOpen) {
+                    Get.snackbar(
+                        '신청 실패', 'OT 신청 횟수 소진4', backgroundColor: Colors.white,
+                        colorText: Colors.red,
+                        borderRadius: 16,
+                        borderColor: gray700,
+                        borderWidth: 1);
+                  }
+                  return;
+                }
               },
               child: Text('신청하기', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),)),
         ),

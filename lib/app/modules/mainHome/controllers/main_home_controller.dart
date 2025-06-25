@@ -92,7 +92,7 @@ class MainHomeController extends GetxController {
   }
   getVisitHistory({DateTime? a}) async {
     DateTime day = a ?? DateTime.now();
-    visitHistory.value = await visitRepository.fetchCurrentMonthVisitHistory(day);
+    visitHistory.value = await visitRepository.fetchCurrentMonthVisitHistory(day,paymentBranch.value);
     calendarList.clear();
     for (var visit in visitHistory) {
       DateTime visitDate = visit.createDate;
@@ -115,30 +115,31 @@ class MainHomeController extends GetxController {
           });
         }
     }
-    List ptScheduleItem = await ptSchedules.getPtSchedules(day);
-    for (var pt in ptScheduleItem) {
-      DateTime ptDate = pt['reservationDate'].toDate();
-      if(calendarList.any((item) =>
-          item['day'].year == ptDate.year &&
-          item['day'].month == ptDate.month &&
-          item['day'].day == ptDate.day))
-      {
-        int index = calendarList.indexWhere((item) =>
-            item['day'].year == ptDate.year &&
+    if(paymentBranch.value == myInfo.ptTicket.paymentBranch){
+      List ptScheduleItem = await ptSchedules.getPtSchedules(day,paymentBranch.value);
+      for (var pt in ptScheduleItem) {
+        DateTime ptDate = pt['reservationDate'].toDate();
+        if(calendarList.any((item) =>
+        item['day'].year == ptDate.year &&
             item['day'].month == ptDate.month &&
-            item['day'].day == ptDate.day);
-        calendarList[index]['pt'] = pt;
-        calendarList[index]['ptIsDone'] = pt['status'] == 1;
-      } else {
-        calendarList.add({
-          'day':  DateTime(ptDate.year, ptDate.month, ptDate.day),
-          'visits':[],
-          'pt':pt,
-          'ptIsDone':pt['status'] == 1
-        });
+            item['day'].day == ptDate.day))
+        {
+          int index = calendarList.indexWhere((item) =>
+          item['day'].year == ptDate.year &&
+              item['day'].month == ptDate.month &&
+              item['day'].day == ptDate.day);
+          calendarList[index]['pt'] = pt;
+          calendarList[index]['ptIsDone'] = pt['status'] == 1;
+        } else {
+          calendarList.add({
+            'day':  DateTime(ptDate.year, ptDate.month, ptDate.day),
+            'visits':[],
+            'pt':pt,
+            'ptIsDone':pt['status'] == 1
+          });
+        }
       }
     }
-
     update();
   }
   bool hasVisitOnDay(DateTime day) {
@@ -184,6 +185,7 @@ class MainHomeController extends GetxController {
                             onTap: (){
                               selectedIndex.value = index;
                               paymentBranch.value = gymList2[index].name;
+                              getVisitHistory(a: selectedDay);
                               Get.back();
                             },
                             child: Container(
@@ -420,7 +422,7 @@ class MainHomeController extends GetxController {
                       SizedBox(width: 8,),
                       GestureDetector(
                         onTap: (){
-                          if(!canCancel){
+                          if(!canCancel && !Get.isSnackbarOpen){
                             Get.snackbar('알림', 'PT 예약 취소는 PT 시작 24시간 전까지 가능합니다.', backgroundColor: Colors.white, colorText: text22, borderRadius: 16, borderColor: gray700, borderWidth: 1);
                             return;
                           }
@@ -724,6 +726,9 @@ class MainHomeController extends GetxController {
                     GestureDetector(
                       onTap: () async {
                         if(isPt.value){
+                          if(a['ptIsDone']){
+                            return;
+                          }
                           if (has50MinutesPassed(ptDate)) {
                             Get.dialog(
                                 AlertDialog(
@@ -789,17 +794,17 @@ class MainHomeController extends GetxController {
                                           Expanded(
                                             child: InkWell(
                                               onTap: () =>{
-                                                review(a['pt'])
-                                                // ptSchedules.changeStatus(a['pt']['documentId'], 1).then((value) {
-                                                //   if(value){
-                                                //     Get.back();
-                                                //     Get.back();
-                                                //     Get.snackbar('알림', 'PT가 완료되었습니다.', backgroundColor: Colors.white, colorText: text22, borderRadius: 16, borderColor: gray700, borderWidth: 1);
-                                                //     getVisitHistory(a:selectedDay);
-                                                //   } else {
-                                                //     Get.snackbar('알림', 'PT 완료에 실패했습니다.', backgroundColor: Colors.white, colorText: text22, borderRadius: 16, borderColor: gray700, borderWidth: 1);
-                                                //   }
-                                                // })
+                                                ptSchedules.changeStatus(a['pt']['documentId'], 1).then((value) {
+                                                  if(value){
+                                                    Get.back();
+                                                    Get.back();
+                                                    Get.snackbar('알림', 'PT가 완료되었습니다.', backgroundColor: Colors.white, colorText: text22, borderRadius: 16, borderColor: gray700, borderWidth: 1);
+                                                    getVisitHistory(a:selectedDay);
+                                                    review();
+                                                  } else {
+                                                    Get.snackbar('알림', 'PT 완료에 실패했습니다.', backgroundColor: Colors.white, colorText: text22, borderRadius: 16, borderColor: gray700, borderWidth: 1);
+                                                  }
+                                                })
                                               },
                                               child: Container(
                                                 height: 48,
@@ -821,13 +826,16 @@ class MainHomeController extends GetxController {
                                   ],
                                 )
                             );
-                            print("예약 시간으로부터 50분이 지났습니다.");
                           } else {
-                            print("아직 50분이 지나지 않았습니다.");
+                            if(!Get.isSnackbarOpen) {
+                              Get.snackbar('알림', 'PT완료는 PT시작시간 + 50분 부터 가능합니다.', backgroundColor: Colors.white, colorText: text22, borderRadius: 16, borderColor: gray700, borderWidth: 1);
+                            }
                           }
                         } else {
-                          bool check = await userDataRepository.addRecord(selectedParts,a['visits'], selectedDay);
-                          Get.snackbar('알림', check ? '운동 기록이 저장되었습니다.' : '운동 기록 저장에 실패했습니다.', backgroundColor: Colors.white, colorText: text22, borderRadius: 16, borderColor: gray700, borderWidth: 1);
+                          if(!Get.isSnackbarOpen){
+                            bool check = await userDataRepository.addRecord(selectedParts,a['visits'], selectedDay);
+                            Get.snackbar('알림', check ? '운동 기록이 저장되었습니다.' : '운동 기록 저장에 실패했습니다.', backgroundColor: Colors.white, colorText: text22, borderRadius: 16, borderColor: gray700, borderWidth: 1);
+                          }
                         }
                       },
                         child: isPt.value? MainBox(text:  'PT 완료', color:  !a['ptIsDone'] && has50MinutesPassed(ptDate)?mainColor:gray100, textColor:!a['ptIsDone'] && has50MinutesPassed(ptDate)? Colors.white:gray400):
@@ -842,7 +850,8 @@ class MainHomeController extends GetxController {
       )
     );
   }
-  review(pt){
+  review(){
+    TextEditingController reviewController = TextEditingController();
     Get.bottomSheet(
         isScrollControlled: true,
         isDismissible: false,
@@ -871,10 +880,11 @@ class MainHomeController extends GetxController {
                     IconButton(onPressed: (){Get.back();}, icon: Icon(Icons.close,color: gray900,size: 24))
                   ],
                 ),
-                Text('${pt['trainerName']}의 ${myInfo.ptTicket.currentAdmission + 1}회차 운동 후기는 어떠 셨나요?',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: gray900,height: 1.4),),
-                Container(
+                Text('${myInfo.ptTicket.trainerName}의 ${myInfo.ptTicket.currentAdmission + 1}회차 운동 후기는 어떠 셨나요?',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: gray900,height: 1.4),),
+                SizedBox(
                     width: MediaQuery.of(Get.context!).size.width,
                     child: TextField(
+                      controller: reviewController,
                       maxLines: 6,
                       style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,height: 1.6,color: gray900),
                       decoration: InputDecoration(
@@ -918,15 +928,35 @@ class MainHomeController extends GetxController {
                           child: Text('건너뛰기',style: TextStyle(fontWeight: FontWeight.w600,fontSize: 17,color: blue500,height: 1.4),),
                         ),
                       ),
-                      Container(
-                        alignment: Alignment.center,
-                        width: MediaQuery.of(Get.context!).size.width*0.44,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: blue500,
-                          borderRadius: BorderRadius.circular(12),
+                      GestureDetector(
+                        onTap: () async {
+                          Map<String,dynamic> review = {
+                            'userDocumentId': myInfo.documentId,
+                            'userName': myInfo.name,
+                            'programName': myInfo.ptTicket.ptItem.name,
+                            'trainerName': myInfo.ptTicket.trainerName,
+                            'trainerDocumentId': myInfo.ptTicket.trainerDocumentId,
+                            'content': reviewController.text,
+                            'createDate': DateTime.now(),
+                          };
+                          bool check =await ptSchedules.addReview(review);
+                          if(check){
+                            Get.back();
+                            Get.snackbar('알림', '리뷰가 등록되었습니다.', backgroundColor: Colors.white, colorText: text22, borderRadius: 16, borderColor: gray700, borderWidth: 1);
+                          } else {
+                            Get.snackbar('알림', '리뷰 등록에 실패했습니다.', backgroundColor: Colors.white, colorText: text22, borderRadius: 16, borderColor: gray700, borderWidth: 1);
+                          }
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: MediaQuery.of(Get.context!).size.width*0.44,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: blue500,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text('등록하기',style: TextStyle(fontWeight: FontWeight.w600,fontSize: 17,color: Colors.white,height: 1.4),),
                         ),
-                        child: Text('등록하기',style: TextStyle(fontWeight: FontWeight.w600,fontSize: 17,color: Colors.white,height: 1.4),),
                       )
                     ],
                   ),
@@ -935,6 +965,85 @@ class MainHomeController extends GetxController {
             ),
           ),
         )
+    );
+  }
+  changeLocker() async {
+    TextEditingController lockerController = TextEditingController();
+    lockerController.text = myInfo.ticket.lockerNum.toString();
+
+    Get.dialog(
+      AlertDialog(
+        actionsAlignment: MainAxisAlignment.center,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        alignment: Alignment.center,
+        title: Center(child: Text('락커 번호 변경',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600,height: 1.4,color: gray900),)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          spacing: 8,
+          children: [
+            Text('변경하실 번호를 입력해주세요',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,height: 1.4,color: gray500),),
+            Container(
+                width: 200,
+                height: 40,
+                margin: EdgeInsets.only(top: 12),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: gray50,
+                    border: Border.all(color: gray100, width: 1),
+                    borderRadius: BorderRadius.circular(4)
+                ),
+                child:TextField(
+                  textAlign: TextAlign.center,
+                  controller: lockerController,
+                  keyboardType: TextInputType.number,
+                  maxLines: 1,
+                  style: TextStyle(fontSize: 24,height: 1.4,fontWeight: FontWeight.w600,color: gray900),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 8),
+                  ),
+                  onChanged: (value) {
+
+                  },
+                )
+
+            ),
+            GestureDetector(
+              onTap: (){
+                if(lockerController.text.isEmpty){
+                  Get.snackbar('알림', '락커 번호를 입력해주세요.', backgroundColor: Colors.white, colorText: text22, borderRadius: 16, borderColor: gray700, borderWidth: 1);
+                  return;
+                }
+                int lockerNum = int.parse(lockerController.text);
+                if(lockerNum < 1 || lockerNum > 1000){
+                  Get.snackbar('알림', '락커 번호는 1부터 1000까지 입력 가능합니다.', backgroundColor: Colors.white, colorText: text22, borderRadius: 16, borderColor: gray700, borderWidth: 1);
+                  return;
+                }
+                spotDataRepository.changeLocker(myInfo.ticket.spotDocumentId,lockerNum).then((value) {
+                  if(value){
+                    myInfo.ticket.lockerNum = lockerNum;
+                    Get.back();
+                    Get.snackbar('알림', '락커 번호가 변경되었습니다.', backgroundColor: Colors.white, colorText: text22, borderRadius: 16, borderColor: gray700, borderWidth: 1);
+                  } else {
+                    Get.snackbar('알림', '락커 번호 변경에 실패했습니다.', backgroundColor: Colors.white, colorText: text22, borderRadius: 16, borderColor: gray700, borderWidth: 1);
+                  }
+                });
+              },
+              child: Container(
+                margin: EdgeInsets.only(top: 12,bottom: 12),
+                padding: EdgeInsets.symmetric(horizontal: 40,vertical: 10),
+                decoration: BoxDecoration(
+                    color: mainColor,
+                    borderRadius: BorderRadius.circular(10000)
+                ),
+                child: Text('저장',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,height: 1.5,color: Colors.white),),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

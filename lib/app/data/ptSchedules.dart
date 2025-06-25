@@ -1,7 +1,7 @@
 import '../../global.dart';
 
 class PtSchedules {
-  getPtSchedules(DateTime now) async {
+  getPtSchedules(DateTime now,paymentBranch) async {
     try{
       final firstDayOfMonth = DateTime(now.year, now.month, 1);
       final firstDayOfNextMonth = DateTime(now.year, now.month + 1, 1);
@@ -29,9 +29,32 @@ class PtSchedules {
       await ptSchedules.doc(documentId).update({
         'status': status, // 2는 취소 상태
       });
+      myInfo.ptTicket.currentAdmission = myInfo.ptTicket.currentAdmission + 1;
+      await userCollection.doc(myInfo.documentId).update({
+        'ptTicket': myInfo.ptTicket.toJson(),
+      });
       return true;
     } catch (e) {
       print('Error cancelling PT schedule: $e');
+      return false;
+    }
+  }
+
+  addReview(review) async {
+    try {
+      await staffCollection.doc(review['trainerDocumentId']).collection('review').add(review);
+      return true;
+    } catch (e) {
+      print('Error adding review: $e');
+      return false;
+    }
+  }
+  addOtSchedule(otSchedule) async {
+    try {
+      await ptSchedules.add(otSchedule);
+      return true;
+    } catch (e) {
+      print('Error adding OT schedule: $e');
       return false;
     }
   }

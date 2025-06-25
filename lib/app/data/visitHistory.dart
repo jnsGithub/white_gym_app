@@ -10,7 +10,7 @@ class VisitRepository {
 
 
 
-  Future fetchCurrentMonthVisitHistory(DateTime now) async {
+  Future fetchCurrentMonthVisitHistory(DateTime now,spotName) async {
     // 현재 날짜를 기준으로 이번 달의 시작과 다음 달의 시작 날짜 계산
 
     final firstDayOfMonth = DateTime(now.year, now.month, 1);
@@ -19,7 +19,8 @@ class VisitRepository {
     // Firestore 쿼리 작성
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('visitHistory')
-        .where('userDocumentId', isEqualTo:'sh8YJ7PJE2YiqEh3h0Pj')
+        .where('userDocumentId', isEqualTo:myInfo.documentId)
+        .where('spotName', isEqualTo: spotName)
         .where('createDate', isGreaterThanOrEqualTo: firstDayOfMonth)
         .where('createDate', isLessThan: firstDayOfNextMonth)
         .get();

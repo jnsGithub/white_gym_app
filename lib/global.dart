@@ -60,7 +60,7 @@ final ptTicketHistory = FirebaseFirestore.instance.collection('ptTicketHistory')
 final billingInfoCollection = FirebaseFirestore.instance.collection('billingInfo');
 final paymentCollection = FirebaseFirestore.instance.collection('payment');
 final visitCollection = FirebaseFirestore.instance.collection('visitHistory');
-final spotCollection = FirebaseFirestore.instance.collection('spot');
+final spotCollection = FirebaseFirestore.instance.collection('spot_test');
 final spotItemCollection = FirebaseFirestore.instance.collection('spotItem');
 final userCollection = FirebaseFirestore.instance.collection('user');
 final recordCollection = FirebaseFirestore.instance.collection('user').doc(myInfo.documentId).collection('record');
@@ -68,6 +68,7 @@ final staffCollection = FirebaseFirestore.instance.collection('staff_test');
 final visitHistory = FirebaseFirestore.instance.collection('visitHistory');
 final statusHistory = FirebaseFirestore.instance.collection('statusHistory');
 final ptSchedules = FirebaseFirestore.instance.collection('pt_schedules');
+final suggestionCollection = FirebaseFirestore.instance.collection('suggestion');
 
 // 말풍선 꼬리를 그리는 CustomPainter
 class SpeechBubblePainter extends CustomPainter {

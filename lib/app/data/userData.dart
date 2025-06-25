@@ -297,7 +297,7 @@ class UserDataRepository {
   Future<List<Review>> getReview(String documentId) async {
     try {
       List<Review> reviewList = [];
-      final snapshot = await staffCollection.doc(documentId).collection('review').get();
+      final snapshot = await staffCollection.doc(documentId).collection('review').orderBy('createDate',descending: true).get();
       for (var doc in snapshot.docs) {
         final data = doc.data();
         data['documentId'] = doc.id; // 문서 ID 추가

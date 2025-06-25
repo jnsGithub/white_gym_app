@@ -7,7 +7,7 @@ class Ticket {
   final String spotDocumentId;
   final String paymentBranch;
   final int admission;
-  final int lockerNum;
+  int lockerNum;
   int pause;
   final bool locker;
   final bool sportswear;

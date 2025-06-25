@@ -200,21 +200,23 @@ class PtItemView extends GetView<PtItemController> {
                       ),
                     ),
                     SizedBox(height: 28),
-                    SizedBox(
-                      height: 48,
-                      child: TabBar(
-                        indicatorColor: mainColor,
-                        labelColor: mainColor,
-                        unselectedLabelColor: gray300,
-                        indicatorWeight: 2,
-                        labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                        tabs: [
-                          Tab(text: '수업'),
-                          Tab(text: '리뷰 100+'),
-                        ],
-                        onTap: (index) {
-                          controller.tabIndex.value = index;
-                        },
+                    Obx(()=>
+                      SizedBox(
+                        height: 48,
+                        child: TabBar(
+                          indicatorColor: mainColor,
+                          labelColor: mainColor,
+                          unselectedLabelColor: gray300,
+                          indicatorWeight: 2,
+                          labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                          tabs: [
+                            Tab(text: '수업'),
+                            Tab(text: '리뷰 ${controller.reviewList.length > 100?'100+':controller.reviewList.length}'),
+                          ],
+                          onTap: (index) {
+                            controller.tabIndex.value = index;
+                          },
+                        ),
                       ),
                     ),
                     Container(height: 1, color: Colors.grey.shade300), // 밑줄 경계선
@@ -293,7 +295,7 @@ class PtItemView extends GetView<PtItemController> {
                           ListView.builder(
                               physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: controller.ptGroupList.length,
+                              itemCount: controller.reviewList.length,
                               itemBuilder: (context , index ){
                                 return Container(
                                   margin: EdgeInsets.only(top: 26,left: 20,right: 20),

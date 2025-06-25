@@ -137,4 +137,51 @@ class SpotDataRepository {
       return list.first;
     }
   }
+  changeLocker(String documentId, int locker) async {
+    try {
+      final snapshot = await spotCollection.doc('14KOrcmUFnchIvu72B0t').collection('locker').where('status',isEqualTo: 5).where('number',isEqualTo: locker).get();
+      if(snapshot.docs.isEmpty){
+        return false;
+      }
+      await spotCollection.doc('14KOrcmUFnchIvu72B0t').collection('locker').doc(snapshot.docs[0].id).update({
+        'userDocumentId': myInfo.documentId,
+        'userName': myInfo.name,
+        'startDate':myInfo.ticket.createDate,
+        'endDate':myInfo.ticket.lockerEndDate,
+        'lastUpdateDate': DateTime.now(),
+        'status': 0,
+      });
+      final querySnapshot = await spotCollection.doc('14KOrcmUFnchIvu72B0t').collection('locker')
+          .where('userDocumentId', isEqualTo:myInfo.documentId).where('number',isNotEqualTo: locker)
+          .get();
+      if(querySnapshot.docs.isNotEmpty) {
+        for(var doc in querySnapshot.docs) {
+          await doc.reference.update({
+            'userDocumentId': '',
+            'userName': '',
+            'startDate': null,
+            'endDate': null,
+            'status': 5,
+            'lastUpdateDate': DateTime.now(),
+          });
+        }
+      }
+      await userCollection.doc(myInfo.documentId).update({
+        'ticket.lockerNum': locker,
+      });
+      return true;
+    } catch (e) {
+      print('사물함 변경 실패: $e');
+      return false;
+    }
+  }
+  saveSuggestion(Map<String,dynamic> a) async {
+    try {
+      await suggestionCollection.add(a);
+      return true;
+    } catch (e){
+      print('제안 저장 실패: $e');
+      return false;
+    }
+  }
 }

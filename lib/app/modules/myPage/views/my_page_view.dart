@@ -126,8 +126,11 @@ class MyPageView extends GetView<MyPageController> {
                           ),
                           GestureDetector(
                             onTap: (){
-                              // TODO: 나의 PT
-                              Get.toNamed(Routes.PT);
+                              if(myInfo.ptTicket.endDate.isBefore(DateTime.now().add(Duration(days: -1)))){
+                                Get.toNamed(Routes.GYM_LIST,arguments: {'isPt':true});
+                              } else {
+                                Get.toNamed(Routes.PT);
+                              }
                             },
                             child: Container(
                               width: size.width,
